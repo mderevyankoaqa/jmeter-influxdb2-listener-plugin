@@ -19,7 +19,9 @@ The supported versions:
 * JMeter 5.3.
 
 ## Deployment
-* Put '`jmeter-plugin-influxdb2-listener-<version>.jar`' file to `~<JmeterPath<\lib\ext`;
+* Put '`jmeter-plugin-influxdb2-listener-<version>.jar`' file from [Releases](https://github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin/releases) to `~<JmeterPath<\lib\ext`; 
+
+Note: "fatJar" gradle task should be used to create the package for the JMeter.
 
  ![](img/deploy1.png)
 
