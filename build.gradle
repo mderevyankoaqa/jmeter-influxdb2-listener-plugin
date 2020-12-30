@@ -1,0 +1,67 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 11
+version = '1.0'
+def title = 'JMeterInfluxDBListener'
+def archiveName = 'jmeter-plugin-influxdb2-listener'
+
+repositories {
+
+    mavenCentral()
+}
+
+// There's a bug in JMeter leaving extra metadata right now. This is a workaround.
+class JMeterRule implements ComponentMetadataRule {
+	void execute(ComponentMetadataContext context) {
+		context.details.allVariants {
+			withDependencies {
+				removeAll { it.group == "org.apache.jmeter" && it.name == "bom" }
+			}
+		}
+	}
+}
+
+dependencies {
+	implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_core', version: '5.3'
+	implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_java', version: '5.3'
+	implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_components', version: '5.3'
+	implementation group: 'org.apache.jmeter', name: 'jorphan', version: '5.3'
+	implementation group: 'com.influxdb', name: 'influxdb-client-java', version: '1.13.0'
+	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
+
+	components {
+		withModule("org.apache.jmeter:ApacheJMeter_core", JMeterRule)
+		withModule("org.apache.jmeter:ApacheJMeter_java", JMeterRule)
+		withModule("org.apache.jmeter:ApacheJMeter_components", JMeterRule)
+		withModule("org.apache.jmeter:jorphan", JMeterRule)
+		withModule("org.apache.jmeter:ApacheJMeter", JMeterRule)
+	}
+}
+
+jar {
+	manifest {
+		attributes 'Implementation-Title': title,
+				    'Implementation-Version': archiveVersion,
+				    'Main-Class': 'org.md.jmeter.influxdb2.visualizer.JMeterInfluxDBBackendListenerClient'
+	}
+}
+
+// Only this task should be used to create the package for the JMeter
+task fatJar(type: Jar) {
+	manifest.from jar.manifest
+
+	archiveBaseName = archiveName
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+	from {
+		configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+			{
+		exclude "META-INF/*.SF"
+		exclude "META-INF/*.DSA"
+		exclude "META-INF/*.RSA"
+	}
+	with jar
+}
