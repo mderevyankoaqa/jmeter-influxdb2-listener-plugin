@@ -17,7 +17,7 @@ The plugin sends metrics to InfluxDB and provides the possibility to visualize t
 The supported versions:
 * Java 11 - make sure that you have it.
 * InfluxDB v2.0, see release notes: https://docs.influxdata.com/influxdb/v2.0/reference/release-notes/influxdb/  (1.8 is not supported)
-* JMeter 5.3.
+* JMeter 5.3 or higher.
 
 ## Deployment
 * Put '`jmeter-plugin-influxdb2-listener-<version>.jar`' file from [Releases](https://github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin/releases) to `~<JmeterPath<\lib\ext`; 
