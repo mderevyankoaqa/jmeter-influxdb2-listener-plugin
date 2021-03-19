@@ -27,7 +27,7 @@ dependencies {
 	implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_java', version: '5.4.1'
 	implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_components', version: '5.4.1'
 	implementation group: 'org.apache.jmeter', name: 'jorphan', version: '5.4.1'
-	implementation group: 'com.influxdb', name: 'influxdb-client-java', version: '1.13.0'
+	implementation group: 'com.influxdb', name: 'influxdb-client-java', version: '2.0.0'
 	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 
 	components {
