@@ -4,7 +4,7 @@ apply plugin: 'eclipse'
 sourceCompatibility = 11
 version = '1.1'
 def title = 'JMeterInfluxDBListener'
-def archiveName = 'jmeter-plugin-influxdb-listener'
+def archiveName = 'jmeter-plugin-influxdb2-listener'
 
 repositories {
 
