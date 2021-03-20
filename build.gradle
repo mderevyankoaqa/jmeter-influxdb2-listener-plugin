@@ -2,13 +2,13 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 
 sourceCompatibility = 11
-version = '1.0'
+version = '1.1'
 def title = 'JMeterInfluxDBListener'
 def archiveName = 'jmeter-plugin-influxdb2-listener'
 
 repositories {
 
-    mavenCentral()
+	mavenCentral()
 }
 
 // There's a bug in JMeter leaving extra metadata right now. This is a workaround.
@@ -23,12 +23,12 @@ class JMeterRule implements ComponentMetadataRule {
 }
 
 dependencies {
-	implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_core', version: '5.3'
-	implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_java', version: '5.3'
-	implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_components', version: '5.3'
-	implementation group: 'org.apache.jmeter', name: 'jorphan', version: '5.3'
-	implementation group: 'com.influxdb', name: 'influxdb-client-java', version: '1.13.0'
-	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
+	implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_core', version: '5.4.1'
+	implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_java', version: '5.4.1'
+	implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_components', version: '5.4.1'
+	implementation group: 'org.apache.jmeter', name: 'jorphan', version: '5.4.1'
+	implementation group: 'com.influxdb', name: 'influxdb-client-java', version: '2.0.0'
+	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 
 	components {
 		withModule("org.apache.jmeter:ApacheJMeter_core", JMeterRule)
@@ -42,12 +42,11 @@ dependencies {
 jar {
 	manifest {
 		attributes 'Implementation-Title': title,
-				    'Implementation-Version': archiveVersion,
-				    'Main-Class': 'org.md.jmeter.influxdb2.visualizer.JMeterInfluxDBBackendListenerClient'
+				'Implementation-Version': archiveVersion,
+				'Main-Class': 'org.md.jmeter.influxdb.visualizer.JMeterInfluxDBBackendListenerClient'
 	}
 }
 
-// Only this task should be used to create the package for the JMeter
 task fatJar(type: Jar) {
 	manifest.from jar.manifest
 
@@ -57,8 +56,8 @@ task fatJar(type: Jar) {
 	from {
 		configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
 		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-	}
-			{
+
+	} {
 		exclude "META-INF/*.SF"
 		exclude "META-INF/*.DSA"
 		exclude "META-INF/*.RSA"
