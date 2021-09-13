@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ac7da6d-c796-4e05-9b2b-cea04fb01ece" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/influxdb/client/InfluxDatabaseClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/influxdb/client/InfluxDatabaseClient.java" afterDir="false" />
-    </list>
+    <list default="true" id="4ac7da6d-c796-4e05-9b2b-cea04fb01ece" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -246,13 +240,21 @@
       <option name="project" value="LOCAL" />
       <updated>1609249868163</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Updated influxdb-client-java to -&gt; 3.2.0 and gradle version to -&gt; 7.0">
+      <created>1631536817323</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1631536817323</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Fixed issues after dev testing" />
     <MESSAGE value="Fixed issue with timings." />
     <MESSAGE value="Updated read me file" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated read me file" />
+    <MESSAGE value="Updated influxdb-client-java to -&gt; 3.2.0 and gradle version to -&gt; 7.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated influxdb-client-java to -&gt; 3.2.0 and gradle version to -&gt; 7.0" />
   </component>
 </project>
