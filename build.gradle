@@ -1,66 +1,65 @@
-apply plugin: 'java'
-apply plugin: 'eclipse'
+plugins {
+    id 'com.github.johnrengelman.shadow' version "7.0.0"
+    id 'java'
+    id 'project-report'
+    id 'idea'
+}
+
+repositories {
+    mavenCentral()
+            {
+
+                mavenCentral()
+            }
+}
 
 sourceCompatibility = 11
-version = '1.1'
+version = '1.2'
 def title = 'JMeterInfluxDBListener'
 def archiveName = 'jmeter-plugin-influxdb2-listener'
 
-repositories {
-
-	mavenCentral()
-}
 
 // There's a bug in JMeter leaving extra metadata right now. This is a workaround.
-class JMeterRule implements ComponentMetadataRule {
-	void execute(ComponentMetadataContext context) {
-		context.details.allVariants {
-			withDependencies {
-				removeAll { it.group == "org.apache.jmeter" && it.name == "bom" }
-			}
-		}
-	}
-}
+    class JMeterRule implements ComponentMetadataRule {
+        void execute(ComponentMetadataContext context) {
+            context.details.allVariants {
+                withDependencies {
+                    removeAll { it.group == "org.apache.jmeter" && it.name == "bom" }
+                }
+            }
+        }
+    }
 
-dependencies {
-	implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_core', version: '5.4.1'
-	implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_java', version: '5.4.1'
-	implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_components', version: '5.4.1'
-	implementation group: 'org.apache.jmeter', name: 'jorphan', version: '5.4.1'
-	implementation group: 'com.influxdb', name: 'influxdb-client-java', version: '2.0.0'
-	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+    dependencies {
+        implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_core', version: '5.4.1'
+        implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_java', version: '5.4.1'
+        implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_components', version: '5.4.1'
+        implementation group: 'org.apache.jmeter', name: 'jorphan', version: '5.4.1'
+        implementation group: 'com.influxdb', name: 'influxdb-client-java', version: '3.2.0'
+        implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 
-	components {
-		withModule("org.apache.jmeter:ApacheJMeter_core", JMeterRule)
-		withModule("org.apache.jmeter:ApacheJMeter_java", JMeterRule)
-		withModule("org.apache.jmeter:ApacheJMeter_components", JMeterRule)
-		withModule("org.apache.jmeter:jorphan", JMeterRule)
-		withModule("org.apache.jmeter:ApacheJMeter", JMeterRule)
-	}
-}
+
+        components {
+            withModule("org.apache.jmeter:ApacheJMeter_core", JMeterRule)
+            withModule("org.apache.jmeter:ApacheJMeter_java", JMeterRule)
+            withModule("org.apache.jmeter:ApacheJMeter_components", JMeterRule)
+            withModule("org.apache.jmeter:jorphan", JMeterRule)
+            withModule("org.apache.jmeter:ApacheJMeter", JMeterRule)
+        }
+    }
 
 jar {
-	manifest {
-		attributes 'Implementation-Title': title,
-				'Implementation-Version': archiveVersion,
-				'Main-Class': 'org.md.jmeter.influxdb.visualizer.JMeterInfluxDBBackendListenerClient'
-	}
+
+        manifest {
+        attributes 'Implementation-Title': title,
+                   'Implementation-Version': archiveVersion,
+                   'Main-Class': 'org.md.jmeter.influxdb.visualizer.JMeterInfluxDBBackendListenerClient'
+    }
 }
 
-task fatJar(type: Jar) {
-	manifest.from jar.manifest
-
-	archiveBaseName = archiveName
-	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-
-	from {
-		configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-
-	} {
-		exclude "META-INF/*.SF"
-		exclude "META-INF/*.DSA"
-		exclude "META-INF/*.RSA"
-	}
-	with jar
+shadowJar {
+    archiveBaseName.set(archiveName)
+    manifest {
+        inheritFrom project.tasks.jar.manifest
+    }
 }

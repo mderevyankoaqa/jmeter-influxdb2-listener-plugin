@@ -35,11 +35,23 @@ public class InfluxDatabaseClient {
      */
     public void setupInfluxClient() {
 
-        this.influxDB = InfluxDBClientFactory.
-                create(this.influxDBConfig.getInfluxDBURL(),
-                        this.influxDBConfig.getInfluxToken().toCharArray(),
-                        this.influxDBConfig.getInfluxOrganization(),
-                        this.influxDBConfig.getInfluxBucket());
+        LOGGER.info("InfluxDBClientFactory is going to use the following properties:");
+        LOGGER.info("URL --> " + this.influxDBConfig.getInfluxDBURL());
+        LOGGER.info("Token --> " + this.influxDBConfig.getInfluxToken());
+        LOGGER.info("Organization --> " + this.influxDBConfig.getInfluxOrganization());
+        LOGGER.info("Bucket --> " + this.influxDBConfig.getInfluxBucket());
+
+        try {
+            this.influxDB = InfluxDBClientFactory.
+                    create(this.influxDBConfig.getInfluxDBURL(),
+                            this.influxDBConfig.getInfluxToken().toCharArray(),
+                            this.influxDBConfig.getInfluxOrganization(),
+                            this.influxDBConfig.getInfluxBucket());
+        }
+        catch (Exception e)
+        {
+            LOGGER.error("Failed to create client", e);
+        }
     }
 
     /**
@@ -49,14 +61,9 @@ public class InfluxDatabaseClient {
     public void write(Point point) {
 
         // Write by Data Point
-        try (WriteApi writeApi = this.influxDB.getWriteApi()) {
+       try (WriteApi writeApi = this.influxDB.makeWriteApi()) {
 
             writeApi.writePoint(point);
-        }
-
-        catch (Exception e)
-        {
-            LOGGER.error("Failed writing to influx", e);
         }
     }
 
