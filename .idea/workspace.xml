@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="4ac7da6d-c796-4e05-9b2b-cea04fb01ece" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/InfluxDatabaseBackendListenerClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/InfluxDatabaseBackendListenerClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/config/InfluxDBConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/config/InfluxDBConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/influxdb/client/InfluxDatabaseClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/influxdb/client/InfluxDatabaseClient.java" afterDir="false" />
     </list>
@@ -254,7 +252,14 @@
       <option name="project" value="LOCAL" />
       <updated>1631536817323</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Added batches, ready for the dev testing.">
+      <created>1635881524811</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1635881524811</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -273,6 +278,7 @@
     <MESSAGE value="Fixed issue with timings." />
     <MESSAGE value="Updated read me file" />
     <MESSAGE value="Updated influxdb-client-java to -&gt; 3.2.0 and gradle version to -&gt; 7.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated influxdb-client-java to -&gt; 3.2.0 and gradle version to -&gt; 7.0" />
+    <MESSAGE value="Added batches, ready for the dev testing." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added batches, ready for the dev testing." />
   </component>
 </project>

@@ -80,12 +80,12 @@ public class InfluxDBConfig {
 	/**
 	 * Config key for batch size.
 	 */
-	public static final String KEY_INFLUX_DB_BATCH_SIZE = "influxdbBatchSize";
+	public static final String KEY_INFLUX_DB_BATCH_SIZE = "influxDBBatchSize";
 
 	/**
 	 * Config key for retry interval.
 	 */
-	public static final String KEY_INFLUX_DB_FLUSH_INTERVAL = "influxdbFlushInterval";
+	public static final String KEY_INFLUX_DB_FLUSH_INTERVAL = "influxDBFlushInterval";
 
 	/**
 	 * InfluxDB Host.
@@ -266,14 +266,26 @@ public class InfluxDBConfig {
 		this.influxdbBatchSize = influxdbBatchSize;
 	}
 
+	/**
+	 * Returns InfluxDB batch size.
+	 * @return InfluxDB batch size represented in the int.
+	 */
 	public int getInfluxdbBatchSize() {
 		return influxdbBatchSize;
 	}
 
+	/**
+	 * Gets InfluxDB flush interval.
+	 * @return InfluxDB flush interval represented in the int.
+	 */
 	public int getInfluxdbFlushInterval() {
 		return influxdbFlushInterval;
 	}
 
+	/**
+	 * Sets flush interval.
+	 * @param influxdbFlushInterval is flush interval represented in the int.
+	 */
 	public void setInfluxdbFlushInterval(int influxdbFlushInterval) {
 		this.influxdbFlushInterval = influxdbFlushInterval;
 	}

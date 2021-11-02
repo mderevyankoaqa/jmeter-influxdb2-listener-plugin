@@ -41,6 +41,13 @@ public class InfluxDatabaseClient {
         influxDBConfig = new InfluxDBConfig(context);
     }
 
+    /**
+     * Creates the singleton instance of the {@link InfluxDatabaseClient}.
+     * Creates the Influx DB client instance.
+     * Executes the Influx DB points by schedule.
+     * @param context {@link BackendListenerContext}
+     * @param logger  {@link Logger}
+     */
     public static InfluxDatabaseClient getInstance(BackendListenerContext context, Logger logger) {
 
         InfluxDatabaseClient result = instance;
@@ -55,6 +62,58 @@ public class InfluxDatabaseClient {
                 instance.writeDataByTimer();
             }
             return instance;
+        }
+    }
+
+    /**
+     * Collects the {@link Point} in {@link List<Point>}
+     * Writes {@link List<Point>} when Batch size equals to size of the {@link List<Point>}; cleans {@link List<Point>} after writing.
+     * @param point the Influxdb {@link Point}.
+     */
+    public synchronized void collectData(Point point) {
+
+        LOGGER.debug("Sending to write");
+        points.add(point);
+
+        if (points.size() == influxDBConfig.getInfluxdbBatchSize()) {
+
+            LOGGER.info("Batch size protection has occurred.");
+            this.writeData();
+        }
+    }
+
+    /**
+     * Closes Influx DB client, cancels timers to write {@link Point}, cleaning {@link List<Point>} collection; writes Points before closing.
+     */
+    public synchronized void close() {
+        if (points.size() != 0) {
+
+            this.writeApi.writePoints(points);
+            LOGGER.info("The final step --->" + points.size() + " points have been written, before closing.");
+        }
+
+        this.influxDB.close();
+        instance = null;
+        this.timer.cancel();
+        points.clear();
+    }
+
+    /**
+     * Writes {@link Point} from {@link List<Point>} collection if items exists.
+     */
+    public synchronized void writeData() {
+        if (points.size() != 0) {
+            try {
+                this.writeApi.writePoints(points);
+                LOGGER.info("The ---> " + points.size() + " points have been written");
+
+                points.clear();
+                LOGGER.debug("Points have been cleaned");
+            }
+            catch (Exception e)
+            {
+                LOGGER.error("Error has occurred while points writing, see the details --> " + e.getMessage());
+            }
         }
     }
 
@@ -85,51 +144,8 @@ public class InfluxDatabaseClient {
     }
 
     /**
-     * Writes the {@link Point}.
-     *
-     * @param point the Influxdb {@link Point}.
+     * Writes data by timer.
      */
-    public synchronized void collectData(Point point) {
-
-        LOGGER.debug("Sending to write");
-        points.add(point);
-
-        if (points.size() == influxDBConfig.getInfluxdbBatchSize()) {
-
-            LOGGER.debug("Batch size protection has occurred");
-            this.writeData();
-        }
-    }
-
-    public synchronized void close() {
-        if (points.size() != 0) {
-
-            this.writeApi.writePoints(points);
-            LOGGER.debug("The final step --->" + points.size() + " points have been written");
-        }
-
-        this.influxDB.close();
-        instance = null;
-        this.timer.cancel();
-        points.clear();
-    }
-
-    public synchronized void writeData() {
-        if (points.size() != 0) {
-            try {
-                this.writeApi.writePoints(points);
-                LOGGER.debug("The ---> " + points.size() + " points have been written");
-
-                points.clear();
-                LOGGER.debug("Points have been cleaned");
-            }
-            catch (Exception e)
-            {
-                LOGGER.error("Error has occurred while points writing, see the details --> " + e.getMessage());
-            }
-        }
-    }
-
     private synchronized void writeDataByTimer() {
         this.timer = new Timer();
         this.timer.schedule(new TimerTask() {
