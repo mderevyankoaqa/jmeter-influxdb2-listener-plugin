@@ -130,7 +130,8 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
                 var sampleResultPointProvider = new SampleResultPointProvider(sampleResultContext);
 
                 Point resultPoint = sampleResultPointProvider.getPoint();
-                this.influxDatabaseClient.write(resultPoint);
+                this.influxDatabaseClient.collectData(resultPoint);
+
             }
         }
     }
@@ -147,6 +148,8 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
         arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_TOKEN, InfluxDBConfig.DEFAULT_INFLUX_DB_TOKEN);
         arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_ORG, InfluxDBConfig.DEFAULT_INFLUX_DB_ORG);
         arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_BUCKET, InfluxDBConfig.DEFAULT_BUCKET);
+        arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_FLUSH_INTERVAL, String.valueOf(InfluxDBConfig.DEFAULT_INFLUX_DB_FLUSH_INTERVAL));
+        arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_BATCH_SIZE, String.valueOf(InfluxDBConfig.DEFAULT_INFLUX_DB_BATCH_SIZE));
         arguments.addArgument(KEY_SAMPLERS_LIST, ".*");
         arguments.addArgument(KEY_USE_REGEX_FOR_SAMPLER_LIST, "true");
         arguments.addArgument(KEY_RECORD_SUB_SAMPLES, "true");
@@ -170,7 +173,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
                 .addTag(TestStartEndMeasurement.Tags.TEST_NAME, this.testName)
                 .addField(TestStartEndMeasurement.Fields.PLACEHOLDER, "1");
 
-        this.influxDatabaseClient.write(setupPoint);
+        this.influxDatabaseClient.collectData(setupPoint);
 
         this.parseSamplers(context);
         this.scheduler = Executors.newScheduledThreadPool(1);
@@ -195,7 +198,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
                 .addTag(TestStartEndMeasurement.Tags.TEST_NAME, this.testName)
                 .addField(TestStartEndMeasurement.Fields.PLACEHOLDER, "1");
 
-        this.influxDatabaseClient.write(teardownPoint);
+        this.influxDatabaseClient.collectData(teardownPoint);
 
         try {
             this.scheduler.awaitTermination(30, TimeUnit.SECONDS);
@@ -229,8 +232,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
      */
     private void setupInfluxClient(BackendListenerContext context) {
 
-        this.influxDatabaseClient = new InfluxDatabaseClient(context, LOGGER);
-        this.influxDatabaseClient.setupInfluxClient();
+        this.influxDatabaseClient = InfluxDatabaseClient.getInstance(context, LOGGER);
     }
 
     /**
@@ -269,7 +271,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
         .addTag(VirtualUsersMeasurement.Tags.TEST_NAME, this.testName)
         .addTag(VirtualUsersMeasurement.Tags.RUN_ID, this.runId);
 
-        this.influxDatabaseClient.write(virtualUsersMetricsPoint);
+        this.influxDatabaseClient.collectData(virtualUsersMetricsPoint);
     }
 
     /**

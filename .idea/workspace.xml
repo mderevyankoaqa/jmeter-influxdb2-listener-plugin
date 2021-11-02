@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ac7da6d-c796-4e05-9b2b-cea04fb01ece" name="Default Changelist" comment="" />
+    <list default="true" id="4ac7da6d-c796-4e05-9b2b-cea04fb01ece" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/InfluxDatabaseBackendListenerClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/InfluxDatabaseBackendListenerClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/config/InfluxDBConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/config/InfluxDBConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/influxdb/client/InfluxDatabaseClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/influxdb/client/InfluxDatabaseClient.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -69,7 +75,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="developmant" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -84,8 +90,9 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="C:/jmeter/jmeter" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../jmeter" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
     <property name="show.unlinked.gradle.project.popup" value="true" />
   </component>
@@ -249,6 +256,17 @@
     </task>
     <option name="localTasksCounter" value="5" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Fixed issues after dev testing" />

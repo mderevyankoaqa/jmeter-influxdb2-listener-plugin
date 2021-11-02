@@ -35,6 +35,17 @@ public class InfluxDBConfig {
 	 */
 	public static final String DEFAULT_INFLUX_DB_ORG = "performance_testing";
 
+
+	/**
+	 * Default batch size.
+	 */
+	public static final int DEFAULT_INFLUX_DB_BATCH_SIZE = 5000;
+
+	/**
+	 * Default flush interval.
+	 */
+	public static final int DEFAULT_INFLUX_DB_FLUSH_INTERVAL = 2000;
+
 	/**
 	 * Config key for bucket.
 	 */
@@ -67,6 +78,16 @@ public class InfluxDBConfig {
 	public static final String KEY_HTTP_SCHEME = "influxDBHttpScheme";
 
 	/**
+	 * Config key for batch size.
+	 */
+	public static final String KEY_INFLUX_DB_BATCH_SIZE = "influxdbBatchSize";
+
+	/**
+	 * Config key for retry interval.
+	 */
+	public static final String KEY_INFLUX_DB_FLUSH_INTERVAL = "influxdbFlushInterval";
+
+	/**
 	 * InfluxDB Host.
 	 */
 	private String influxDBHost;
@@ -97,6 +118,17 @@ public class InfluxDBConfig {
 	private String influxHTTPScheme;
 
 	/**
+	 * InfluxDB database batch size.
+	 */
+	private int influxdbBatchSize;
+
+	/**
+	 * InfluxDB database flush interval.
+	 */
+	private int influxdbFlushInterval;
+
+
+	/**
 	 * Creates the new instance of {@link InfluxDBConfig}
 	 * @param context the {@link BackendListenerContext}
 	 */
@@ -122,6 +154,14 @@ public class InfluxDBConfig {
 
 		String influxHTTPScheme = ArgsValidator.checkHTTPScheme(context.getParameter(KEY_HTTP_SCHEME, DEFAULT_HTTP_SCHEME));
 		this.setInfluxHTTPScheme(influxHTTPScheme);
+
+		int influxdbBatchSize = context.getIntParameter(KEY_INFLUX_DB_BATCH_SIZE);
+		Arguments.checkNotNegativeNumber(influxdbBatchSize, KEY_INFLUX_DB_BATCH_SIZE);
+		this.setInfluxdbBatchSize(influxdbBatchSize);
+
+		int influxdbFlushInterval = context.getIntParameter(KEY_INFLUX_DB_FLUSH_INTERVAL);
+		Arguments.checkNotNegativeNumber(influxdbFlushInterval, KEY_INFLUX_DB_FLUSH_INTERVAL);
+		this.setInfluxdbFlushInterval(influxdbFlushInterval);
 	}
 
 	/**
@@ -216,5 +256,25 @@ public class InfluxDBConfig {
 	 */
 	public void setInfluxToken(String influxToken) {
 		this.influxToken = influxToken;
+	}
+
+	/**
+	 * Sets the InfluxDB batch size.
+	 * @param influxdbBatchSize is InfluxDB batch size represented in the int.
+	 */
+	public void setInfluxdbBatchSize(int influxdbBatchSize) {
+		this.influxdbBatchSize = influxdbBatchSize;
+	}
+
+	public int getInfluxdbBatchSize() {
+		return influxdbBatchSize;
+	}
+
+	public int getInfluxdbFlushInterval() {
+		return influxdbFlushInterval;
+	}
+
+	public void setInfluxdbFlushInterval(int influxdbFlushInterval) {
+		this.influxdbFlushInterval = influxdbFlushInterval;
 	}
 }
