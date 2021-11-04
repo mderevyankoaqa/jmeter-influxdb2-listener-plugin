@@ -89,7 +89,7 @@ Using both options you can tune data importing and have optimal performance.
 Make sure you have enough ram to aggregate huge batch and optimal flush period.
 
 Notes: when at least one error has occurred while sending metrics by schedule the MAX batch protection will work only, test will not be interrupted.
-This is going to be improved in the next realise. 
+This is going to be improved in the next releases. 
 
 ## Grafana dashboard capabilities
 See deployment instructions here https://grafana.com/grafana/dashboards/13644

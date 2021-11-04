@@ -5,21 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ac7da6d-c796-4e05-9b2b-cea04fb01ece" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/img/grafana7.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/deploy3.png" beforeDir="false" afterPath="$PROJECT_DIR$/img/deploy3.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/grafana1.png" beforeDir="false" afterPath="$PROJECT_DIR$/img/grafana1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/grafana2.png" beforeDir="false" afterPath="$PROJECT_DIR$/img/grafana2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/grafana3.png" beforeDir="false" afterPath="$PROJECT_DIR$/img/grafana3.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/grafana4.png" beforeDir="false" afterPath="$PROJECT_DIR$/img/grafana4.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/grafana5.png" beforeDir="false" afterPath="$PROJECT_DIR$/img/grafana5.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/grafana6.png" beforeDir="false" afterPath="$PROJECT_DIR$/img/grafana6.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/InfluxDatabaseBackendListenerClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/InfluxDatabaseBackendListenerClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/config/InfluxDBConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/config/InfluxDBConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/influxdb/client/InfluxDatabaseClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/influxdb/client/InfluxDatabaseClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/influxdb/client/InfluxDatabaseUtility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/influxdb/client/InfluxDatabaseUtility.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -282,7 +269,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635888552313</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Fixes after dev testing, added user manual, updated board.">
+      <created>1636027136478</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1636027136478</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -304,6 +298,7 @@
     <MESSAGE value="Updated influxdb-client-java to -&gt; 3.2.0 and gradle version to -&gt; 7.0" />
     <MESSAGE value="Added batches, ready for the dev testing." />
     <MESSAGE value="Added comments and fixes." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added comments and fixes." />
+    <MESSAGE value="Fixes after dev testing, added user manual, updated board." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixes after dev testing, added user manual, updated board." />
   </component>
 </project>
