@@ -6,10 +6,7 @@ import org.md.jmeter.influxdb2.visualizer.config.InfluxDBConfig;
 import org.apache.jmeter.visualizers.backend.BackendListenerContext;
 import org.slf4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * The client to work with Influx DB 2.0 *
@@ -20,34 +17,36 @@ public class InfluxDatabaseClient {
 
     private static org.slf4j.Logger LOGGER;
     private static InfluxDBConfig influxDBConfig;
-    private Timer timer;
-    private static final List<Point> points = new ArrayList<>();
+    private final List<Point> points;
     private InfluxDBClient influxDB;
 
     private WriteApiBlocking writeApi;
 
     private static volatile InfluxDatabaseClient instance;
+    private static final int criticalBatchSize = 500;
+
 
     /**
      * Creates a new instance of the @link InfluxDatabaseClient.
      *
-     * @param context {@link BackendListenerContext}
+     * @param config {@link InfluxDBConfig}
      * @param logger  {@link Logger}
      */
-    private InfluxDatabaseClient(BackendListenerContext context, Logger logger) {
+    private InfluxDatabaseClient(InfluxDBConfig config, Logger logger) {
 
+        this.points = Collections.synchronizedList(new ArrayList<>());
+        influxDBConfig = config;
         LOGGER = logger;
-        influxDBConfig = new InfluxDBConfig(context);
     }
 
     /**
      * Creates the singleton instance of the {@link InfluxDatabaseClient}.
      * Creates the Influx DB client instance.
      * Executes the Influx DB points by schedule.
-     * @param context {@link BackendListenerContext}
+     * @param config {@link InfluxDBConfig}
      * @param logger  {@link Logger}
      */
-    public static InfluxDatabaseClient getInstance(BackendListenerContext context, Logger logger) {
+    public static InfluxDatabaseClient getInstance(InfluxDBConfig config, Logger logger) {
 
         InfluxDatabaseClient result = instance;
         if (result != null) {
@@ -55,10 +54,7 @@ public class InfluxDatabaseClient {
         }
         synchronized (InfluxDatabaseClient.class) {
             if (instance == null) {
-                instance = new InfluxDatabaseClient(context, logger);
-
-                instance.setupInfluxClient();
-                instance.writeDataByTimer();
+                instance = new InfluxDatabaseClient(config, logger);
             }
             return instance;
         }
@@ -72,9 +68,9 @@ public class InfluxDatabaseClient {
     public synchronized void collectData(Point point) {
 
         LOGGER.debug("Sending to write");
-        points.add(point);
+        this.points.add(point);
 
-        if (points.size() == influxDBConfig.getInfluxdbBatchSize()) {
+        if (this.points.size() >= influxDBConfig.getInfluxdbBatchSize()) {
 
             LOGGER.info("Batch size protection has occurred.");
             this.writeData();
@@ -88,13 +84,11 @@ public class InfluxDatabaseClient {
 
         LOGGER.info("The final step ---> importing before closing.");
         this.writeData();
-
-
         this.influxDB.close();
-        this.timer.cancel();
-        points.clear();
+        this.points.clear();
 
-        if(instance != null) {
+        if (instance != null)
+        {
             instance = null;
         }
     }
@@ -103,23 +97,27 @@ public class InfluxDatabaseClient {
      * Writes {@link Point} from {@link List<Point>} collection if items exists.
      */
     public synchronized void writeData() {
-        if (points.size() != 0) {
+
+        if (this.points.size() != 0) {
             try {
                 long start = System.currentTimeMillis();
-                this.writeApi.writePoints(points);
+                this.writeApi.writePoints(this.points);
                 long end = System.currentTimeMillis();
-                LOGGER.info("Data has been imported successfully, batch with size --> " + points.size() + " ,elapsed time is -->" + (end - start)+ " ms");
+                LOGGER.info("Data has been imported successfully, batch with size is --> " + this.points.size() + ", elapsed time is --> " + (end - start)+ " ms");
 
-                points.clear();
+                this.points.clear();
                 LOGGER.debug("Points have been cleaned");
             }
             catch (Exception e)
             {
+                LOGGER.error("Error has occurred, batch with size " + this.points.size() + " was not imported, see the details --> " + e.getMessage());
 
-                LOGGER.error("Error has occurred, batch with size " + points.size() + " was not imported, see the details --> " + e.getMessage());
 
-                this.timer.cancel();
-                LOGGER.warn("Timer has stopped since error! You will have max batch size protection only.");
+                if (this.points.size() >= criticalBatchSize)
+                {
+                    LOGGER.warn("Critical size protection has occurred the --> " + this.points.size() + "; batch data has bee removed from que and will not be imported, data completely lost to avoid OOM!!!");
+                    this.points.clear();
+                }
             }
         }
     }
@@ -127,7 +125,7 @@ public class InfluxDatabaseClient {
     /**
      * Creates the Influx DB client instance.
      */
-    private void setupInfluxClient() {
+    public synchronized void setupInfluxClient() {
 
         LOGGER.info("InfluxDBClientFactory is going to use the following properties:");
         LOGGER.info("URL --> " + influxDBConfig.getInfluxDBURL());
@@ -148,22 +146,5 @@ public class InfluxDatabaseClient {
         } catch (Exception e) {
             LOGGER.error("Failed to create client", e);
         }
-    }
-
-    /**
-     * Writes data by timer.
-     */
-    private synchronized void writeDataByTimer() {
-        this.timer = new Timer();
-        this.timer.schedule(new TimerTask() {
-
-            @Override
-            public void run() {
-                LOGGER.debug("Running the timer: " + new java.util.Date());
-                if (instance != null) {
-                    instance.writeData();
-                }
-            }
-        }, 0, influxDBConfig.getInfluxdbFlushInterval());
     }
 }

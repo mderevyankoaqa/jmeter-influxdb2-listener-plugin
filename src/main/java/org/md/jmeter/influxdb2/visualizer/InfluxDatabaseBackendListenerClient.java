@@ -2,7 +2,7 @@ package org.md.jmeter.influxdb2.visualizer;
 
 import java.util.*;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import com.influxdb.client.domain.WritePrecision;
@@ -20,7 +20,10 @@ import org.apache.jmeter.visualizers.backend.BackendListenerContext;
 
 import org.md.jmeter.influxdb2.visualizer.result.SampleResultPointContext;
 import org.md.jmeter.influxdb2.visualizer.result.SampleResultPointProvider;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.md.jmeter.influxdb2.visualizer.influxdb.client.InfluxDatabaseClient.getInstance;
 
 
 /**
@@ -48,8 +51,6 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
     private static final String KEY_SAMPLERS_LIST = "samplersList";
     private static final String KEY_RECORD_SUB_SAMPLES = "recordSubSamples";
 
-    private InfluxDatabaseClient influxDatabaseClient;
-
     private final WritePrecision writePrecision = WritePrecision.MS;
 
     /**
@@ -61,7 +62,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
     /**
      * Scheduler for periodic metric aggregation.
      */
-    private ScheduledExecutorService scheduler;
+    private ScheduledThreadPoolExecutor scheduler;
 
     /**
      * Name of the test.
@@ -99,6 +100,11 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
      */
     private boolean recordSubSamples;
 
+
+    private InfluxDBConfig influxDBConfig;
+
+    private Timer timer;
+
     /**
      * Processes sampler results.
      */
@@ -130,7 +136,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
                 var sampleResultPointProvider = new SampleResultPointProvider(sampleResultContext);
 
                 Point resultPoint = sampleResultPointProvider.getPoint();
-                this.influxDatabaseClient.collectData(resultPoint);
+                getInstance(this.influxDBConfig, LOGGER).collectData(resultPoint);
 
             }
         }
@@ -173,10 +179,11 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
                 .addTag(TestStartEndMeasurement.Tags.TEST_NAME, this.testName)
                 .addField(TestStartEndMeasurement.Fields.PLACEHOLDER, "1");
 
-        this.influxDatabaseClient.collectData(setupPoint);
+        getInstance(influxDBConfig, LOGGER).collectData(setupPoint);
 
         this.parseSamplers(context);
-        this.scheduler = Executors.newScheduledThreadPool(1);
+        this.scheduler =  (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(2);
+        this.scheduler.setRemoveOnCancelPolicy(true);
 
         this.scheduler.scheduleAtFixedRate(this, 1, 1, TimeUnit.SECONDS);
 
@@ -187,6 +194,9 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
     @Override
     public void teardownTest(BackendListenerContext context) throws Exception {
         LOGGER.info("Shutting down influxDB scheduler...");
+
+
+        this.timer.cancel();
         this.scheduler.shutdown();
 
         this.addVirtualUsersMetrics(0, 0, 0, 0, JMeterContextService.getThreadCounts().finishedThreads);
@@ -198,16 +208,16 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
                 .addTag(TestStartEndMeasurement.Tags.TEST_NAME, this.testName)
                 .addField(TestStartEndMeasurement.Fields.PLACEHOLDER, "1");
 
-        this.influxDatabaseClient.collectData(teardownPoint);
+        getInstance(this.influxDBConfig, LOGGER).collectData(teardownPoint);
 
-        try {
+      try {
             this.scheduler.awaitTermination(30, TimeUnit.SECONDS);
             LOGGER.info("influxDB scheduler terminated!");
         } catch (InterruptedException e) {
             LOGGER.error("Error waiting for end of scheduler " + e);
         }
 
-        this.influxDatabaseClient.close();
+        getInstance(influxDBConfig, LOGGER).close();
         this.samplersToFilter.clear();
         super.teardownTest(context);
     }
@@ -232,7 +242,11 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
      */
     private void setupInfluxClient(BackendListenerContext context) {
 
-        this.influxDatabaseClient = InfluxDatabaseClient.getInstance(context, LOGGER);
+       this.influxDBConfig = new InfluxDBConfig(context);
+       getInstance(this.influxDBConfig, LOGGER).setupInfluxClient();
+
+       this.writeDataByTimer(this.influxDBConfig, LOGGER);
+
     }
 
     /**
@@ -271,7 +285,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
         .addTag(VirtualUsersMeasurement.Tags.TEST_NAME, this.testName)
         .addTag(VirtualUsersMeasurement.Tags.RUN_ID, this.runId);
 
-        this.influxDatabaseClient.collectData(virtualUsersMetricsPoint);
+        getInstance(this.influxDBConfig, LOGGER).collectData(virtualUsersMetricsPoint);
     }
 
     /**
@@ -280,5 +294,18 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
     private int getUniqueNumberForTheSamplerThread() {
 
         return randomNumberGenerator.nextInt(ONE_MS_IN_NANOSECONDS);
+    }
+
+    public void writeDataByTimer(InfluxDBConfig conf, Logger logger) {
+        this.timer = new Timer();
+        this.timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                LOGGER.debug("Running the timer: " + new java.util.Date());
+                InfluxDatabaseClient.getInstance(conf, logger).writeData();
+
+            }
+        }, 0, conf.getInfluxdbFlushInterval());
     }
 }
