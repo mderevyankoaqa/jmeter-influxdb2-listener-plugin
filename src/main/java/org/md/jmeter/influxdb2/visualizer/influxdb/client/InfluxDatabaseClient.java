@@ -24,7 +24,6 @@ public class InfluxDatabaseClient {
     private static final List<Point> points = new ArrayList<>();
     private InfluxDBClient influxDB;
 
-
     private WriteApiBlocking writeApi;
 
     private static volatile InfluxDatabaseClient instance;
@@ -86,16 +85,18 @@ public class InfluxDatabaseClient {
      * Closes Influx DB client, cancels timers to write {@link Point}, cleaning {@link List<Point>} collection; writes Points before closing.
      */
     public synchronized void close() {
-        if (points.size() != 0) {
 
-            this.writeApi.writePoints(points);
-            LOGGER.info("The final step --->" + points.size() + " points have been written, before closing.");
-        }
+        LOGGER.info("The final step ---> importing before closing.");
+        this.writeData();
+
 
         this.influxDB.close();
-        instance = null;
         this.timer.cancel();
         points.clear();
+
+        if(instance != null) {
+            instance = null;
+        }
     }
 
     /**
@@ -104,15 +105,21 @@ public class InfluxDatabaseClient {
     public synchronized void writeData() {
         if (points.size() != 0) {
             try {
+                long start = System.currentTimeMillis();
                 this.writeApi.writePoints(points);
-                LOGGER.info("The ---> " + points.size() + " points have been written");
+                long end = System.currentTimeMillis();
+                LOGGER.info("Data has been imported successfully, batch with size --> " + points.size() + " ,elapsed time is -->" + (end - start)+ " ms");
 
                 points.clear();
                 LOGGER.debug("Points have been cleaned");
             }
             catch (Exception e)
             {
-                LOGGER.error("Error has occurred while points writing, see the details --> " + e.getMessage());
+
+                LOGGER.error("Error has occurred, batch with size " + points.size() + " was not imported, see the details --> " + e.getMessage());
+
+                this.timer.cancel();
+                LOGGER.warn("Timer has stopped since error! You will have max batch size protection only.");
             }
         }
     }

@@ -39,12 +39,12 @@ public class InfluxDBConfig {
 	/**
 	 * Default batch size.
 	 */
-	public static final int DEFAULT_INFLUX_DB_BATCH_SIZE = 5000;
+	public static final int DEFAULT_INFLUX_DB_MAX_BATCH_SIZE = 2000;
 
 	/**
 	 * Default flush interval.
 	 */
-	public static final int DEFAULT_INFLUX_DB_FLUSH_INTERVAL = 2000;
+	public static final int DEFAULT_INFLUX_DB_FLUSH_INTERVAL = 4000;
 
 	/**
 	 * Config key for bucket.
@@ -80,7 +80,7 @@ public class InfluxDBConfig {
 	/**
 	 * Config key for batch size.
 	 */
-	public static final String KEY_INFLUX_DB_BATCH_SIZE = "influxDBBatchSize";
+	public static final String KEY_INFLUX_DB_MAX_BATCH_SIZE = "influxDBMaxBatchSize";
 
 	/**
 	 * Config key for retry interval.
@@ -155,8 +155,8 @@ public class InfluxDBConfig {
 		String influxHTTPScheme = ArgsValidator.checkHTTPScheme(context.getParameter(KEY_HTTP_SCHEME, DEFAULT_HTTP_SCHEME));
 		this.setInfluxHTTPScheme(influxHTTPScheme);
 
-		int influxdbBatchSize = context.getIntParameter(KEY_INFLUX_DB_BATCH_SIZE);
-		Arguments.checkNotNegativeNumber(influxdbBatchSize, KEY_INFLUX_DB_BATCH_SIZE);
+		int influxdbBatchSize = context.getIntParameter(KEY_INFLUX_DB_MAX_BATCH_SIZE);
+		Arguments.checkNotNegativeNumber(influxdbBatchSize, KEY_INFLUX_DB_MAX_BATCH_SIZE);
 		this.setInfluxdbBatchSize(influxdbBatchSize);
 
 		int influxdbFlushInterval = context.getIntParameter(KEY_INFLUX_DB_FLUSH_INTERVAL);
