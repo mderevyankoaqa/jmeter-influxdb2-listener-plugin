@@ -31,7 +31,6 @@ import static org.md.jmeter.influxdb2.visualizer.influxdb.client.InfluxDatabaseC
  *
  * @author Alexander Wert
  * @author Michael Derevyanko (minor changes and improvements)
- *
  */
 
 public class InfluxDatabaseBackendListenerClient extends AbstractBackendListenerClient implements Runnable {
@@ -156,6 +155,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
         arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_BUCKET, InfluxDBConfig.DEFAULT_BUCKET);
         arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_FLUSH_INTERVAL, String.valueOf(InfluxDBConfig.DEFAULT_INFLUX_DB_FLUSH_INTERVAL));
         arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_MAX_BATCH_SIZE, String.valueOf(InfluxDBConfig.DEFAULT_INFLUX_DB_MAX_BATCH_SIZE));
+        arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_FLUSH_CRITICAL_BATCH_SIZE, String.valueOf(InfluxDBConfig.DEFAULT_INFLUX_DB_FLUSH_CRITICAL_BATCH_SIZE));
         arguments.addArgument(KEY_SAMPLERS_LIST, ".*");
         arguments.addArgument(KEY_USE_REGEX_FOR_SAMPLER_LIST, "true");
         arguments.addArgument(KEY_RECORD_SUB_SAMPLES, "true");
@@ -182,7 +182,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
         getInstance(influxDBConfig, LOGGER).collectData(setupPoint);
 
         this.parseSamplers(context);
-        this.scheduler =  (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(2);
+        this.scheduler = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(2);
         this.scheduler.setRemoveOnCancelPolicy(true);
 
         this.scheduler.scheduleAtFixedRate(this, 1, 1, TimeUnit.SECONDS);
@@ -210,7 +210,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
 
         getInstance(this.influxDBConfig, LOGGER).collectData(teardownPoint);
 
-      try {
+        try {
             this.scheduler.awaitTermination(30, TimeUnit.SECONDS);
             LOGGER.info("influxDB scheduler terminated!");
         } catch (InterruptedException e) {
@@ -236,16 +236,16 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
     }
 
     /**
-     * Setup influxDB client.
+     * Setups influxDB client.
      *
      * @param context {@link BackendListenerContext}.
      */
     private void setupInfluxClient(BackendListenerContext context) {
 
-       this.influxDBConfig = new InfluxDBConfig(context);
-       getInstance(this.influxDBConfig, LOGGER).setupInfluxClient();
+        this.influxDBConfig = new InfluxDBConfig(context);
+        getInstance(this.influxDBConfig, LOGGER).setupInfluxClient();
 
-       this.writeDataByTimer(this.influxDBConfig, LOGGER);
+        this.writeDataByTimer(this.influxDBConfig, LOGGER);
 
     }
 
@@ -276,14 +276,14 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
      */
     private void addVirtualUsersMetrics(int minActiveThreads, int meanActiveThreads, int maxActiveThreads, int startedThreads, int finishedThreads) {
         Point virtualUsersMetricsPoint = Point.measurement(VirtualUsersMeasurement.MEASUREMENT_NAME).time(System.currentTimeMillis(), writePrecision)
-        .addField(VirtualUsersMeasurement.Fields.MIN_ACTIVE_THREADS, minActiveThreads)
-        .addField(VirtualUsersMeasurement.Fields.MAX_ACTIVE_THREADS, maxActiveThreads)
-        .addField(VirtualUsersMeasurement.Fields.MEAN_ACTIVE_THREADS, meanActiveThreads)
-        .addField(VirtualUsersMeasurement.Fields.STARTED_THREADS, startedThreads)
-        .addField(VirtualUsersMeasurement.Fields.FINISHED_THREADS, finishedThreads)
-        .addTag(VirtualUsersMeasurement.Tags.NODE_NAME, this.nodeName)
-        .addTag(VirtualUsersMeasurement.Tags.TEST_NAME, this.testName)
-        .addTag(VirtualUsersMeasurement.Tags.RUN_ID, this.runId);
+                .addField(VirtualUsersMeasurement.Fields.MIN_ACTIVE_THREADS, minActiveThreads)
+                .addField(VirtualUsersMeasurement.Fields.MAX_ACTIVE_THREADS, maxActiveThreads)
+                .addField(VirtualUsersMeasurement.Fields.MEAN_ACTIVE_THREADS, meanActiveThreads)
+                .addField(VirtualUsersMeasurement.Fields.STARTED_THREADS, startedThreads)
+                .addField(VirtualUsersMeasurement.Fields.FINISHED_THREADS, finishedThreads)
+                .addTag(VirtualUsersMeasurement.Tags.NODE_NAME, this.nodeName)
+                .addTag(VirtualUsersMeasurement.Tags.TEST_NAME, this.testName)
+                .addTag(VirtualUsersMeasurement.Tags.RUN_ID, this.runId);
 
         getInstance(this.influxDBConfig, LOGGER).collectData(virtualUsersMetricsPoint);
     }
