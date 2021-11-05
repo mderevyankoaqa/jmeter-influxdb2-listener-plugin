@@ -92,6 +92,7 @@ public class InfluxDatabaseClient {
     public synchronized void close() {
 
         LOGGER.info("The final step ---> importing before closing.");
+        this.writeData();
 
         this.influxDB.close();
         this.points.clear();
