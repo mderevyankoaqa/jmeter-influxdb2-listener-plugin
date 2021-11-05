@@ -246,7 +246,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
 
         getInstance(this.influxDBConfig, LOGGER).setupInfluxClient();
 
-        this.writeDataByTimer(this.influxDBConfig, LOGGER);
+        this.importDataByTimer(this.influxDBConfig, LOGGER);
 
     }
 
@@ -297,14 +297,19 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
         return randomNumberGenerator.nextInt(ONE_MS_IN_NANOSECONDS);
     }
 
-    public void writeDataByTimer(InfluxDBConfig conf, Logger logger) {
+    /**
+     * Imports data by timer set in the settings.
+     * @param conf uses {@link InfluxDBConfig}
+     * @param logger uses {@link Logger}
+     */
+    public void importDataByTimer(InfluxDBConfig conf, Logger logger) {
         this.timer = new Timer();
         this.timer.schedule(new TimerTask() {
             @Override
             public void run() {
 
                 LOGGER.debug("Running the timer: " + new java.util.Date());
-                InfluxDatabaseClient.getInstance(conf, logger).writeData();
+                InfluxDatabaseClient.getInstance(conf, logger).importData();
 
             }
         }, 0, conf.getInfluxdbFlushInterval());

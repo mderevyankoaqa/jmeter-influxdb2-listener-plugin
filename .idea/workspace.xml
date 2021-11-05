@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4ac7da6d-c796-4e05-9b2b-cea04fb01ece" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/InfluxDatabaseBackendListenerClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/InfluxDatabaseBackendListenerClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/influxdb/client/InfluxDatabaseClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/influxdb/client/InfluxDatabaseClient.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -311,7 +312,14 @@
       <option name="project" value="LOCAL" />
       <updated>1636110464054</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Fixed close logic issue.">
+      <created>1636111102869</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1636111102869</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -338,6 +346,7 @@
     <MESSAGE value="Fixed issues." />
     <MESSAGE value="Added influxDBCriticalBatchSize key." />
     <MESSAGE value="The final commit before pushing" />
-    <option name="LAST_COMMIT_MESSAGE" value="The final commit before pushing" />
+    <MESSAGE value="Fixed close logic issue." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed close logic issue." />
   </component>
 </project>

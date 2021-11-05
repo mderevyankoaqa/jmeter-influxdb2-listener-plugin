@@ -77,22 +77,13 @@ public class InfluxDatabaseClient {
         this.checkBatchSize();
     }
 
-    public synchronized void checkBatchSize()
-    {
-        if (this.points.size() >= this.influxDBConfig.getInfluxdbBatchSize()) {
-
-            LOGGER.info("Batch size protection has occurred.");
-            this.writeData();
-        }
-    }
-
     /**
      * Closes Influx DB client, cancels timers to write {@link Point}, cleaning {@link List<Point>} collection; writes Points before closing.
      */
     public synchronized void close() {
 
         LOGGER.info("The final step ---> importing before closing.");
-        this.writeData();
+        this.importData();
 
         this.influxDB.close();
         this.points.clear();
@@ -105,9 +96,11 @@ public class InfluxDatabaseClient {
     }
 
     /**
-     * Writes {@link Point} from {@link List<Point>} collection if items exists.
+     * Imports {@link Point} from {@link List<Point>} collection if items exists. Cleans {@link List<Point>} after writing.
+     * Manages Error Amount counter. The limit of the errors occurred one by one is 5. After 5 such errors, import is stopping till and of the tes.
+     * If less 5 error has occurred and next import attempt was successful - errors counter will be refreshed.
      */
-    public synchronized void writeData() {
+    public synchronized void importData() {
 
         if (this.errorsAmount.size() >= 5)
         {
@@ -164,6 +157,18 @@ public class InfluxDatabaseClient {
 
         } catch (Exception e) {
             LOGGER.error("Failed to create client", e);
+        }
+    }
+
+    /**
+     * Checks batch size, makes import when limit is reached.
+     */
+    private synchronized void checkBatchSize()
+    {
+        if (this.points.size() >= this.influxDBConfig.getInfluxdbBatchSize()) {
+
+            LOGGER.info("Batch size protection has occurred.");
+            this.importData();
         }
     }
 }
