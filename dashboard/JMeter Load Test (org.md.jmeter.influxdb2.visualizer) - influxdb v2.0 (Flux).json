@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_JMETER",
-      "label": "jmeter",
+      "name": "DS_INFLUXDB2.0_JMETER",
+      "label": "InfluxDB2.0_Jmeter",
       "description": "",
       "type": "datasource",
       "pluginId": "influxdb",
@@ -11,15 +11,21 @@
   ],
   "__requires": [
     {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    },
+    {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.3.4"
+      "version": "8.2.3"
     },
     {
       "type": "panel",
       "id": "graph",
-      "name": "Graph",
+      "name": "Graph (old)",
       "version": ""
     },
     {
@@ -30,20 +36,20 @@
     },
     {
       "type": "panel",
-      "id": "singlestat",
-      "name": "Singlestat",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
       "version": ""
     },
     {
       "type": "panel",
       "id": "table",
       "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "table-old",
-      "name": "Table (old)",
       "version": ""
     },
     {
@@ -62,10 +68,16 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       },
       {
-        "datasource": "${DS_JMETER}",
+        "datasource": "${DS_INFLUXDB2.0_JMETER}",
         "enable": true,
         "iconColor": "rgb(23, 255, 0)",
         "mappings": {},
@@ -78,7 +90,7 @@
         "titleColumn": "testName"
       },
       {
-        "datasource": "${DS_JMETER}",
+        "datasource": "${DS_INFLUXDB2.0_JMETER}",
         "enable": true,
         "iconColor": "rgba(255, 96, 96, 1)",
         "mappings": {},
@@ -92,24 +104,20 @@
       }
     ]
   },
-  "description": "This dashboard shows live load test metrics provided by JMeter.",
+  "description": "This dashboard shows live load test metrics provided by JMeter, updated bars charts.",
   "editable": true,
+  "fiscalYearStartMonth": 0,
   "gnetId": 13644,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1609264346274,
+  "iteration": 1636015770871,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "editable": true,
       "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "gridPos": {
         "h": 2,
         "w": 24,
@@ -123,14 +131,13 @@
         "content": "<h3 style=\"text-align: center;\"><em>The following panels show aggregated metrics for <span style=\"color: #00ccff;\"><strong>all requests</strong></span></em></h3>",
         "mode": "html"
       },
-      "pluginVersion": "7.3.4",
-      "title": "",
+      "pluginVersion": "8.2.3",
       "transparent": true,
       "type": "text"
     },
     {
       "collapsed": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -144,30 +151,41 @@
     },
     {
       "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": false,
-      "colors": [
-        "rgba(245, 54, 54, 0.9)",
-        "rgba(237, 129, 40, 0.89)",
-        "rgba(50, 172, 45, 0.97)"
-      ],
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "description": "",
-      "editable": true,
-      "error": false,
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
         },
         "overrides": []
-      },
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
       },
       "gridPos": {
         "h": 4,
@@ -175,45 +193,26 @@
         "x": 0,
         "y": 3
       },
-      "height": "120",
       "id": 14,
       "interval": null,
       "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "$$hashKey": "object:5147",
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "$$hashKey": "object:5148",
-          "name": "range to text",
-          "value": 2
-        }
-      ],
       "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "$$hashKey": "object:5153",
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": true,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": true
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
       },
-      "tableColumn": "",
+      "pluginVersion": "8.2.3",
       "targets": [
         {
           "dsType": "influxdb",
@@ -239,46 +238,46 @@
           "tags": []
         }
       ],
-      "thresholds": "",
       "title": "Active Users",
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "$$hashKey": "object:5150",
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "current"
+      "type": "stat"
     },
     {
       "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": false,
-      "colors": [
-        "rgba(245, 54, 54, 0.9)",
-        "rgba(237, 129, 40, 0.89)",
-        "rgba(50, 172, 45, 0.97)"
-      ],
-      "datasource": "${DS_JMETER}",
-      "decimals": 1,
-      "editable": true,
-      "error": false,
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 1,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ops"
         },
         "overrides": []
-      },
-      "format": "ops",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
       },
       "gridPos": {
         "h": 4,
@@ -286,44 +285,26 @@
         "x": 4,
         "y": 3
       },
-      "height": "120",
       "id": 17,
       "interval": null,
       "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "$$hashKey": "object:2028",
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "$$hashKey": "object:2029",
-          "name": "range to text",
-          "value": 2
-        }
-      ],
       "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "postfix": "",
-      "postfixFontSize": "30%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": true
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
       },
-      "tableColumn": "",
+      "pluginVersion": "8.2.3",
       "targets": [
         {
           "dsType": "influxdb",
@@ -349,47 +330,46 @@
           "tags": []
         }
       ],
-      "thresholds": "",
       "title": "Overall Throughput",
       "transformations": [],
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "$$hashKey": "object:2031",
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "current"
+      "type": "stat"
     },
     {
       "cacheTimeout": null,
-      "colorBackground": false,
-      "colorPostfix": false,
-      "colorPrefix": false,
-      "colorValue": true,
-      "colors": [
-        "#299c46",
-        "#e24d42",
-        "#d44a3a"
-      ],
-      "datasource": "${DS_JMETER}",
-      "decimals": 0,
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "0"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
         },
         "overrides": []
-      },
-      "format": "bytes",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
       },
       "gridPos": {
         "h": 4,
@@ -397,44 +377,26 @@
         "x": 8,
         "y": 3
       },
-      "height": "",
       "id": 34,
       "interval": "",
       "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "$$hashKey": "object:601",
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "$$hashKey": "object:602",
-          "name": "range to text",
-          "value": 2
-        }
-      ],
       "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "postfix": " ",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "#bf1b00",
-        "show": true
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
       },
-      "tableColumn": "",
+      "pluginVersion": "8.2.3",
       "targets": [
         {
           "groupBy": [
@@ -476,46 +438,47 @@
           "tags": []
         }
       ],
-      "thresholds": "",
       "title": "Received Bytes",
       "transformations": [],
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "$$hashKey": "object:604",
-          "op": "=",
-          "text": "0",
-          "value": "null"
-        }
-      ],
-      "valueName": "total"
+      "type": "stat"
     },
     {
       "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": true,
-      "colors": [
-        "#299c46",
-        "#e24d42",
-        "#d44a3a"
-      ],
-      "datasource": "${DS_JMETER}",
-      "decimals": 0,
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "0"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
         },
         "overrides": []
-      },
-      "format": "bytes",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
       },
       "gridPos": {
         "h": 4,
@@ -523,44 +486,26 @@
         "x": 10,
         "y": 3
       },
-      "height": "",
       "id": 56,
       "interval": "",
       "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "$$hashKey": "object:3088",
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "$$hashKey": "object:3089",
-          "name": "range to text",
-          "value": 2
-        }
-      ],
       "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "postfix": " ",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "#bf1b00",
-        "show": true
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
       },
-      "tableColumn": "",
+      "pluginVersion": "8.2.3",
       "targets": [
         {
           "groupBy": [
@@ -601,47 +546,46 @@
           "tags": []
         }
       ],
-      "thresholds": "",
       "title": "Sent Bytes",
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "$$hashKey": "object:3091",
-          "op": "=",
-          "text": "0",
-          "value": "null"
-        }
-      ],
-      "valueName": "total"
+      "type": "stat"
     },
     {
       "cacheTimeout": null,
-      "colorBackground": false,
-      "colorPrefix": false,
-      "colorValue": false,
-      "colors": [
-        "rgba(245, 54, 54, 0.9)",
-        "rgba(237, 129, 40, 0.89)",
-        "rgba(50, 172, 45, 0.97)"
-      ],
-      "datasource": "${DS_JMETER}",
-      "decimals": 0,
-      "editable": true,
-      "error": false,
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "fixedColor": "rgb(73, 31, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
         },
         "overrides": []
-      },
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
       },
       "gridPos": {
         "h": 4,
@@ -649,44 +593,26 @@
         "x": 12,
         "y": 3
       },
-      "height": "120",
       "id": 20,
       "interval": null,
       "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "$$hashKey": "object:5523",
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "$$hashKey": "object:5524",
-          "name": "range to text",
-          "value": 2
-        }
-      ],
       "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "postfix": "",
-      "postfixFontSize": "70%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 189, 132, 0.18)",
-        "full": false,
-        "lineColor": "rgb(73, 31, 193)",
-        "show": true
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
       },
-      "tableColumn": "",
+      "pluginVersion": "8.2.3",
       "targets": [
         {
           "dsType": "influxdb",
@@ -712,50 +638,48 @@
           "tags": []
         }
       ],
-      "thresholds": "",
       "timeFrom": null,
       "timeShift": null,
       "title": "Request Count",
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "$$hashKey": "object:5526",
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "total"
+      "type": "stat"
     },
     {
       "cacheTimeout": null,
-      "colorBackground": false,
-      "colorPostfix": false,
-      "colorPrefix": true,
-      "colorValue": false,
-      "colors": [
-        "rgba(245, 54, 54, 0.9)",
-        "rgba(237, 129, 40, 0.89)",
-        "rgba(50, 172, 45, 0.97)"
-      ],
-      "datasource": "${DS_JMETER}",
-      "decimals": 0,
-      "editable": true,
-      "error": false,
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "fixedColor": "rgb(237, 20, 20)",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
         },
         "overrides": []
-      },
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
       },
       "gridPos": {
         "h": 4,
@@ -763,44 +687,26 @@
         "x": 15,
         "y": 3
       },
-      "height": "120",
       "id": 59,
       "interval": null,
       "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "$$hashKey": "object:5474",
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "$$hashKey": "object:5475",
-          "name": "range to text",
-          "value": 2
-        }
-      ],
       "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "postfix": "",
-      "postfixFontSize": "30%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgb(214, 13, 13)",
-        "full": false,
-        "lineColor": "rgb(237, 20, 20)",
-        "show": true
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
       },
-      "tableColumn": "",
+      "pluginVersion": "8.2.3",
       "targets": [
         {
           "dsType": "influxdb",
@@ -826,49 +732,54 @@
           "tags": []
         }
       ],
-      "thresholds": "",
       "timeFrom": null,
       "timeShift": null,
       "title": "Errors Count",
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "$$hashKey": "object:5477",
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "total"
+      "type": "stat"
     },
     {
       "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": false,
-      "colors": [
-        "rgba(245, 54, 54, 0.9)",
-        "rgba(237, 129, 40, 0.89)",
-        "rgba(50, 172, 45, 0.97)"
-      ],
-      "datasource": "${DS_JMETER}",
-      "decimals": 1,
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "description": "",
-      "editable": true,
-      "error": false,
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "max": 1,
+          "min": null,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "rgba(245, 54, 54, 0.9)",
+                "value": null
+              },
+              {
+                "color": "rgba(237, 129, 40, 0.89)",
+                "value": -1
+              },
+              {
+                "color": "rgba(50, 172, 45, 0.97)",
+                "value": -1
+              }
+            ]
+          },
+          "unit": "percentunit"
         },
         "overrides": []
-      },
-      "format": "percentunit",
-      "gauge": {
-        "maxValue": 1,
-        "minValue": null,
-        "show": true,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
       },
       "gridPos": {
         "h": 4,
@@ -876,44 +787,24 @@
         "x": 18,
         "y": 3
       },
-      "height": "180",
       "id": 18,
       "interval": null,
       "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "$$hashKey": "object:1119",
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "$$hashKey": "object:1120",
-          "name": "range to text",
-          "value": 2
-        }
-      ],
       "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "postfix": "",
-      "postfixFontSize": "30%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false
+      "options": {
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "tableColumn": "",
+      "pluginVersion": "8.2.3",
       "targets": [
         {
           "dsType": "influxdb",
@@ -938,48 +829,53 @@
           "tags": []
         }
       ],
-      "thresholds": "-1,-1",
       "timeFrom": null,
       "timeShift": null,
       "title": "Success Rate",
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "$$hashKey": "object:1122",
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "current"
+      "type": "gauge"
     },
     {
       "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": false,
-      "colors": [
-        "rgb(109, 109, 109)",
-        "rgba(232, 132, 56, 0.89)",
-        "rgba(227, 4, 4, 0.9)"
-      ],
-      "datasource": "${DS_JMETER}",
-      "decimals": 2,
-      "editable": true,
-      "error": false,
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "max": 1,
+          "min": null,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "rgb(109, 109, 109)",
+                "value": null
+              },
+              {
+                "color": "rgba(232, 132, 56, 0.89)",
+                "value": 0.01
+              },
+              {
+                "color": "rgba(227, 4, 4, 0.9)",
+                "value": 0.1
+              }
+            ]
+          },
+          "unit": "percentunit"
         },
         "overrides": []
-      },
-      "format": "percentunit",
-      "gauge": {
-        "maxValue": 1,
-        "minValue": null,
-        "show": true,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
       },
       "gridPos": {
         "h": 4,
@@ -987,44 +883,24 @@
         "x": 21,
         "y": 3
       },
-      "height": "180",
       "id": 21,
       "interval": null,
       "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "$$hashKey": "object:1019",
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "$$hashKey": "object:1020",
-          "name": "range to text",
-          "value": 2
-        }
-      ],
       "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "postfix": "",
-      "postfixFontSize": "30%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false
+      "options": {
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "tableColumn": "",
+      "pluginVersion": "8.2.3",
       "targets": [
         {
           "dsType": "influxdb",
@@ -1049,23 +925,12 @@
           "tags": []
         }
       ],
-      "thresholds": "0.01,0.1",
       "title": "Error Rate",
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "$$hashKey": "object:1022",
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "current"
+      "type": "gauge"
     },
     {
       "collapsed": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1082,28 +947,12 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "description": "",
       "editable": true,
       "error": false,
       "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
+        "defaults": {},
         "overrides": [
           {
             "matcher": {
@@ -1162,7 +1011,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "8.2.3",
       "pointradius": 2,
       "points": true,
       "renderer": "flot",
@@ -1305,14 +1154,12 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "description": "",
       "editable": true,
       "error": false,
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": [
           {
             "matcher": {
@@ -1359,7 +1206,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "8.2.3",
       "pointradius": 2,
       "points": true,
       "renderer": "flot",
@@ -1502,14 +1349,12 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "description": "",
       "editable": true,
       "error": false,
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": [
           {
             "matcher": {
@@ -1568,7 +1413,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "8.2.3",
       "pointradius": 2,
       "points": true,
       "renderer": "flot",
@@ -1711,16 +1556,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "description": "",
       "editable": true,
       "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "grid": {},
@@ -1751,7 +1590,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "8.2.3",
       "pointradius": 2,
       "points": true,
       "renderer": "flot",
@@ -1853,7 +1692,7 @@
     },
     {
       "collapsed": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1874,13 +1713,11 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "editable": true,
       "error": false,
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": [
           {
             "matcher": {
@@ -1927,7 +1764,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "8.2.3",
       "pointradius": 2,
       "points": true,
       "renderer": "flot",
@@ -2078,13 +1915,11 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "editable": true,
       "error": false,
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": [
           {
             "matcher": {
@@ -2131,7 +1966,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "8.2.3",
       "pointradius": 2,
       "points": true,
       "renderer": "flot",
@@ -2274,254 +2109,114 @@
       }
     },
     {
-      "aliasColors": {
-        "95 perc": "#F9934E",
-        "99 perc": "#E24D42",
-        "Max": "#BF1B00"
-      },
-      "bars": true,
-      "cacheTimeout": null,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "description": "",
-      "editable": true,
-      "error": false,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": null,
+            "displayMode": "auto",
+            "filterable": true,
+            "minWidth": 20
+          },
+          "decimals": 2,
           "mappings": [],
+          "min": 1,
+          "noValue": "0%",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "rgba(50, 172, 45, 0.97)",
                 "value": null
               },
               {
-                "color": "red",
-                "value": 80
+                "color": "rgba(237, 129, 40, 0.89)",
+                "value": 0
+              },
+              {
+                "color": "rgba(245, 54, 54, 0.9)",
+                "value": 0
               }
             ]
           },
-          "unit": "ms"
+          "unit": "percent"
         },
-        "overrides": []
-      },
-      "fill": 3,
-      "fillGradient": 0,
-      "grid": {},
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 43
-      },
-      "height": "300",
-      "hiddenSeries": false,
-      "id": 54,
-      "legend": {
-        "alignAsTable": false,
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "rightSide": false,
-        "show": false,
-        "sort": "max",
-        "sortDesc": true,
-        "total": false,
-        "values": false
-      },
-      "lines": false,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.3.4",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": true,
-      "targets": [
-        {
-          "alias": "$tag_requestName",
-          "dsType": "influxdb",
-          "groupBy": [
-            {
-              "params": [
-                "$aggregation"
-              ],
-              "type": "time"
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ErrorRate"
             },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "requestsRaw",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "from(bucket: v.bucket)\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\n  |> toFloat()\n  |> quantile(q: 0.90)\n",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
+            "properties": [
               {
-                "params": [
-                  "responseTime"
-                ],
-                "type": "field"
+                "id": "unit",
+                "value": "percentunit"
               },
               {
-                "params": [],
-                "type": "mean"
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "custom.align",
+                "value": null
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "rgba(0, 0, 0, 0)",
+                      "value": null
+                    },
+                    {
+                      "color": "rgba(183, 84, 26, 0.89)",
+                      "value": 0
+                    },
+                    {
+                      "color": "rgba(245, 54, 54, 0.9)",
+                      "value": 0
+                    }
+                  ]
+                }
               }
             ]
-          ],
-          "tags": [
-            {
-              "key": "requestName",
-              "operator": "=~",
-              "value": "/^$request$/"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Response Times Distribution, 90% percentile ",
-      "tooltip": {
-        "msResolution": true,
-        "shared": false,
-        "sort": 1,
-        "value_type": "individual"
-      },
-      "transformations": [
-        {
-          "id": "labelsToFields",
-          "options": {
-            "valueLabel": "requestName"
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Response time is <= 1000, (%)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": null
+              }
+            ]
           }
-        }
-      ],
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "series",
-        "name": null,
-        "show": true,
-        "values": [
-          "total"
         ]
       },
-      "yaxes": [
-        {
-          "$$hashKey": "object:3828",
-          "format": "ms",
-          "label": "Response Time",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:3829",
-          "format": "short",
-          "label": "",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "columns": [],
-      "datasource": "${DS_JMETER}",
-      "description": "",
-      "editable": true,
-      "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fontSize": "80%",
       "gridPos": {
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 51
+        "y": 43
       },
-      "height": "300",
-      "id": 93,
+      "id": 108,
       "links": [],
-      "pageSize": 20,
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "col": 0,
-        "desc": false
+      "options": {
+        "showHeader": true,
+        "sortBy": []
       },
-      "styles": [
-        {
-          "$$hashKey": "object:3733",
-          "alias": "",
-          "align": "auto",
-          "colorMode": "cell",
-          "colors": [
-            "rgba(0, 0, 0, 0)",
-            "rgba(183, 84, 26, 0.89)",
-            "rgba(245, 54, 54, 0.9)"
-          ],
-          "decimals": 2,
-          "link": false,
-          "pattern": "ErrorRate",
-          "thresholds": [
-            "0.00000001",
-            "0.01"
-          ],
-          "type": "number",
-          "unit": "percentunit"
-        },
-        {
-          "$$hashKey": "object:3735",
-          "align": "auto",
-          "colorMode": null,
-          "colors": [
-            "rgba(50, 172, 45, 0.97)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(245, 54, 54, 0.9)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "pattern": "/.*/",
-          "thresholds": [
-            "0.01",
-            "0.05"
-          ],
-          "type": "number",
-          "unit": "short"
-        }
-      ],
+      "pluginVersion": "8.2.3",
       "targets": [
         {
           "groupBy": [
@@ -2682,6 +2377,7 @@
               "type": "fill"
             }
           ],
+          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
           "query": "get_percent_5000 = () => {\r\n\r\nfcount_5000=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"_value\"] <= 5000)\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])  \r\n  \r\n count=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n    \r\n   return join(\r\n      tables:{fcount_5000:fcount_5000, count:count},\r\n      on:[\"requestName\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n              \"Request Name\": r.requestName,\r\n               \"Response time is <= 5000, (%)\": r._value_fcount_5000 * 100.0/ r._value_count,        \r\n    })) \r\n}\r\nget_percent_5000()\r\n\r\n",
@@ -2706,113 +2402,381 @@
       ],
       "timeShift": null,
       "title": "Response Times Distribution, %",
-      "transform": "table",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 53
+      },
+      "id": 103,
+      "links": [],
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.2.3",
+      "targets": [
+        {
+          "hide": false,
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")  \r\n  |> toFloat()\r\n  |> group(columns: [\"requestName\"])\r\n  |> quantile(q: 0.9, method: \"exact_selector\" ) \r\n  ",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Response Times Distribution, 90% percentile",
       "transformations": [],
-      "type": "table-old"
+      "type": "piechart"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 53
+      },
+      "id": 106,
+      "links": [],
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.2.3",
+      "targets": [
+        {
+          "hide": false,
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")  \r\n  |> toFloat()\r\n  |> group(columns: [\"requestName\"])\r\n  |> quantile(q: 0.95, method: \"exact_selector\" ) \r\n  ",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Response Times Distribution, 95% percentile",
+      "transformations": [],
+      "type": "piechart"
     },
     {
       "collapsed": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 61
+        "y": 63
       },
       "id": 85,
       "panels": [],
-      "title": "Agreegate Report (ms)",
+      "title": "Aggregate Report (ms)",
       "type": "row"
     },
     {
-      "columns": [],
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "description": "",
-      "editable": true,
-      "error": false,
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": true,
+            "minWidth": 60
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ErrorRate"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "decimals"
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "lcd-gauge"
+              },
+              {
+                "id": "custom.align",
+                "value": "right"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "#1F78C1",
+                      "value": 0.1
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 0.5
+                    },
+                    {
+                      "color": "#E24D42",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.width",
+                "value": null
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Avg"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Median"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "90%"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "95%"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "99%"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "stddev"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "number"
+            },
+            "properties": [
+              {
+                "id": "custom.filterable",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "string"
+            },
+            "properties": [
+              {
+                "id": "custom.filterable",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "requestName"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 162
+              }
+            ]
+          }
+        ]
       },
-      "fontSize": "80%",
       "gridPos": {
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 62
+        "y": 64
       },
-      "height": "300",
       "id": 83,
       "links": [],
-      "pageSize": 20,
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "col": 0,
-        "desc": false
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "90%"
+          }
+        ]
       },
-      "styles": [
-        {
-          "$$hashKey": "object:3733",
-          "alias": "",
-          "align": "auto",
-          "colorMode": "cell",
-          "colors": [
-            "rgba(0, 0, 0, 0)",
-            "rgba(183, 84, 26, 0.89)",
-            "rgba(245, 54, 54, 0.9)"
-          ],
-          "decimals": 2,
-          "link": false,
-          "pattern": "ErrorRate",
-          "thresholds": [
-            "0.00000001",
-            "0.01"
-          ],
-          "type": "number",
-          "unit": "percentunit"
-        },
-        {
-          "$$hashKey": "object:3734",
-          "alias": "",
-          "align": "auto",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "link": false,
-          "mappingType": 1,
-          "pattern": "Time",
-          "thresholds": [],
-          "type": "hidden",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:3735",
-          "align": "auto",
-          "colorMode": null,
-          "colors": [
-            "rgba(50, 172, 45, 0.97)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(245, 54, 54, 0.9)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "pattern": "/.*/",
-          "thresholds": [
-            "0.01",
-            "0.05"
-          ],
-          "type": "number",
-          "unit": "short"
-        }
-      ],
+      "pluginVersion": "8.2.3",
       "targets": [
         {
           "groupBy": [
@@ -2831,8 +2795,8 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Count\"})\r\n  |> keep(columns: [\"Count\", \"requestName\"])",
-          "refId": "D",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> mean()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Avg\"})\r\n  |> keep(columns: [\"Avg\", \"requestName\"])\r\n\r\n ",
+          "refId": "B",
           "resultFormat": "time_series",
           "select": [
             [
@@ -2867,8 +2831,8 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> mean()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Avg\"})\r\n  |> keep(columns: [\"Avg\", \"requestName\"])\r\n\r\n ",
-          "refId": "B",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Count\"})\r\n  |> keep(columns: [\"requestName\", \"Count\"])",
+          "refId": "D",
           "resultFormat": "time_series",
           "select": [
             [
@@ -3177,18 +3141,22 @@
       ],
       "timeShift": null,
       "title": "Metrics Overview (in milliseconds)",
-      "transform": "table",
-      "transformations": [],
-      "type": "table-old"
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        }
+      ],
+      "type": "table"
     },
     {
       "collapsed": true,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 72
+        "y": 74
       },
       "id": 40,
       "panels": [
@@ -3199,20 +3167,14 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${DS_JMETER}",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
+          "datasource": "${DS_INFLUXDB2.0_JMETER}",
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 73
+            "y": 75
           },
           "hiddenSeries": false,
           "id": 32,
@@ -3235,7 +3197,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.3.4",
+          "pluginVersion": "8.2.3",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -3301,14 +3263,7 @@
             "sort": 0,
             "value_type": "individual"
           },
-          "transformations": [
-            {
-              "id": "labelsToFields",
-              "options": {
-                "valueLabel": "requestName"
-              }
-            }
-          ],
+          "transformations": [],
           "type": "graph",
           "xaxis": {
             "buckets": null,
@@ -3343,7 +3298,7 @@
           }
         },
         {
-          "datasource": "${DS_JMETER}",
+          "datasource": "${DS_INFLUXDB2.0_JMETER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -3388,7 +3343,7 @@
                 "properties": [
                   {
                     "id": "custom.width",
-                    "value": 624
+                    "value": 248
                   }
                 ]
               },
@@ -3410,7 +3365,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 83
+            "y": 85
           },
           "id": 96,
           "links": [],
@@ -3423,7 +3378,7 @@
               }
             ]
           },
-          "pluginVersion": "7.3.4",
+          "pluginVersion": "8.2.3",
           "targets": [
             {
               "groupBy": [
@@ -3481,24 +3436,25 @@
     },
     {
       "collapsed": true,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 73
+        "y": 75
       },
       "id": 80,
       "panels": [
         {
-          "datasource": "${DS_JMETER}",
+          "datasource": "${DS_INFLUXDB2.0_JMETER}",
           "description": "",
           "fieldConfig": {
             "defaults": {
               "custom": {
                 "align": null,
                 "displayMode": "json-view",
-                "filterable": true
+                "filterable": true,
+                "minWidth": 50
               },
               "mappings": [],
               "thresholds": {
@@ -3536,7 +3492,7 @@
                 "properties": [
                   {
                     "id": "custom.width",
-                    "value": 465
+                    "value": 216
                   }
                 ]
               },
@@ -3567,10 +3523,10 @@
             ]
           },
           "gridPos": {
-            "h": 20,
+            "h": 21,
             "w": 24,
             "x": 0,
-            "y": 93
+            "y": 76
           },
           "id": 95,
           "links": [],
@@ -3584,7 +3540,7 @@
               }
             ]
           },
-          "pluginVersion": "7.3.4",
+          "pluginVersion": "8.2.3",
           "targets": [
             {
               "alias": "",
@@ -3635,12 +3591,12 @@
     },
     {
       "collapsed": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 74
+        "y": 76
       },
       "id": 38,
       "panels": [],
@@ -3656,15 +3612,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "editable": true,
       "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "grid": {},
@@ -3672,7 +3622,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 75
+        "y": 77
       },
       "height": "300",
       "hiddenSeries": false,
@@ -3698,7 +3648,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "8.2.3",
       "pointradius": 2,
       "points": true,
       "renderer": "flot",
@@ -3829,20 +3779,14 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_JMETER}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 75
+        "y": 77
       },
       "hiddenSeries": false,
       "id": 49,
@@ -3865,7 +3809,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "8.2.3",
       "pointradius": 2,
       "points": true,
       "renderer": "flot",
@@ -3979,15 +3923,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "editable": true,
       "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "grid": {},
@@ -3995,7 +3933,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 85
+        "y": 87
       },
       "height": "300",
       "hiddenSeries": false,
@@ -4021,7 +3959,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "8.2.3",
       "pointradius": 2,
       "points": true,
       "renderer": "flot",
@@ -4152,20 +4090,14 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_JMETER}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 85
+        "y": 87
       },
       "hiddenSeries": false,
       "id": 48,
@@ -4188,7 +4120,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "8.2.3",
       "pointradius": 2,
       "points": true,
       "renderer": "flot",
@@ -4298,21 +4230,15 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 95
+        "y": 97
       },
       "hiddenSeries": false,
       "id": 50,
@@ -4335,7 +4261,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "8.2.3",
       "pointradius": 2,
       "points": true,
       "renderer": "flot",
@@ -4501,15 +4427,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "editable": true,
       "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "grid": {},
@@ -4517,7 +4437,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 95
+        "y": 97
       },
       "height": "300",
       "hiddenSeries": false,
@@ -4543,7 +4463,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "8.2.3",
       "pointradius": 2,
       "points": true,
       "renderer": "flot",
@@ -4670,20 +4590,14 @@
       }
     },
     {
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "editable": true,
       "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "gridPos": {
         "h": 2,
         "w": 24,
         "x": 0,
-        "y": 105
+        "y": 107
       },
       "height": "180",
       "id": 97,
@@ -4692,169 +4606,23 @@
         "content": "<h3 style=\"text-align: center;\"><em>The following panels show aggregated metrics for <span style=\"color: #00ccff;\"><strong>selected request \"[[request]]\"</strong></span></em></h3>",
         "mode": "html"
       },
-      "pluginVersion": "7.3.4",
-      "title": "",
+      "pluginVersion": "8.2.3",
       "transparent": true,
       "type": "text"
     },
     {
       "collapsed": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 107
+        "y": 109
       },
       "id": 36,
       "panels": [],
       "title": "Individual Request [[request]]",
       "type": "row"
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_JMETER}",
-      "description": "",
-      "editable": true,
-      "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "grid": {},
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 108
-      },
-      "height": "300px",
-      "hiddenSeries": false,
-      "id": 7,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "max": true,
-        "min": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null as zero",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.3.4",
-      "pointradius": 3,
-      "points": true,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "Throughput",
-          "dsType": "influxdb",
-          "groupBy": [
-            {
-              "params": [
-                "10s"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "requestsRaw",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "  from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))\r\n",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "responseTime"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "count"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "requestName",
-              "operator": "=~",
-              "value": "/^$request$/"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Throughput per second [[request]] ",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:2789",
-          "format": "ops",
-          "label": "Throughput",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:2790",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
     },
     {
       "aliasColors": {
@@ -4865,24 +4633,18 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "description": "",
       "editable": true,
       "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 3,
       "fillGradient": 0,
       "grid": {},
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 108
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 110
       },
       "height": "300",
       "hiddenSeries": false,
@@ -4905,7 +4667,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "8.2.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4961,7 +4723,7 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "  from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: mean, createEmpty: false)   \r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> rename(columns: {_value: \"AVG\"})",
+          "query": "  from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: mean, createEmpty: false)   \r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> rename(columns: {_value: \"Response Time. AVG\"})",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5008,7 +4770,7 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "  from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: max, createEmpty: false)   \r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> rename(columns: {_value: \"MAX\"})",
+          "query": "  from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: max, createEmpty: false)   \r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> rename(columns: {_value: \"Response Time. MAX\"})",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -5057,7 +4819,7 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "  from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> toFloat()\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: median, createEmpty: false)   \r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> rename(columns: {_value: \"Median\"})",
+          "query": "  from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> toFloat()\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: median, createEmpty: false)   \r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> rename(columns: {_value: \"Response Time. Median\"})",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -5172,15 +4934,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
+      "description": "",
       "editable": true,
       "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "grid": {},
@@ -5188,7 +4945,145 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 116
+        "y": 119
+      },
+      "height": "300px",
+      "hiddenSeries": false,
+      "id": 7,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.2.3",
+      "pointradius": 3,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "Throughput",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "10s"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "requestsRaw",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "  from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))\r\n",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "responseTime"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "requestName",
+              "operator": "=~",
+              "value": "/^$request$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Throughput per second [[request]] ",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:2789",
+          "format": "ops",
+          "label": "Throughput",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:2790",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 119
       },
       "height": "300",
       "hiddenSeries": false,
@@ -5212,7 +5107,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.4",
+      "pluginVersion": "8.2.3",
       "pointradius": 2,
       "points": true,
       "renderer": "flot",
@@ -5313,187 +5208,72 @@
       }
     },
     {
-      "aliasColors": {
-        "95 perc": "#F9934E",
-        "99 perc": "#E24D42",
-        "Max": "#BF1B00"
-      },
-      "bars": true,
       "cacheTimeout": null,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_JMETER}",
+      "datasource": "${DS_INFLUXDB2.0_JMETER}",
       "description": "",
-      "editable": true,
-      "error": false,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
+          "color": {
+            "mode": "palette-classic"
           },
-          "unit": "ms"
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "none"
         },
         "overrides": []
       },
-      "fill": 3,
-      "fillGradient": 0,
-      "grid": {},
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 116
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 127
       },
-      "height": "300",
-      "hiddenSeries": false,
-      "id": 92,
-      "legend": {
-        "alignAsTable": false,
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "rightSide": false,
-        "show": false,
-        "sort": "max",
-        "sortDesc": true,
-        "total": false,
-        "values": false
-      },
-      "lines": false,
-      "linewidth": 1,
+      "id": 105,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single"
+        }
       },
-      "percentage": false,
-      "pluginVersion": "7.3.4",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": true,
+      "pluginVersion": "8.2.3",
       "targets": [
         {
-          "alias": "$tag_requestName",
-          "dsType": "influxdb",
-          "groupBy": [
-            {
-              "params": [
-                "$aggregation"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
           "hide": false,
-          "measurement": "requestsRaw",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "from(bucket: v.bucket)\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\n  |> toFloat()\n  |> quantile(q: 0.90)\n\n",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "responseTime"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "requestName",
-              "operator": "=~",
-              "value": "/^$request$/"
-            }
-          ]
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"count\")  \r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> group(columns: [\"requestName\", \"responseCode\"])\r\n  |> toFloat()\r\n  |> sum()\r\n \r\n \r\n  ",
+          "refId": "A"
         }
       ],
-      "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
-      "title": "Response Times, 90% percentile ",
-      "tooltip": {
-        "msResolution": true,
-        "shared": false,
-        "sort": 1,
-        "value_type": "individual"
-      },
-      "transformations": [
-        {
-          "id": "labelsToFields",
-          "options": {
-            "valueLabel": "requestName"
-          }
-        }
-      ],
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "series",
-        "name": null,
-        "show": true,
-        "values": [
-          "total"
-        ]
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:3828",
-          "format": "ms",
-          "label": "Response Time ",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:3829",
-          "format": "short",
-          "label": "",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "title": "Response codes",
+      "transformations": [],
+      "type": "piechart"
     }
   ],
   "refresh": false,
-  "schemaVersion": 26,
+  "schemaVersion": 31,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -5501,8 +5281,9 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_JMETER}",
+        "datasource": "${DS_INFLUXDB2.0_JMETER}",
         "definition": "",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -5516,7 +5297,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": null,
-        "tags": [],
         "tagsQuery": null,
         "type": "query",
         "useTags": false
@@ -5526,10 +5306,11 @@
         "auto": false,
         "current": {
           "selected": true,
-          "text": "30s",
-          "value": "30"
+          "text": "10s",
+          "value": "10"
         },
         "datasource": null,
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -5543,12 +5324,12 @@
             "value": "1"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "10s",
             "value": "10"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "30s",
             "value": "30"
           },
@@ -5611,7 +5392,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "JMeter Load Test (org.md.jmeter.influxdb2.visualizer) - influxdb v2.0",
+  "title": "JMeter Load Test (org.md.jmeter.influxdb2.visualizer) - influxdb v2.0 (Flux)",
   "uid": "b4kP_KoMzas",
-  "version": 4
+  "version": 29
 }

@@ -13,10 +13,7 @@ public class InfluxDatabaseUtility {
      */
     public static String getEscapedString(String value) {
 
-        return value.replace("\n", "")
-                .replace("\r", "")
-                .replace(" ", "\\ ")
-                .replace(",", ",\\ ")
-                .replace("=", "=\\ ");
+          return value.replace("\n", "")
+                      .replace("\r", "");
     }
 }

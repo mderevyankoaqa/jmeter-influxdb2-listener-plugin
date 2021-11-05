@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ac7da6d-c796-4e05-9b2b-cea04fb01ece" name="Default Changelist" comment="" />
+    <list default="true" id="4ac7da6d-c796-4e05-9b2b-cea04fb01ece" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/InfluxDatabaseBackendListenerClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/InfluxDatabaseBackendListenerClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/influxdb/client/InfluxDatabaseClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/md/jmeter/influxdb2/visualizer/influxdb/client/InfluxDatabaseClient.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -66,10 +70,17 @@
       </state>
     </system>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="developmant" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -78,14 +89,19 @@
     <option name="version" value="1" />
   </component>
   <component name="ProjectId" id="1lO4G9SoW1kfLhmmzP0uo3fV8aq" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="C:/jmeter/jmeter" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../jmeter" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
     <property name="show.unlinked.gradle.project.popup" value="true" />
   </component>
@@ -247,14 +263,90 @@
       <option name="project" value="LOCAL" />
       <updated>1631536817323</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Added batches, ready for the dev testing.">
+      <created>1635881524811</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1635881524811</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Added comments and fixes.">
+      <created>1635888552313</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1635888552313</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Fixes after dev testing, added user manual, updated board.">
+      <created>1636027136478</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1636027136478</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Updated manual.">
+      <created>1636027482587</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1636027482587</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Fixed issues.">
+      <created>1636054227551</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1636054227551</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Added influxDBCriticalBatchSize key.">
+      <created>1636061062063</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1636061062063</updated>
+    </task>
+    <task id="LOCAL-00011" summary="The final commit before pushing">
+      <created>1636110464054</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1636110464054</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Fixed close logic issue.">
+      <created>1636111102869</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1636111102869</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Fixed issues after dev testing" />
     <MESSAGE value="Fixed issue with timings." />
     <MESSAGE value="Updated read me file" />
     <MESSAGE value="Updated influxdb-client-java to -&gt; 3.2.0 and gradle version to -&gt; 7.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated influxdb-client-java to -&gt; 3.2.0 and gradle version to -&gt; 7.0" />
+    <MESSAGE value="Added batches, ready for the dev testing." />
+    <MESSAGE value="Added comments and fixes." />
+    <MESSAGE value="Fixes after dev testing, added user manual, updated board." />
+    <MESSAGE value="Updated manual." />
+    <MESSAGE value="Fixed issues." />
+    <MESSAGE value="Added influxDBCriticalBatchSize key." />
+    <MESSAGE value="The final commit before pushing" />
+    <MESSAGE value="Fixed close logic issue." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed close logic issue." />
   </component>
 </project>
