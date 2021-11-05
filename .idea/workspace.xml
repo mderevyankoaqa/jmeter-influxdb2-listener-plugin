@@ -300,7 +300,14 @@
       <option name="project" value="LOCAL" />
       <updated>1636054227551</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Added influxDBCriticalBatchSize key.">
+      <created>1636061062063</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1636061062063</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -325,6 +332,7 @@
     <MESSAGE value="Fixes after dev testing, added user manual, updated board." />
     <MESSAGE value="Updated manual." />
     <MESSAGE value="Fixed issues." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed issues." />
+    <MESSAGE value="Added influxDBCriticalBatchSize key." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added influxDBCriticalBatchSize key." />
   </component>
 </project>

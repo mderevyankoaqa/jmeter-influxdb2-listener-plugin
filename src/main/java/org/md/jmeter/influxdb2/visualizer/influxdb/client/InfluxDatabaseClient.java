@@ -3,7 +3,6 @@ package org.md.jmeter.influxdb2.visualizer.influxdb.client;
 import com.influxdb.client.*;
 import com.influxdb.client.write.Point;
 import org.md.jmeter.influxdb2.visualizer.config.InfluxDBConfig;
-import org.apache.jmeter.visualizers.backend.BackendListenerContext;
 import org.slf4j.Logger;
 
 import java.util.*;
@@ -21,6 +20,7 @@ public class InfluxDatabaseClient {
     private InfluxDBClient influxDB;
 
     private WriteApiBlocking writeApi;
+    private final List<Integer> errorsAmount;
 
     private static volatile InfluxDatabaseClient instance;
 
@@ -34,8 +34,11 @@ public class InfluxDatabaseClient {
     private InfluxDatabaseClient(InfluxDBConfig config, Logger logger) {
 
         this.points = Collections.synchronizedList(new ArrayList<>());
+        this.errorsAmount = Collections.synchronizedList(new ArrayList<>());
         this.influxDBConfig = config;
         LOGGER = logger;
+
+        LOGGER.info("New instance of InfluxDatabaseClient has been created!");
     }
 
     /**
@@ -54,7 +57,7 @@ public class InfluxDatabaseClient {
         }
         synchronized (InfluxDatabaseClient.class) {
             if (instance == null) {
-                instance = new InfluxDatabaseClient(config, logger);
+                 instance = new InfluxDatabaseClient(config, logger);
             }
             return instance;
         }
@@ -71,6 +74,11 @@ public class InfluxDatabaseClient {
         LOGGER.debug("Sending to write");
         this.points.add(point);
 
+        this.checkBatchSize();
+    }
+
+    public synchronized void checkBatchSize()
+    {
         if (this.points.size() >= this.influxDBConfig.getInfluxdbBatchSize()) {
 
             LOGGER.info("Batch size protection has occurred.");
@@ -84,12 +92,14 @@ public class InfluxDatabaseClient {
     public synchronized void close() {
 
         LOGGER.info("The final step ---> importing before closing.");
-        this.writeData();
+
         this.influxDB.close();
         this.points.clear();
 
         if (instance != null) {
+
             instance = null;
+            LOGGER.info("Instance of InfluxDatabaseClient has been refreshed!");
         }
     }
 
@@ -98,23 +108,34 @@ public class InfluxDatabaseClient {
      */
     public synchronized void writeData() {
 
-        if (this.points.size() != 0) {
+        if (this.errorsAmount.size() >= 5)
+        {
+            this.points.clear();
+            LOGGER.warn("Importing of the results to Influx DB is skipping since 5 errors, has occurred!");
+        }
+
+        if (this.points.size() != 0 && this.errorsAmount.size() <= 5) {
             try {
+
                 long start = System.currentTimeMillis();
                 this.writeApi.writePoints(this.points);
                 long end = System.currentTimeMillis();
+
+                if (this.errorsAmount.size() != 0)
+                {
+                    this.errorsAmount.clear();
+                    LOGGER.warn("Counter of the errors refreshed since import was done successfully.");
+                 }
+
                 LOGGER.info("Data has been imported successfully, batch with size is --> " + this.points.size() + ", elapsed time is --> " + (end - start) + " ms");
 
                 this.points.clear();
                 LOGGER.debug("Points have been cleaned");
+
             } catch (Exception e) {
 
                 LOGGER.error("Error has occurred, batch with size " + this.points.size() + " was not imported, see the details --> " + e.getMessage());
-
-                if (this.points.size() >= this.influxDBConfig.getInfluxdbCriticalBatchSize()) {
-                    LOGGER.warn("Critical size protection has occurred the --> " + this.points.size() + "; batch data has bee removed from que and will not be imported, data completely lost to avoid OOM!!!");
-                    this.points.clear();
-                }
+                this.errorsAmount.add(1);
             }
         }
     }

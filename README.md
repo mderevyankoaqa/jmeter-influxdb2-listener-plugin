@@ -12,13 +12,19 @@ The plugin sends metrics to InfluxDB and provides the possibility to visualize t
 * Latency;
 * The response time (uses from the SampleResult.class, needs to make aggregate report).
 
+## Important notes 
+The plugin allows 5 errors happened one by one, then plugin will stop importing the results after that! See details in the logs.
+Counter will be refreshed at least you have 4 fails. This is protection to avoid OOM error.
+
+Pleas monitor the elapsed time of the data importing (see logs) to avoid issues with requests sending from JMeter.
+Pay attention on "Sending metrics performance tuning" chapter, see below.
 
 ## Compatibility
 The supported versions:
 * Java 11 - make sure that you have it (its minimum version).
 * InfluxDB v2.0, see release notes: https://docs.influxdata.com/influxdb/v2.0/reference/release-notes/influxdb/  (1.8 is not supported)
 * JMeter 5.4.1 only.
-* The current board was tested on Grafana 8.2.3.
+* The current board and plugin were tested on Grafana 8.2.3 and InfluxDB 2.0.9, JAVA 15.
 
 ## Deployment
 * Put '`jmeter-plugin-influxdb2-listener-<version>.jar`' file from [Releases](https://github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin/releases) to `~<JmeterPath<\lib\ext`; 
@@ -55,10 +61,8 @@ Let’s explain the plugin fields:
 * `influxDBToken` - the influxdb bucket token, the default value should be updated, copy it from InfluxDB site.
 * `influxDBFlushInterval` - its interval to send data to InfluxDB, the default value is 4000 (4 seconds).
 * `influxDBMaxBatchSize` - the max size of the batch with metrics, the default 2000 (2000 items of JMeter results).
-* `influxDBCriticalBatchSize` - the size of the batch with metrics, the default value is 4000 items. It's responsible to remove the all items from batch, when a lot of error are occurring to avoid OOM.
-So for example, some error has occurred while importing the data, the next attempt to import will be while a new run task by schedule. The not imported data + new will be imported if InfluxDB server is available. 
- But, if you have errors constantly the batch will grow till `influxDBCriticalBatchSize` is not reached. After removing you will lose the results in the system. Plugin writes appropriate logs.
-  
+
+
  ![](img/influx3.png)
   
 * `influxDBOrganization` - the influxdb bucket organization, the default value should be updated, copy it from InfluxDB site.
@@ -91,7 +95,7 @@ Using both options you can tune data importing and have optimal performance.
 
 Make sure you have enough ram to aggregate huge batch and optimal flush period.
 
-Notes: when you have been interrupted the test using UI the processes may not be finished properly. 
+Notes: when test has been interrupted from UI; the processes may not be finished properly, restart JMeter.
  
 
 ## Grafana dashboard capabilities

@@ -48,11 +48,6 @@ public class InfluxDBConfig {
     public static final int DEFAULT_INFLUX_DB_FLUSH_INTERVAL = 4000;
 
     /**
-     * Default flush interval.
-     */
-    public static final int DEFAULT_INFLUX_DB_FLUSH_CRITICAL_BATCH_SIZE = 4000;
-
-    /**
      * Config key for bucket.
      */
     public static final String KEY_INFLUX_DB_BUCKET = "influxDBBucket";
@@ -77,7 +72,6 @@ public class InfluxDBConfig {
      */
     public static final String KEY_INFLUX_DB_HOST = "influxDBHost";
 
-
     /**
      * Config key for http scheme.
      */
@@ -92,11 +86,6 @@ public class InfluxDBConfig {
      * Config key for flush interval.
      */
     public static final String KEY_INFLUX_DB_FLUSH_INTERVAL = "influxDBFlushInterval";
-
-    /**
-     * Config key for critical batch size.
-     */
-    public static final String KEY_INFLUX_DB_FLUSH_CRITICAL_BATCH_SIZE = "influxDBCriticalBatchSize";
 
     /**
      * InfluxDB Host.
@@ -139,12 +128,6 @@ public class InfluxDBConfig {
     private int influxdbFlushInterval;
 
     /**
-     * InfluxDB database critical batch size.
-     */
-    private int influxdbCriticalBatchSize;
-
-
-    /**
      * Creates the new instance of {@link InfluxDBConfig}
      *
      * @param context the {@link BackendListenerContext}
@@ -179,10 +162,6 @@ public class InfluxDBConfig {
         int influxdbFlushInterval = context.getIntParameter(KEY_INFLUX_DB_FLUSH_INTERVAL);
         Arguments.checkNotNegativeNumber(influxdbFlushInterval, KEY_INFLUX_DB_FLUSH_INTERVAL);
         this.setInfluxdbFlushInterval(influxdbFlushInterval);
-
-        int influxdbCriticalBatchSize = context.getIntParameter(KEY_INFLUX_DB_FLUSH_CRITICAL_BATCH_SIZE);
-        Arguments.checkNotNegativeNumber(influxdbCriticalBatchSize, KEY_INFLUX_DB_FLUSH_CRITICAL_BATCH_SIZE);
-        this.setInfluxdbCriticalBatchSize(influxdbCriticalBatchSize);
 
     }
 
@@ -314,23 +293,5 @@ public class InfluxDBConfig {
      */
     public void setInfluxdbFlushInterval(int influxdbFlushInterval) {
         this.influxdbFlushInterval = influxdbFlushInterval;
-    }
-
-    /**
-     * Gets critical batch size.
-     *
-     * @return
-     */
-    public int getInfluxdbCriticalBatchSize() {
-        return influxdbCriticalBatchSize;
-    }
-
-    /**
-     * Sets critical batch size.
-     *
-     * @param influxdbCriticalBatchSize is critical batch size represented in the int.
-     */
-    public void setInfluxdbCriticalBatchSize(int influxdbCriticalBatchSize) {
-        this.influxdbCriticalBatchSize = influxdbCriticalBatchSize;
     }
 }
