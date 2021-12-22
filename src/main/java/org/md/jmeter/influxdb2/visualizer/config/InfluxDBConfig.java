@@ -1,6 +1,7 @@
 package org.md.jmeter.influxdb2.visualizer.config;
 
-import com.influxdb.Arguments;
+
+import com.influxdb.utils.Arguments;
 import org.apache.jmeter.visualizers.backend.BackendListenerContext;
 
 /**
