@@ -175,6 +175,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
         Point setupPoint = Point.measurement(TestStartEndMeasurement.MEASUREMENT_NAME).time(System.currentTimeMillis(), writePrecision)
                 .addTag(TestStartEndMeasurement.Tags.TYPE, TestStartEndMeasurement.Values.STARTED)
                 .addTag(TestStartEndMeasurement.Tags.NODE_NAME, this.nodeName)
+                .addTag(TestStartEndMeasurement.Tags.RUN_ID, this.runId)
                 .addTag(TestStartEndMeasurement.Tags.TEST_NAME, this.testName)
                 .addField(TestStartEndMeasurement.Fields.PLACEHOLDER, "1");
 
