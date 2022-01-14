@@ -23,7 +23,7 @@ Pay attention on "Sending metrics performance tuning" chapter, see below.
 The supported versions:
 * Java 11 - make sure that you have it (its minimum version).
 * InfluxDB v2.0, see release notes: https://docs.influxdata.com/influxdb/v2.0/reference/release-notes/influxdb/  (1.8 is not supported)
-* JMeter 5.4.2 only.
+* JMeter 5.4.3 only.
 * The current board and plugin were tested on Grafana 8.2.3 and InfluxDB 2.0.9, JAVA 15.
 
 ## Deployment
