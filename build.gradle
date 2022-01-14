@@ -1,5 +1,5 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version "7.0.0"
+    id 'com.github.johnrengelman.shadow' version "7.1.2"
     id 'java'
     id 'project-report'
     id 'idea'
@@ -14,7 +14,7 @@ repositories {
 }
 
 sourceCompatibility = 11
-version = '1.4'
+version = '1.5'
 def title = 'JMeterInfluxDBListener'
 def archiveName = 'jmeter-plugin-influxdb2-listener'
 
@@ -31,10 +31,10 @@ def archiveName = 'jmeter-plugin-influxdb2-listener'
     }
 
     dependencies {
-        implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_core', version: '5.4.2'
-        implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_java', version: '5.4.2'
-        implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_components', version: '5.4.2'
-        implementation group: 'org.apache.jmeter', name: 'jorphan', version: '5.4.2'
+        implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_core', version: '5.4.3'
+        implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_java', version: '5.4.3'
+        implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_components', version: '5.4.3'
+        implementation group: 'org.apache.jmeter', name: 'jorphan', version: '5.4.3'
         implementation group: 'com.influxdb', name: 'influxdb-client-java', version: '4.0.0'
         implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 
