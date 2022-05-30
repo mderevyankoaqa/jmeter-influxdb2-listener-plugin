@@ -12,6 +12,9 @@ The plugin sends metrics to InfluxDB and provides the possibility to visualize t
 * Latency;
 * The response time (uses from the SampleResult.class, needs to make aggregate report).
 
+Notes: if you need to save the errors you got wile the test to csv like file and then share to the dev team you can use the [jmeter-csv-listener-plugin](https://github.com/mderevyankoaqa/jmeter-csv-listener-plugin). 
+This plugin can be used while the functional testing and load tests as well.
+
 ## Important notes 
 The plugin allows 5 errors happened one by one, then plugin will stop importing the results after that! See details in the logs.
 Counter will be refreshed at least you have 4 fails. This is protection to avoid OOM error.
