@@ -1,4 +1,4 @@
-package org.md.jmeter.influxdb2.visualizer.result;
+package io.github.mderevyankoaqa.influxdb2.visualizer.result;
 
 import org.apache.jmeter.samplers.SampleResult;
 

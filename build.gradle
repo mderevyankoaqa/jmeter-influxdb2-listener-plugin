@@ -1,8 +1,16 @@
 plugins {
     id 'com.github.johnrengelman.shadow' version "7.1.2"
     id 'java'
+    id 'java-library'
     id 'project-report'
+    id 'maven-publish'
     id 'idea'
+    id 'signing'
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
 repositories {
@@ -14,8 +22,9 @@ repositories {
 }
 
 sourceCompatibility = 11
-version = '1.6'
-def title = 'JMeterInfluxDBListener'
+group = 'io.github.mderevyankoaqa'
+version = '2.0'
+def title = 'JMeterInfluxDB2Listener'
 def archiveName = 'jmeter-plugin-influxdb2-listener'
 
 
@@ -53,7 +62,7 @@ jar {
         manifest {
         attributes 'Implementation-Title': title,
                    'Implementation-Version': archiveVersion,
-                   'Main-Class': 'org.md.jmeter.influxdb.visualizer.JMeterInfluxDBBackendListenerClient'
+                   'Main-Class': 'io.github.mderevyankoaqa.influxdb2.visualizer.JMeterInfluxDBBackendListenerClient'
     }
 }
 
@@ -61,5 +70,74 @@ shadowJar {
     archiveBaseName.set(archiveName)
     manifest {
         inheritFrom project.tasks.jar.manifest
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'io.github.mderevyankoaqa'
+            artifactId = archiveName
+            version = version
+
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = archiveName
+                description = 'Influx DB v2.0 listener plugin for Apache JMeter. Provides the possibility to see the online dashboard (aggregation table, errors, the response body of failures).'
+                url = 'https://github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin'
+
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'mderevyanko'
+                        name = 'Mike Derevianko'
+                        email = 'm.v.derevyanko@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git:github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin.git'
+                    developerConnection = 'scm:git:ssh://github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin.git'
+                    url = 'https://github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin'
+                }
+            }
+        }
+    }
+
+
+    repositories {
+       maven {
+            name = "OSSRH"
+
+            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+
+            credentials {
+                username = project.properties["ossrhUsername"]
+                password = project.properties["ossrhPassword"]
+           }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
+
+
+javadoc {
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
     }
 }

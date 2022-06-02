@@ -1,8 +1,8 @@
-package org.md.jmeter.influxdb2.visualizer.influxdb.client;
+package io.github.mderevyankoaqa.influxdb2.visualizer.influxdb.client;
 
 import com.influxdb.client.*;
 import com.influxdb.client.write.Point;
-import org.md.jmeter.influxdb2.visualizer.config.InfluxDBConfig;
+import io.github.mderevyankoaqa.influxdb2.visualizer.config.InfluxDBConfig;
 import org.slf4j.Logger;
 
 import java.util.*;
@@ -43,11 +43,9 @@ public class InfluxDatabaseClient {
 
     /**
      * Creates the singleton instance of the {@link InfluxDatabaseClient}.
-     * Creates the Influx DB client instance.
-     * Executes the Influx DB points by schedule.
-     *
      * @param config {@link InfluxDBConfig}
      * @param logger {@link Logger}
+     * @return the created instance of {@link InfluxDatabaseClient}
      */
     public static InfluxDatabaseClient getInstance(InfluxDBConfig config, Logger logger) {
 

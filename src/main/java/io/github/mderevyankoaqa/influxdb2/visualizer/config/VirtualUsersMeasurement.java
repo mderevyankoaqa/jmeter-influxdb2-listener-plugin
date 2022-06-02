@@ -1,4 +1,4 @@
-package org.md.jmeter.influxdb2.visualizer.config;
+package io.github.mderevyankoaqa.influxdb2.visualizer.config;
 
 /**
  * Constants (Tag, Field, Measurement) names for the virtual users measurement.
@@ -22,8 +22,14 @@ public interface VirtualUsersMeasurement {
 		 */
 		String NODE_NAME = "nodeName";
 
+		/**
+		 * Test Name name field
+		 */
 		String TEST_NAME = "testName";
 
+		/**
+		 * Run Id field
+		 */
 		String RUN_ID = "runId";
 	}
 

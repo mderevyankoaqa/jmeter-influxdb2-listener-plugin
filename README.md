@@ -1,5 +1,18 @@
 # JMeter InfluxDB v2.0 listener plugin
 
+<p align="left">
+<img src="https://img.shields.io/github/issues/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic&color=white">
+<img src="https://img.shields.io/github/forks/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic">
+<img src="https://img.shields.io/github/stars/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic&color=gold">
+<img src="https://img.shields.io/github/license/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic">
+<img src="https://img.shields.io/github/repo-size/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic">
+<img src="https://img.shields.io/github/issues/detail/age/mderevyankoaqa/jmeter-influxdb2-listener-plugin/1?style=plastic&color=purple">
+<img src="https://img.shields.io/github/commit-activity/m/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic&color=red">
+<img src="https://img.shields.io/github/contributors/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic">
+<img src="https://img.shields.io/github/last-commit/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic">
+<img src="https://badgen.net/github/closed-issues/mderevyankoaqa/jmeter-influxdb2-listener-plugin">
+</p>
+
 ## Description
 The goal of the project is to make a quite similar online dashboard in the same way as JMeter generates. Supported the latest InfluxDB v2.0 and created appropriate dashboard ("Flux" language has been used to create the queries - now there are a lot fo capacities to build amazing charts, tables with a lot of math function).
 So that it would be possible to build the monitor hardware solution on the latest InfluxDB v2.0 and telegraf (agent to send the hardware metrics to InfluxDB) as well.

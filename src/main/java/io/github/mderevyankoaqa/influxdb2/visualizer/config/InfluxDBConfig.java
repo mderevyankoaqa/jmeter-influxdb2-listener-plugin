@@ -1,4 +1,4 @@
-package org.md.jmeter.influxdb2.visualizer.config;
+package io.github.mderevyankoaqa.influxdb2.visualizer.config;
 
 
 import com.influxdb.utils.Arguments;

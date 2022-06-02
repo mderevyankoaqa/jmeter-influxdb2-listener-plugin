@@ -1,4 +1,4 @@
-package org.md.jmeter.influxdb2.visualizer;
+package io.github.mderevyankoaqa.influxdb2.visualizer;
 
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -7,10 +7,10 @@ import java.util.concurrent.TimeUnit;
 
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
-import org.md.jmeter.influxdb2.visualizer.influxdb.client.InfluxDatabaseClient;
-import org.md.jmeter.influxdb2.visualizer.config.InfluxDBConfig;
-import org.md.jmeter.influxdb2.visualizer.config.TestStartEndMeasurement;
-import org.md.jmeter.influxdb2.visualizer.config.VirtualUsersMeasurement;
+import io.github.mderevyankoaqa.influxdb2.visualizer.influxdb.client.InfluxDatabaseClient;
+import io.github.mderevyankoaqa.influxdb2.visualizer.config.InfluxDBConfig;
+import io.github.mderevyankoaqa.influxdb2.visualizer.config.TestStartEndMeasurement;
+import io.github.mderevyankoaqa.influxdb2.visualizer.config.VirtualUsersMeasurement;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.threads.JMeterContextService;
@@ -18,12 +18,10 @@ import org.apache.jmeter.threads.JMeterContextService.ThreadCounts;
 import org.apache.jmeter.visualizers.backend.AbstractBackendListenerClient;
 import org.apache.jmeter.visualizers.backend.BackendListenerContext;
 
-import org.md.jmeter.influxdb2.visualizer.result.SampleResultPointContext;
-import org.md.jmeter.influxdb2.visualizer.result.SampleResultPointProvider;
+import io.github.mderevyankoaqa.influxdb2.visualizer.result.SampleResultPointContext;
+import io.github.mderevyankoaqa.influxdb2.visualizer.result.SampleResultPointProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.md.jmeter.influxdb2.visualizer.influxdb.client.InfluxDatabaseClient.getInstance;
 
 
 /**
@@ -135,7 +133,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
                 var sampleResultPointProvider = new SampleResultPointProvider(sampleResultContext);
 
                 Point resultPoint = sampleResultPointProvider.getPoint();
-                getInstance(this.influxDBConfig, LOGGER).collectData(resultPoint);
+                InfluxDatabaseClient.getInstance(this.influxDBConfig, LOGGER).collectData(resultPoint);
 
             }
         }
@@ -179,7 +177,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
                 .addTag(TestStartEndMeasurement.Tags.TEST_NAME, this.testName)
                 .addField(TestStartEndMeasurement.Fields.PLACEHOLDER, "1");
 
-        getInstance(influxDBConfig, LOGGER).collectData(setupPoint);
+        InfluxDatabaseClient.getInstance(influxDBConfig, LOGGER).collectData(setupPoint);
 
         this.parseSamplers(context);
         this.scheduler = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(2);
@@ -208,7 +206,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
                 .addTag(TestStartEndMeasurement.Tags.TEST_NAME, this.testName)
                 .addField(TestStartEndMeasurement.Fields.PLACEHOLDER, "1");
 
-        getInstance(this.influxDBConfig, LOGGER).collectData(teardownPoint);
+        InfluxDatabaseClient.getInstance(this.influxDBConfig, LOGGER).collectData(teardownPoint);
 
         try {
             this.scheduler.awaitTermination(30, TimeUnit.SECONDS);
@@ -217,7 +215,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
             LOGGER.error("Error waiting for end of scheduler " + e);
         }
 
-        getInstance(influxDBConfig, LOGGER).close();
+        InfluxDatabaseClient.getInstance(influxDBConfig, LOGGER).close();
         this.samplersToFilter.clear();
         super.teardownTest(context);
     }
@@ -245,7 +243,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
         this.influxDBConfig = new InfluxDBConfig(context);
 
 
-        getInstance(this.influxDBConfig, LOGGER).setupInfluxClient();
+        InfluxDatabaseClient.getInstance(this.influxDBConfig, LOGGER).setupInfluxClient();
 
         this.importDataByTimer(this.influxDBConfig, LOGGER);
 
@@ -287,7 +285,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
                 .addTag(VirtualUsersMeasurement.Tags.TEST_NAME, this.testName)
                 .addTag(VirtualUsersMeasurement.Tags.RUN_ID, this.runId);
 
-        getInstance(this.influxDBConfig, LOGGER).collectData(virtualUsersMetricsPoint);
+        InfluxDatabaseClient.getInstance(this.influxDBConfig, LOGGER).collectData(virtualUsersMetricsPoint);
     }
 
     /**
