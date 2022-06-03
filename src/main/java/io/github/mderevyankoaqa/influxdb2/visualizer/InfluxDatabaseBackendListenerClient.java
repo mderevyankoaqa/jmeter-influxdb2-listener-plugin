@@ -1,9 +1,9 @@
 package io.github.mderevyankoaqa.influxdb2.visualizer;
 
+import java.security.SecureRandom;
+import java.time.LocalDate;
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
@@ -90,17 +90,21 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
     /**
      * Random number generator.
      */
-    private Random randomNumberGenerator;
+    private SecureRandom randomNumberGenerator;
 
     /**
      * Indicates whether to record Sub samples.
      */
     private boolean recordSubSamples;
 
-
+    /**
+     * The Influx DB Config.
+     */
     private InfluxDBConfig influxDBConfig;
 
     private Timer timer;
+
+    private ScheduledFuture<?> scheduledFuture;
 
     /**
      * Processes sampler results.
@@ -165,7 +169,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
     public void setupTest(BackendListenerContext context) {
         this.testName = context.getParameter(KEY_TEST_NAME, "Test");
         this.runId = context.getParameter(KEY_RUN_ID, "R001"); //Will be used to compare performance of R001, R002, etc of 'Test'
-        this.randomNumberGenerator = new Random();
+        this.randomNumberGenerator = new SecureRandom ();
         this.nodeName = context.getParameter(KEY_NODE_NAME, "Test-Node");
 
         this.setupInfluxClient(context);
@@ -183,7 +187,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
         this.scheduler = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(2);
         this.scheduler.setRemoveOnCancelPolicy(true);
 
-        this.scheduler.scheduleAtFixedRate(this, 1, 1, TimeUnit.SECONDS);
+        this.scheduledFuture = this.scheduler.scheduleAtFixedRate(this, 1, 1, TimeUnit.SECONDS);
 
         // Indicates whether to write sub sample records to the database
         this.recordSubSamples = Boolean.parseBoolean(context.getParameter(KEY_RECORD_SUB_SAMPLES, "false"));
@@ -193,8 +197,10 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
     public void teardownTest(BackendListenerContext context) throws Exception {
         LOGGER.info("Shutting down influxDB scheduler...");
 
-
+        // Stop importing data by timer.
         this.timer.cancel();
+
+        this.scheduledFuture.cancel(false);
         this.scheduler.shutdown();
 
         this.addVirtualUsersMetrics(0, 0, 0, 0, JMeterContextService.getThreadCounts().finishedThreads);
@@ -209,8 +215,10 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
         InfluxDatabaseClient.getInstance(this.influxDBConfig, LOGGER).collectData(teardownPoint);
 
         try {
-            this.scheduler.awaitTermination(30, TimeUnit.SECONDS);
             LOGGER.info("influxDB scheduler terminated!");
+            if(!this.scheduler.awaitTermination(30, TimeUnit.SECONDS)) {
+                LOGGER.info("Threads didn't finish in 30 seconds!");
+            }
         } catch (InterruptedException e) {
             LOGGER.error("Error waiting for end of scheduler " + e);
         }
@@ -307,7 +315,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
             @Override
             public void run() {
 
-                LOGGER.debug("Running the timer: " + new java.util.Date());
+                LOGGER.debug("Running the timer: " + LocalDate.now());
                 InfluxDatabaseClient.getInstance(conf, logger).importData();
 
             }
