@@ -1,4 +1,28 @@
 # JMeter InfluxDB v2.0 listener plugin
+<img src="https://badges.frapsoft.com/os/v3/open-source.svg?v=103" width="300">
+
+<p align="left">
+<img src="https://img.shields.io/github/issues/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic&color=white">
+<img src="https://img.shields.io/github/forks/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic">
+<img src="https://img.shields.io/github/stars/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic&color=gold">
+<img src="https://img.shields.io/github/license/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic">
+<img src="https://img.shields.io/github/repo-size/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic">
+<img src="https://img.shields.io/github/issues/detail/age/mderevyankoaqa/jmeter-influxdb2-listener-plugin/1?style=plastic&color=purple">
+<img src="https://img.shields.io/github/commit-activity/m/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic&color=red">
+<img src="https://img.shields.io/github/contributors/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic">
+<img src="https://img.shields.io/github/last-commit/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic">
+<img src="https://badgen.net/github/closed-issues/mderevyankoaqa/jmeter-influxdb2-listener-plugin">
+</p>
+
+<h3> 
+<details>
+<summary>Support my Ukrainian Family 
+</summary>
+ <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H8L62WL5HVD32">
+  <img src="https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png" alt="Donate with PayPal" />
+</a>
+</details>
+</h3> 
 
 ## Description
 The goal of the project is to make a quite similar online dashboard in the same way as JMeter generates. Supported the latest InfluxDB v2.0 and created appropriate dashboard ("Flux" language has been used to create the queries - now there are a lot fo capacities to build amazing charts, tables with a lot of math function).
@@ -22,12 +46,17 @@ Counter will be refreshed at least you have 4 fails. This is protection to avoid
 Pleas monitor the elapsed time of the data importing (see logs) to avoid issues with requests sending from JMeter.
 Pay attention on "Sending metrics performance tuning" chapter, see below.
 
+ 
+
 ## Compatibility
 The supported versions:
 * Java 11 - make sure that you have it (its minimum version).
 * InfluxDB v2.0, see release notes: https://docs.influxdata.com/influxdb/v2.0/reference/release-notes/influxdb/  (1.8 is not supported)
 * JMeter 5.4.3 only.
 * The current board and plugin were tested on Grafana 8.2.3 and InfluxDB 2.0.9, JAVA 15.
+
+## Maven Support
+Please see the latest release here https://s01.oss.sonatype.org/content/repositories/releases/io/github/mderevyankoaqa/jmeter-plugin-influxdb2-listener/maven-metadata.xml
 
 ## Deployment
 * Put '`jmeter-plugin-influxdb2-listener-<version>.jar`' file from [Releases](https://github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin/releases) to `~<JmeterPath<\lib\ext`; 
@@ -40,9 +69,21 @@ Note: "fatJar" gradle task should be used to create the package for the JMeter.
  
 ![](img/deploy2.png)
 
-* Select from the dropdown item with the name '`org.md.jmeter.influxdb2.visualizer.JMeterInfluxDBBackendListenerClient`'.
+* Select from the dropdown item with the name '`io.github.mderevyankoaqa.influxdb2.visualizer.JMeterInfluxDBBackendListenerClient`'.
 
  ![](img/deploy3.png)
+
+## Upgrade
+* Close JMeter if its started.
+* Remove old jar.
+* Put '`jmeter-plugin-influxdb2-listener-<version>.jar`' file from [Releases](https://github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin/releases) to `~<JmeterPath<\lib\ext`;
+* Run JMeter again and got Listener.
+* Select from the dropdown item with the name '`io.github.mderevyankoaqa.influxdb2.visualizer.JMeterInfluxDBBackendListenerClient`'.
+![](img/deploy3.png)
+* Click 'Clear all' button
+
+ ![](img/deploy6.png) 
+* Set right settings (update all properties).
 
 ## InfluxDB configuration
 * Create Bucket to store the further testing results.

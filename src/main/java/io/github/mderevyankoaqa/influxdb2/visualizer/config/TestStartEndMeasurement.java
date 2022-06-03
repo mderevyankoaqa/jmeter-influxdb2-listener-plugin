@@ -1,4 +1,4 @@
-package org.md.jmeter.influxdb2.visualizer.config;
+package io.github.mderevyankoaqa.influxdb2.visualizer.config;
 
 /**
  * Constants (Tag, Field, Measurement) names for the measurement that denotes start and end points of a load test.

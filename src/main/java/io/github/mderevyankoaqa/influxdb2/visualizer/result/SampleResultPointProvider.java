@@ -1,9 +1,9 @@
-package org.md.jmeter.influxdb2.visualizer.result;
+package io.github.mderevyankoaqa.influxdb2.visualizer.result;
 
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
-import org.md.jmeter.influxdb2.visualizer.config.RequestMeasurement;
-import org.md.jmeter.influxdb2.visualizer.influxdb.client.InfluxDatabaseUtility;
+import io.github.mderevyankoaqa.influxdb2.visualizer.config.RequestMeasurement;
+import io.github.mderevyankoaqa.influxdb2.visualizer.influxdb.client.InfluxDatabaseUtility;
 
 /**
  * The provider of the Influxdb {@link Point} based on the sample result.

@@ -1,4 +1,4 @@
-package org.md.jmeter.influxdb2.visualizer.config;
+package io.github.mderevyankoaqa.influxdb2.visualizer.config;
 
 
 import com.influxdb.utils.Arguments;
@@ -176,6 +176,8 @@ public class InfluxDBConfig {
     }
 
     /**
+     * Gets the influxDBHost.
+     *
      * @return the influxDBHost.
      */
     public String getInfluxDBHost() {
@@ -183,6 +185,8 @@ public class InfluxDBConfig {
     }
 
     /**
+     * Sets influxDBHost.
+     *
      * @param influxDBHost the influxDBHost to set.
      */
     public void setInfluxDBHost(String influxDBHost) {
@@ -190,6 +194,8 @@ public class InfluxDBConfig {
     }
 
     /**
+     * Gets influxDatabase Bucket.
+     *
      * @return the influxDatabase Bucket.
      */
     public String getInfluxBucket() {
@@ -197,6 +203,8 @@ public class InfluxDBConfig {
     }
 
     /**
+     * Sets influxDatabase.
+     *
      * @param influxBucket the influxDatabase to set.
      */
     public void setInfluxBucket(String influxBucket) {
@@ -204,6 +212,8 @@ public class InfluxDBConfig {
     }
 
     /**
+     * Sets influxHTTPScheme.
+     *
      * @param influxHTTPScheme the influxHTTPScheme to set.
      */
     public void setInfluxHTTPScheme(String influxHTTPScheme) {
@@ -211,6 +221,8 @@ public class InfluxDBConfig {
     }
 
     /**
+     * Gets influxDBPort.
+     *
      * @return the influxDBPort.
      */
     public int getInfluxDBPort() {
@@ -218,6 +230,8 @@ public class InfluxDBConfig {
     }
 
     /**
+     * Sets setInfluxDBPort.
+     *
      * @param influxDBPort the influxDBPort to set.
      */
     public void setInfluxDBPort(int influxDBPort) {

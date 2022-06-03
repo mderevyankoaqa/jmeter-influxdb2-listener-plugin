@@ -1,4 +1,4 @@
-package org.md.jmeter.influxdb2.visualizer.influxdb.client;
+package io.github.mderevyankoaqa.influxdb2.visualizer.influxdb.client;
 
 /**
  * The utility to escape values before inserting.

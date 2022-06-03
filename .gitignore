@@ -5,3 +5,5 @@
 .settings/
 .classpath
 .idea
+secret-key.gpg
+gradle.properties
