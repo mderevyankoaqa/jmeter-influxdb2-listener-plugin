@@ -120,6 +120,11 @@ publishing {
                         name = 'Mike Derevianko'
                         email = 'm.v.derevyanko@gmail.com'
                     }
+                    developer {
+                        id = 'AlucardleVash'
+                        name = 'Pierre Brun'
+                        email = 'pbrun.pro@gmail.com'
+                    }
                 }
                 scm {
                     connection = 'scm:git:git:github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin.git'

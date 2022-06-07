@@ -28,6 +28,11 @@ public class InfluxDBConfig {
     public static final int DEFAULT_PORT = 8086;
 
     /**
+     * Default threshold error.
+     */
+    public static final int DEFAULT_THRESHOLD_ERROR = 5;
+
+    /**
      * Default token.
      */
     public static final String DEFAULT_INFLUX_DB_TOKEN = "put token here";
@@ -89,6 +94,11 @@ public class InfluxDBConfig {
     public static final String KEY_INFLUX_DB_FLUSH_INTERVAL = "influxDBFlushInterval";
 
     /**
+     * Config key error threshold.
+     */
+    public static final String KEY_INFLUX_DB_THRESHOLD_ERROR = "influxDBThresholdError";
+
+    /**
      * InfluxDB Host.
      */
     private String influxDBHost;
@@ -129,6 +139,11 @@ public class InfluxDBConfig {
     private int influxdbFlushInterval;
 
     /**
+     * Default protection to avoid OOM error.
+     */
+    private int influxdbThresholdError;
+
+    /**
      * Creates the new instance of {@link InfluxDBConfig}
      *
      * @param context the {@link BackendListenerContext}
@@ -164,6 +179,9 @@ public class InfluxDBConfig {
         Arguments.checkNotNegativeNumber(influxdbFlushInterval, KEY_INFLUX_DB_FLUSH_INTERVAL);
         this.setInfluxdbFlushInterval(influxdbFlushInterval);
 
+        int influxdbThresholdError = context.getIntParameter(KEY_INFLUX_DB_THRESHOLD_ERROR, InfluxDBConfig.DEFAULT_THRESHOLD_ERROR);
+        Arguments.checkNotNegativeNumber(influxdbThresholdError, KEY_INFLUX_DB_THRESHOLD_ERROR);
+        this.setInfluxdbThresholdError(influxdbThresholdError);
     }
 
     /**
@@ -308,5 +326,23 @@ public class InfluxDBConfig {
      */
     public void setInfluxdbFlushInterval(int influxdbFlushInterval) {
         this.influxdbFlushInterval = influxdbFlushInterval;
+    }
+
+    /**
+     * Sets error threshold.
+     *
+     * @param influxdbThresholdError is the threshold of error to stop sending data to influx db to avoid OOM error.
+     */
+    public void setInfluxdbThresholdError(int influxdbThresholdError) {
+        this.influxdbThresholdError = influxdbThresholdError;
+    }
+
+    /**
+     * Gets threshold error to stop InfluxDB import.
+     *
+     * @return Threshold of error represented in the int.
+     */
+    public int getInfluxdbThresholdError() {
+        return influxdbThresholdError;
     }
 }
