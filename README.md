@@ -2,10 +2,12 @@
 <img src="https://badges.frapsoft.com/os/v3/open-source.svg?v=103" width="300">
 
 <p align="left">
-<img src="https://img.shields.io/github/issues/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic&color=white">
-<img src="https://img.shields.io/github/forks/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic">
-<img src="https://img.shields.io/github/stars/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic&color=gold">
 <img src="https://img.shields.io/github/license/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic">
+<img src ="https://img.shields.io/github/v/release/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic">
+<img src="https://img.shields.io/maven-central/v/io.github.mderevyankoaqa/jmeter-plugins-influxdb2-listener?style=plastic">
+<img src="https://img.shields.io/github/stars/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic&color=gold">
+<img src="https://img.shields.io/github/forks/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic">
+<br>
 <img src="https://img.shields.io/github/repo-size/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic">
 <img src="https://img.shields.io/github/issues/detail/age/mderevyankoaqa/jmeter-influxdb2-listener-plugin/1?style=plastic&color=purple">
 <img src="https://img.shields.io/github/commit-activity/m/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic&color=red">
@@ -56,7 +58,18 @@ The supported versions:
 * The current board and plugin were tested on Grafana 8.2.3 and InfluxDB 2.0.9, JAVA 15.
 
 ## Maven Support
-Please see the latest release here https://s01.oss.sonatype.org/content/repositories/releases/io/github/mderevyankoaqa/jmeter-plugin-influxdb2-listener/maven-metadata.xml
+Please see the latest release here https://s01.oss.sonatype.org/content/repositories/releases/io/github/mderevyankoaqa/jmeter-plugins-influxdb2-listener/maven-metadata.xml
+
+## CI/CD Support
+The CI/CD can be done using [jmeter-maven-plugin](https://github.com/jmeter-maven-plugin/jmeter-maven-plugin)
+The example of the adding plugin to the project with the plugin: 
+
+          <configuration>
+                <jmeterExtensions>
+                  <artifact>io.github.mderevyankoaqa:jmeter-plugins-influxdb2-listener:2.1</artifact>
+                </jmeterExtensions>
+            </configuration>
+Some notes cab be found in the article [Adding jar's to the /lib/ext directory](https://github.com/jmeter-maven-plugin/jmeter-maven-plugin/wiki/Adding-Excluding-libraries-to-from-the-classpath).
 
 ## Deployment
 * Put '`jmeter-plugin-influxdb2-listener-<version>.jar`' file from [Releases](https://github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin/releases) to `~<JmeterPath<\lib\ext`; 
