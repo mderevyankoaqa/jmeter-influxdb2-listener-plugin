@@ -21,11 +21,12 @@ repositories {
             }
 }
 
+
 sourceCompatibility = 11
 group = 'io.github.mderevyankoaqa'
-version = '2.0'
+version = '2.1'
 def title = 'JMeterInfluxDB2Listener'
-def archiveName = 'jmeter-plugin-influxdb2-listener'
+def archiveName = 'jmeter-plugins-influxdb2-listener'
 
 
 // There's a bug in JMeter leaving extra metadata right now. This is a workaround.
@@ -57,19 +58,33 @@ def archiveName = 'jmeter-plugin-influxdb2-listener'
     }
 
 jar {
-
         manifest {
         attributes 'Implementation-Title': title,
                    'Implementation-Version': archiveVersion,
                    'Main-Class': 'io.github.mderevyankoaqa.influxdb2.visualizer.JMeterInfluxDBBackendListenerClient'
-    }
+        }
+
+        // Sets Classifier as sources.
+        archiveClassifier.set("sources")
 }
 
 shadowJar {
+    // Removes of the useless links.
+    minimize()
+    // Fix of the Class path contains multiple SLF4J bindings.
+    minimize
+            {
+                exclude(dependency('org.slf4j:.*:.*'))
+            }
     archiveBaseName.set(archiveName)
+
     manifest {
         inheritFrom project.tasks.jar.manifest
     }
+
+    // Removes the 'All' in Classifier to have downloadable artifact by default.
+    archiveClassifier.set(null)
+
 }
 
 publishing {
@@ -117,7 +132,7 @@ publishing {
 
 
     repositories {
-       maven {
+        maven {
             name = "OSSRH"
 
             url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
@@ -125,15 +140,15 @@ publishing {
             credentials {
                 username = project.properties["ossrhUsername"]
                 password = project.properties["ossrhPassword"]
-           }
+            }
         }
     }
 }
 
+
 signing {
     sign publishing.publications.mavenJava
 }
-
 
 javadoc {
     if(JavaVersion.current().isJava9Compatible()) {
