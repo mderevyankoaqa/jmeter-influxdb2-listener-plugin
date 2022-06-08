@@ -157,6 +157,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
         arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_BUCKET, InfluxDBConfig.DEFAULT_BUCKET);
         arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_FLUSH_INTERVAL, String.valueOf(InfluxDBConfig.DEFAULT_INFLUX_DB_FLUSH_INTERVAL));
         arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_MAX_BATCH_SIZE, String.valueOf(InfluxDBConfig.DEFAULT_INFLUX_DB_MAX_BATCH_SIZE));
+        arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_THRESHOLD_ERROR, Integer.toString(InfluxDBConfig.DEFAULT_THRESHOLD_ERROR));
         arguments.addArgument(KEY_SAMPLERS_LIST, ".*");
         arguments.addArgument(KEY_USE_REGEX_FOR_SAMPLER_LIST, "true");
         arguments.addArgument(KEY_RECORD_SUB_SAMPLES, "true");

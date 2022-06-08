@@ -100,13 +100,13 @@ public class InfluxDatabaseClient {
      */
     public synchronized void importData() {
 
-        if (this.errorsAmount.size() >= 5)
+        if (this.errorsAmount.size() >= this.influxDBConfig.getInfluxdbThresholdError())
         {
             this.points.clear();
             this.LOGGER.warn("Importing of the results to Influx DB is skipping since 5 errors, has occurred!");
         }
 
-        if (this.points.size() != 0 && this.errorsAmount.size() <= 5) {
+        if (this.points.size() != 0 && this.errorsAmount.size() <= this.influxDBConfig.getInfluxdbThresholdError()) {
             try {
 
                 long start = System.currentTimeMillis();

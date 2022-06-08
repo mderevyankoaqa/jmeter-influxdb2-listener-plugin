@@ -118,7 +118,7 @@ Let’s explain the plugin fields:
 * `influxDBToken` - the influxdb bucket token, the default value should be updated, copy it from InfluxDB site.
 * `influxDBFlushInterval` - its interval to send data to InfluxDB, the default value is 4000 (4 seconds).
 * `influxDBMaxBatchSize` - the max size of the batch with metrics, the default 2000 (2000 items of JMeter results).
-
+* `influxDBThresholdError` - the error threshold before stopping the import, the default value is 5. (see [Important notes](#important-notes) for more detail.)
 
  ![](img/influx3.png)
   
