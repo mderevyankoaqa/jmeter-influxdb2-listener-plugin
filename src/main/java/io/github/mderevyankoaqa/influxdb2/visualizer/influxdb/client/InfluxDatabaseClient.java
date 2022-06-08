@@ -95,7 +95,7 @@ public class InfluxDatabaseClient {
 
     /**
      * Imports {@link Point} from {@link List<Point>} collection if items exists. Cleans {@link List<Point>} after writing.
-     * Manages Error Amount counter. The limit of the errors occurred one by one is 5. After 5 such errors, import is stopping till and of the tes.
+     * Manages Error Amount counter. The limit of the errors occurred one by one is 5 (the 5 - is default setting and can be updated in UI of the plugin - the key is KEY_INFLUX_DB_THRESHOLD_ERROR). After 5 such errors, import is stopping till and of the tes.
      * If less 5 error has occurred and next import attempt was successful - errors counter will be refreshed.
      */
     public synchronized void importData() {
@@ -103,7 +103,7 @@ public class InfluxDatabaseClient {
         if (this.errorsAmount.size() >= this.influxDBConfig.getInfluxdbThresholdError())
         {
             this.points.clear();
-            this.LOGGER.warn("Importing of the results to Influx DB is skipping since 5 errors, has occurred!");
+            this.LOGGER.warn("Importing of the results to Influx DB is skipping since "+this.influxDBConfig.getInfluxdbThresholdError()+" errors, has occurred!");
         }
 
         if (this.points.size() != 0 && this.errorsAmount.size() <= this.influxDBConfig.getInfluxdbThresholdError()) {
