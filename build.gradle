@@ -24,7 +24,7 @@ repositories {
 
 sourceCompatibility = 11
 group = 'io.github.mderevyankoaqa'
-version = '2.1'
+version = '2.2'
 def title = 'JMeterInfluxDB2Listener'
 def archiveName = 'jmeter-plugins-influxdb2-listener'
 
@@ -119,6 +119,11 @@ publishing {
                         id = 'mderevyanko'
                         name = 'Mike Derevianko'
                         email = 'm.v.derevyanko@gmail.com'
+                    }
+                    developer {
+                        id = 'aktoluna'
+                        name = 'Ali Aktolun'
+                        email = 'ali.aktolun.009@gmail.com'
                     }
                     developer {
                         id = 'AlucardleVash'

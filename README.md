@@ -43,11 +43,11 @@ This plugin can be used while the functional testing and load tests as well.
 
 ## Important notes 
 The plugin allows 5 errors happened one by one, then plugin will stop importing the results after that! See details in the logs.
-Counter will be refreshed at least you have 4 fails. This is protection to avoid OOM error.
+Counter will be refreshed at least you have 4 fails. This is protection to avoid OOM error. 
+The option can be configured in the settings (the key name is `influxDBThresholdError` see the [Plugin configuration](https://github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin/tree/main#plugin-configuration) for the details). You need to be careful with that option and know the hardware resources to store data in the memory. 
 
 Pleas monitor the elapsed time of the data importing (see logs) to avoid issues with requests sending from JMeter.
 Pay attention on "Sending metrics performance tuning" chapter, see below.
-
  
 
 ## Compatibility
@@ -58,11 +58,11 @@ The supported versions:
 * The current board and plugin were tested on Grafana 8.2.3 and InfluxDB 2.0.9, JAVA 15.
 
 ## Maven Support
-Please see the latest release here https://s01.oss.sonatype.org/content/repositories/releases/io/github/mderevyankoaqa/jmeter-plugins-influxdb2-listener/maven-metadata.xml
+Please see the latest release here https://search.maven.org/artifact/io.github.mderevyankoaqa/jmeter-plugins-influxdb2-listener.
 
 ## CI/CD Support
 The CI/CD can be done using [jmeter-maven-plugin](https://github.com/jmeter-maven-plugin/jmeter-maven-plugin)
-The example of the adding plugin to the project with the plugin: 
+The example of the adding plugin to the project with the jmeter-maven: 
 
           <configuration>
                 <jmeterExtensions>
@@ -70,6 +70,24 @@ The example of the adding plugin to the project with the plugin:
                 </jmeterExtensions>
             </configuration>
 Some notes cab be found in the article [Adding jar's to the /lib/ext directory](https://github.com/jmeter-maven-plugin/jmeter-maven-plugin/wiki/Adding-Excluding-libraries-to-from-the-classpath).
+
+## Development and branching strategy
+Hello all contributors! Welcome to the project, I'm happy to see you here. Just to avoid the mess and have a nice history, let's keep the simple rules:
+1. Code should pass standard static code analysis in IntelliJ IDEA.
+2. Comments should be for the new code to have clear java docs.
+3. All new development lets - in the "development" branch. So the steps:
+   a. make a branch for the feature you want to develop from "development" (source branch -> "main"). There will be a mirror of the latest release + can be a merge of the new features.
+   b. all pull requests from your feature branch -> "development" branch only.
+   c. once we decide to make the new release after testing, we will merge "development" -> "main" with push to maven central.   
+
+While the first pull request please add your self to the [build.gradle](https://github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin/blob/main/build.gradle) the section 'developers'
+
+    developers {
+        developer {
+        id = 'your github if'
+        name = 'your name'
+        email = 'email'
+        }
 
 ## Deployment
 * Put '`jmeter-plugin-influxdb2-listener-<version>.jar`' file from [Releases](https://github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin/releases) to `~<JmeterPath<\lib\ext`; 
@@ -118,7 +136,7 @@ Let’s explain the plugin fields:
 * `influxDBToken` - the influxdb bucket token, the default value should be updated, copy it from InfluxDB site.
 * `influxDBFlushInterval` - its interval to send data to InfluxDB, the default value is 4000 (4 seconds).
 * `influxDBMaxBatchSize` - the max size of the batch with metrics, the default 2000 (2000 items of JMeter results).
-* `influxDBThresholdError` - the error threshold before stopping the import, the default value is 5. (see [Important notes](#important-notes) for more detail.)
+* `influxDBThresholdError` - the error threshold before stopping the import, the default value is 5. (see [Important notes](https://github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin/tree/main#important-notes) for more detail.)
 
  ![](img/influx3.png)
   
