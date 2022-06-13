@@ -14,6 +14,7 @@ public class SampleResultPointContext {
     private String runId;
     private String testName;
     boolean errorBodyToBeSaved;
+    private int ResponseBodyLength;
 
     /**
      * Checks whether the body of the failed repose is going to be saved.
@@ -109,5 +110,21 @@ public class SampleResultPointContext {
      */
     public void setTestName(String testName) {
         this.testName = testName;
+    }
+
+    /**
+     * Gets the response body length.
+     * @return tge response body length.
+     */
+    public int getResponseBodyLength() {
+        return ResponseBodyLength;
+    }
+
+    /**
+     * Sets the response body length.
+     * @param responseBodyLength response body length.
+     */
+    public void setResponseBodyLength(int responseBodyLength) {
+        this.ResponseBodyLength = responseBodyLength;
     }
 }

@@ -53,6 +53,11 @@ public interface RequestMeasurement {
 		 * Error response body.
 		 */
 		String ERROR_RESPONSE_BODY = "errorResponseBody";
+
+		/**
+		 * The result, can be pass or fail.
+		 */
+		String RESULT = "result";
 	}
 
 	/**
@@ -75,7 +80,6 @@ public interface RequestMeasurement {
 		 * Error count field.
 		 */
 		String REQUEST_COUNT = "count";
-
 
 		/**
 		 * Sent Bytes field.

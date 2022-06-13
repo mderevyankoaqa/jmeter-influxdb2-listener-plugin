@@ -1,27 +1,29 @@
 package io.github.mderevyankoaqa.influxdb2.visualizer;
 
-import java.security.SecureRandom;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.concurrent.*;
-
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
-import io.github.mderevyankoaqa.influxdb2.visualizer.influxdb.client.InfluxDatabaseClient;
 import io.github.mderevyankoaqa.influxdb2.visualizer.config.InfluxDBConfig;
 import io.github.mderevyankoaqa.influxdb2.visualizer.config.TestStartEndMeasurement;
 import io.github.mderevyankoaqa.influxdb2.visualizer.config.VirtualUsersMeasurement;
+import io.github.mderevyankoaqa.influxdb2.visualizer.influxdb.client.InfluxDatabaseClient;
+import io.github.mderevyankoaqa.influxdb2.visualizer.result.SampleResultPointContext;
+import io.github.mderevyankoaqa.influxdb2.visualizer.result.SampleResultPointProvider;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.threads.JMeterContextService;
 import org.apache.jmeter.threads.JMeterContextService.ThreadCounts;
 import org.apache.jmeter.visualizers.backend.AbstractBackendListenerClient;
 import org.apache.jmeter.visualizers.backend.BackendListenerContext;
-
-import io.github.mderevyankoaqa.influxdb2.visualizer.result.SampleResultPointContext;
-import io.github.mderevyankoaqa.influxdb2.visualizer.result.SampleResultPointProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.security.SecureRandom;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -133,12 +135,11 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
                 sampleResultContext.setSampleResult(sampleResult);
                 sampleResultContext.setTimeToSet(System.currentTimeMillis() * ONE_MS_IN_NANOSECONDS + this.getUniqueNumberForTheSamplerThread());
                 sampleResultContext.setErrorBodyToBeSaved(context.getBooleanParameter(KEY_INCLUDE_BODY_OF_FAILURES, false));
-
+                sampleResultContext.setResponseBodyLength(this.influxDBConfig.getResponseBodyLength());
                 var sampleResultPointProvider = new SampleResultPointProvider(sampleResultContext);
 
                 Point resultPoint = sampleResultPointProvider.getPoint();
                 InfluxDatabaseClient.getInstance(this.influxDBConfig, LOGGER).collectData(resultPoint);
-
             }
         }
     }
@@ -155,13 +156,14 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
         arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_TOKEN, InfluxDBConfig.DEFAULT_INFLUX_DB_TOKEN);
         arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_ORG, InfluxDBConfig.DEFAULT_INFLUX_DB_ORG);
         arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_BUCKET, InfluxDBConfig.DEFAULT_BUCKET);
-        arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_FLUSH_INTERVAL, String.valueOf(InfluxDBConfig.DEFAULT_INFLUX_DB_FLUSH_INTERVAL));
-        arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_MAX_BATCH_SIZE, String.valueOf(InfluxDBConfig.DEFAULT_INFLUX_DB_MAX_BATCH_SIZE));
+        arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_FLUSH_INTERVAL, Integer.toString(InfluxDBConfig.DEFAULT_INFLUX_DB_FLUSH_INTERVAL));
+        arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_MAX_BATCH_SIZE, Integer.toString(InfluxDBConfig.DEFAULT_INFLUX_DB_MAX_BATCH_SIZE));
         arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_THRESHOLD_ERROR, Integer.toString(InfluxDBConfig.DEFAULT_THRESHOLD_ERROR));
         arguments.addArgument(KEY_SAMPLERS_LIST, ".*");
         arguments.addArgument(KEY_USE_REGEX_FOR_SAMPLER_LIST, "true");
         arguments.addArgument(KEY_RECORD_SUB_SAMPLES, "true");
         arguments.addArgument(KEY_INCLUDE_BODY_OF_FAILURES, "true");
+        arguments.addArgument(InfluxDBConfig.KEY_RESPONSE_BODY_LENGTH, Integer.toString(InfluxDBConfig.DEFAULT_RESPONSE_BODY_LENGTH));
 
         return arguments;
     }

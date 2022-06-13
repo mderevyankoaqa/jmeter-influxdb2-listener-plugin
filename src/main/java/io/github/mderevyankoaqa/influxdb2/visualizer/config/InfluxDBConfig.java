@@ -42,7 +42,6 @@ public class InfluxDBConfig {
      */
     public static final String DEFAULT_INFLUX_DB_ORG = "performance_testing";
 
-
     /**
      * Default batch size.
      */
@@ -52,6 +51,11 @@ public class InfluxDBConfig {
      * Default flush interval.
      */
     public static final int DEFAULT_INFLUX_DB_FLUSH_INTERVAL = 4000;
+
+    /**
+     * Default response body length.
+     */
+    public static final int DEFAULT_RESPONSE_BODY_LENGTH = 2000;
 
     /**
      * Config key for bucket.
@@ -99,6 +103,11 @@ public class InfluxDBConfig {
     public static final String KEY_INFLUX_DB_THRESHOLD_ERROR = "influxDBThresholdError";
 
     /**
+     * Config key to manage the response body length.
+     */
+    public static final String KEY_RESPONSE_BODY_LENGTH = "responseBodyLength";
+
+    /**
      * InfluxDB Host.
      */
     private String influxDBHost;
@@ -144,6 +153,11 @@ public class InfluxDBConfig {
     private int influxdbThresholdError;
 
     /**
+     * Response body length.
+     */
+    private int responseBodyLength;
+
+    /**
      * Creates the new instance of {@link InfluxDBConfig}
      *
      * @param context the {@link BackendListenerContext}
@@ -182,6 +196,10 @@ public class InfluxDBConfig {
         int influxdbThresholdError = context.getIntParameter(KEY_INFLUX_DB_THRESHOLD_ERROR, InfluxDBConfig.DEFAULT_THRESHOLD_ERROR);
         Arguments.checkNotNegativeNumber(influxdbThresholdError, KEY_INFLUX_DB_THRESHOLD_ERROR);
         this.setInfluxdbThresholdError(influxdbThresholdError);
+
+        int responseBodyLength= context.getIntParameter(KEY_RESPONSE_BODY_LENGTH);
+        Arguments.checkNotNegativeNumber(influxdbFlushInterval, KEY_RESPONSE_BODY_LENGTH);
+        this.setResponseBodyLength(responseBodyLength);
     }
 
     /**
@@ -344,5 +362,23 @@ public class InfluxDBConfig {
      */
     public int getInfluxdbThresholdError() {
         return influxdbThresholdError;
+    }
+
+    /**
+     * Gets the response body length.
+     *
+     * @return the response body length.
+     */
+    public int getResponseBodyLength() {
+        return responseBodyLength;
+    }
+
+    /**
+     * Sets the response body length.
+     *
+     * @param responseBodyLength the response body length.
+     */
+    public void setResponseBodyLength(int responseBodyLength) {
+        this.responseBodyLength = responseBodyLength;
     }
 }

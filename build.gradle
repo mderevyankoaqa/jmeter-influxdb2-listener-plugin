@@ -24,7 +24,7 @@ repositories {
 
 sourceCompatibility = 11
 group = 'io.github.mderevyankoaqa'
-version = '2.2'
+version = '2.3'
 def title = 'JMeterInfluxDB2Listener'
 def archiveName = 'jmeter-plugins-influxdb2-listener'
 
