@@ -1,10 +1,12 @@
 # JMeter InfluxDB v2.0 listener plugin
-<img src="https://badges.frapsoft.com/os/v3/open-source.svg?v=103" width="300">
+![](img/logo2.png) <img src="https://badges.frapsoft.com/os/v3/open-source.svg?v=103" width="500">
+
 
 <p align="left">
 <img src="https://img.shields.io/github/license/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic">
 <img src ="https://img.shields.io/github/v/release/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic">
 <img src="https://img.shields.io/maven-central/v/io.github.mderevyankoaqa/jmeter-plugins-influxdb2-listener?style=plastic">
+<img src="https://img.shields.io/github/downloads/mderevyankoaqa/jmeter-influxdb2-listener-plugin/total?style=plastic">
 <img src="https://img.shields.io/github/stars/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic&color=gold">
 <img src="https://img.shields.io/github/forks/mderevyankoaqa/jmeter-influxdb2-listener-plugin?style=plastic">
 <br>
@@ -55,7 +57,7 @@ The supported versions:
 * Java 11 - make sure that you have it (its minimum version).
 * InfluxDB v2.0, see release notes: https://docs.influxdata.com/influxdb/v2.0/reference/release-notes/influxdb/  (1.8 is not supported)
 * JMeter 5.4.3 only.
-* The current board and plugin were tested on Grafana 8.2.3 and InfluxDB 2.0.9, JAVA 15.
+* The current board and plugin were tested on Grafana 8.5.4 and InfluxDB 2.2.0, JAVA 15.
 
 ## Maven Support
 Please see the latest release here https://search.maven.org/artifact/io.github.mderevyankoaqa/jmeter-plugins-influxdb2-listener.
@@ -94,15 +96,19 @@ While the first pull request please add your self to the [build.gradle](https://
 
 Note: "fatJar" gradle task should be used to create the package for the JMeter.
 
- ![](img/deploy1.png)
+  ![](img/deploy1.png)
 
 * Run JMeter and select the test plan, Add-> Listener -> Backend Listener.
  
-![](img/deploy2.png)
+  ![](img/deploy2.png)
 
+* Go to Backend Listener
+  
+  ![](img/testPlan.png)
+  
 * Select from the dropdown item with the name '`io.github.mderevyankoaqa.influxdb2.visualizer.JMeterInfluxDBBackendListenerClient`'.
-
- ![](img/deploy3.png)
+ 
+  ![](img/deploy3.png)
 
 ## Upgrade
 * Close JMeter if its started.
@@ -110,20 +116,21 @@ Note: "fatJar" gradle task should be used to create the package for the JMeter.
 * Put '`jmeter-plugin-influxdb2-listener-<version>.jar`' file from [Releases](https://github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin/releases) to `~<JmeterPath<\lib\ext`;
 * Run JMeter again and got Listener.
 * Select from the dropdown item with the name '`io.github.mderevyankoaqa.influxdb2.visualizer.JMeterInfluxDBBackendListenerClient`'.
-![](img/deploy3.png)
+  
+  ![](img/deploy3.png)
+
 * Click 'Clear all' button
 
- ![](img/deploy6.png) 
+  ![](img/deploy6.png) 
 * Set right settings (update all properties).
 
 ## InfluxDB configuration
 * Create Bucket to store the further testing results.
 
- ![](img/influx1.png)
+  ![](img/influx1.png)
   
 * Create the token with read and write rights.
-
- ![](img/influx2.png)
+  ![](img/influx2.png)
 
 ## Plugin configuration
 Let’s explain the plugin fields:
@@ -134,32 +141,30 @@ Let’s explain the plugin fields:
 * `influxDBHost` - the host name or ip of the InfluxDB server.
 * `influxDBPort` - the port of the InfluxDB server, the default is 8086.
 * `influxDBToken` - the influxdb bucket token, the default value should be updated, copy it from InfluxDB site.
-* `influxDBFlushInterval` - its interval to send data to InfluxDB, the default value is 4000 (4 seconds).
-* `influxDBMaxBatchSize` - the max size of the batch with metrics, the default 2000 (2000 items of JMeter results).
-* `influxDBThresholdError` - the error threshold before stopping the import, the default value is 5. (see [Important notes](https://github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin/tree/main#important-notes) for more detail.)
 
- ![](img/influx3.png)
+  ![](img/influx3.png)
   
 * `influxDBOrganization` - the influxdb bucket organization, the default value should be updated, copy it from InfluxDB site.
 
- ![](img/influx4.png)
-  
+  ![](img/influx4.png)
+
+* `influxDBFlushInterval` - its interval to send data to InfluxDB, the default value is 4000 (4 seconds).
+* `influxDBMaxBatchSize` - the max size of the batch with metrics, the default 2000 (2000 items of JMeter results).
+* `influxDBThresholdError` - the error threshold before stopping the import, the default value is 5. (see [Important notes](https://github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin/tree/main#important-notes) for more detail.)
 * `influxDBBucket` - the InfluxDB bucket name to store the test results.
 * `samplersList` - the regex value to sort out the JMeter samplers results; the default is _`.*`_. For example if you have the pattern of JMeter test plan development like this - create the 'Transaction controller', add inside of the 'Transaction controller' the Sampler with request, and the name pattern '`GET->Something`', like on the see screen below.
- 
- ![](img/testPlan.png)
-
 The regex `^(Home Page|Login|Search)(-success|-failure)?$` can be used to save only samplers names. The regex can be generated from JMeter menu.
 
- ![](img/deploy4.png)
+  ![](img/deploy4.png)
 
 You can modify the generated string in terms of your purposes.
 
- ![](img/deploy5.png)
+  ![](img/deploy5.png)
 
 * `useRegexForSamplerList` - allows to use the regexps if set to 'true'.
 * `recordSubSamples` - allows to save the JMeter sub samples if set to 'true'.
 * `saveResponseBodyOfFailures` - allows to save the response body of the failures.
+* `responseBodyLength` - allows saving the response body, not more than the set specified length.
 
 ## Sending metrics performance tuning
 The plugin imports batch with JMeter results each 4 seconds (by default settings). In the logs you will see records like this:
@@ -178,32 +183,32 @@ See deployment instructions here https://grafana.com/grafana/dashboards/13644
 
 Dashboard helps:
 * Monitor throughput with active users.
-
- ![](img/grafana1.png)
+  ![](img/grafana1.png)
   
-* Overview and analise the response time, distribution as well.
 
- ![](img/grafana2.png)
-
- ![](img/grafana3.png)
+* Overview and analise the response time, distribution as well. Added the filters to see requests with status "pass", "fail".
+  ![](img/grafana2.png)
+  ![](img/grafana3.png)
   
+
 * See aggregate report. 
   The table rendering may take an extra time. The table has hardware resources consuming queries from Influxdb side. If you have low hardware on the Influxdb server - recommended make the clone of the original dashboard and remove aggregate report.
   So the idea - it's to have one 'fast' dashboard for the online monitoring (has no aggregate report) to see the results while the test, the second (original with aggregate report) to see the final results.
+  ![](img/grafana4.0.png)
 
- ![](img/grafana4.png)
+  Now added the possibility to see the aggregate report for requests with status "pass" only.
+  ![](img/grafana4.1.png)
  
-* Investigate errors. The table is interactive, it's possible to filter data in the columns and see details for the specific error.
 
- ![](img/grafana5.png)
+* Investigate errors. The table is interactive, it's possible to filter data in the columns and see details for the specific error. Added the paging. 
+  ![](img/grafana5.png)
   
+
 * See network statistics, latency, processing time.
-  
-  ![](img/grafana6.png) 
-  
+  ![](img/grafana6.0.png)
+  ![](img/grafana6.1.png)
+  ![](img/grafana6.2.png)
+
+
 * Check individual request details.
-
- ![](img/grafana7.png)
-
-
-
+  ![](img/grafana7.png)
