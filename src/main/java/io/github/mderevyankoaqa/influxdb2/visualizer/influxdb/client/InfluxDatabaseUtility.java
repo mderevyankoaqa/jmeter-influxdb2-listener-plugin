@@ -27,10 +27,12 @@ public class InfluxDatabaseUtility {
      */
     public static String getSubstring(String value, int expectedLength)
     {
-        String newValue = value;
-        if(newValue.length()<= expectedLength)
+        String newValue;
+        if(value.length() >= expectedLength)
         {
-            newValue.substring(0,expectedLength);
+            newValue = value.substring(0,expectedLength);
+        }else {
+            newValue = value;
         }
 
         return newValue;
