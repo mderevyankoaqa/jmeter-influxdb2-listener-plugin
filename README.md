@@ -28,6 +28,16 @@
 </details>
 </h3> 
 
+<h3>
+<details>
+<summary>Like what you see?</summary>
+<br>
+   <a href="https://www.buymeacoffee.com/mvderevyanko">
+   <img alt="Coffee2" src="https://raw.githubusercontent.com/mderevyankoaqa/jmeter-elk/main/img/Coffee2.png"  width="150">
+</a>
+</details>
+</h3>
+
 ## Description
 The goal of the project is to make a quite similar online dashboard in the same way as JMeter generates. Supported the latest InfluxDB v2.0 and created appropriate dashboard ("Flux" language has been used to create the queries - now there are a lot fo capacities to build amazing charts, tables with a lot of math function).
 So that it would be possible to build the monitor hardware solution on the latest InfluxDB v2.0 and telegraf (agent to send the hardware metrics to InfluxDB) as well.
