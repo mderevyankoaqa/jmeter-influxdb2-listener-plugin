@@ -20,7 +20,7 @@
 
 <h3> 
 <details>
-<summary>Support my Ukrainian Family 
+<summary>Support my Ukrainian Family ❤️
 </summary>
  <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H8L62WL5HVD32">
   <img src="https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png" alt="Donate with PayPal" />
@@ -30,7 +30,7 @@
 
 <h3>
 <details>
-<summary>Like what you see?</summary>
+<summary>Like what you see? 😍 </summary>
 <br>
    <a href="https://www.buymeacoffee.com/mvderevyanko">
    <img alt="Coffee2" src="https://raw.githubusercontent.com/mderevyankoaqa/jmeter-elk/main/img/Coffee2.png"  width="150">
@@ -54,7 +54,7 @@ Notes: if you need to save the errors you got wile the test to csv like file and
 This plugin can be used while the functional testing and load tests as well.
 
 ## Important notes 
-The plugin allows 5 errors happened one by one, then plugin will stop importing the results after that! See details in the logs.
+🚨 The plugin allows 5 errors happened one by one, then plugin will stop importing the results after that! See details in the logs.
 Counter will be refreshed at least you have 4 fails. This is protection to avoid OOM error. 
 The option can be configured in the settings (the key name is `influxDBThresholdError` see the [Plugin configuration](https://github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin/tree/main#plugin-configuration) for the details). You need to be careful with that option and know the hardware resources to store data in the memory. 
 
@@ -65,8 +65,8 @@ Pay attention on "Sending metrics performance tuning" chapter, see below.
 ## Compatibility
 The supported versions:
 * Java 11 - make sure that you have it (its minimum version).
-* InfluxDB v2.0, see release notes: https://docs.influxdata.com/influxdb/v2.0/reference/release-notes/influxdb/  (1.8 is not supported)
-* JMeter 5.4.3 only.
+* InfluxDB v2.x, see release notes: https://docs.influxdata.com/influxdb/v2.0/reference/release-notes/influxdb/  (1.8 is not supported)
+* JMeter 5.5.0 only.
 * The current board and plugin were tested on Grafana 8.5.4 and InfluxDB 2.2.0, JAVA 15.
 
 ## Maven Support
