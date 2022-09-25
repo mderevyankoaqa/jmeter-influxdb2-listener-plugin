@@ -47,6 +47,7 @@ def archiveName = 'jmeter-plugins-influxdb2-listener'
         implementation group: 'org.apache.jmeter', name: 'jorphan', version: '5.5'
         implementation group: 'com.influxdb', name: 'influxdb-client-java', version: '6.1.0'
         implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+        implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_http', version: '5.4.3'
 
         components {
             withModule("org.apache.jmeter:ApacheJMeter_core", JMeterRule)
@@ -54,6 +55,7 @@ def archiveName = 'jmeter-plugins-influxdb2-listener'
             withModule("org.apache.jmeter:ApacheJMeter_components", JMeterRule)
             withModule("org.apache.jmeter:jorphan", JMeterRule)
             withModule("org.apache.jmeter:ApacheJMeter", JMeterRule)
+            withModule("org.apache.jmeter:ApacheJMeter_http", JMeterRule)
         }
     }
 

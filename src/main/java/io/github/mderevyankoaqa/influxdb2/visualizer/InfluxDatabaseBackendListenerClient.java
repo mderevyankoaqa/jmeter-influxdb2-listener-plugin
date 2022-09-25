@@ -24,6 +24,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import org.apache.jmeter.protocol.http.sampler.HTTPSampleResult;
 
 
 /**
@@ -124,6 +125,11 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
 
         for (SampleResult sampleResult : allSampleResults) {
             getUserMetrics().add(sampleResult);
+            // Determine the type of sample, whether it is a request or a transaction controller
+            String sampleType = "transaction";
+            if (sampleResult instanceof HTTPSampleResult){
+                sampleType = "request";
+            }
 
             if ((null != regexForSamplerList && sampleResult.getSampleLabel().matches(regexForSamplerList))
                     || samplersToFilter.contains(sampleResult.getSampleLabel())) {
@@ -133,6 +139,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
                 sampleResultContext.setTestName(this.testName);
                 sampleResultContext.setNodeName(this.nodeName);
                 sampleResultContext.setSampleResult(sampleResult);
+                sampleResultContext.setSampleType(sampleType);
                 sampleResultContext.setTimeToSet(System.currentTimeMillis() * ONE_MS_IN_NANOSECONDS + this.getUniqueNumberForTheSamplerThread());
                 sampleResultContext.setErrorBodyToBeSaved(context.getBooleanParameter(KEY_INCLUDE_BODY_OF_FAILURES, false));
                 sampleResultContext.setResponseBodyLength(this.influxDBConfig.getResponseBodyLength());

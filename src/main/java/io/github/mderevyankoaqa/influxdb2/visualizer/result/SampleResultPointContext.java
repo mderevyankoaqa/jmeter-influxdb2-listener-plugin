@@ -15,6 +15,7 @@ public class SampleResultPointContext {
     private String testName;
     boolean errorBodyToBeSaved;
     private int ResponseBodyLength;
+    private String sampleType;
 
     /**
      * Checks whether the body of the failed repose is going to be saved.
@@ -126,5 +127,21 @@ public class SampleResultPointContext {
      */
     public void setResponseBodyLength(int responseBodyLength) {
         this.ResponseBodyLength = responseBodyLength;
+    }
+
+    /**
+     * Sets sampleType.
+     * @param sampleType represents the type of sample, whether it is a request or a transaction controller.
+     */
+    public void setSampleType(String sampleType) {
+        this.sampleType = sampleType;
+    }
+
+    /**
+     * Gets the SampleType.
+     * @return returns SampleType.
+     */
+    public String getSampleType() {
+        return this.sampleType;
     }
 }

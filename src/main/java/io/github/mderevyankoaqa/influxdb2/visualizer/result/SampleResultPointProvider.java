@@ -106,6 +106,7 @@ public class SampleResultPointProvider {
                 .addTag(RequestMeasurement.Tags.NODE_NAME, this.sampleResultContext.getNodeName())
                 .addTag(RequestMeasurement.Tags.RESULT_CODE, this.sampleResultContext.getSampleResult().getResponseCode())
                 .addTag(RequestMeasurement.Tags.ERROR_MSG, this.getAssertionFailure())
+                .addTag(RequestMeasurement.Tags.SAMPLE_TYPE, this.sampleResultContext.getSampleType())
                 .addTag(RequestMeasurement.Tags.ERROR_RESPONSE_BODY, this.getErrorBodyToBeSaved(this.sampleResultContext.isErrorBodyToBeSaved()))
                 .addField(RequestMeasurement.Fields.ERROR_COUNT, this.sampleResultContext.getSampleResult().getErrorCount())
                 .addField(RequestMeasurement.Fields.REQUEST_COUNT, this.sampleResultContext.getSampleResult().getSampleCount())
