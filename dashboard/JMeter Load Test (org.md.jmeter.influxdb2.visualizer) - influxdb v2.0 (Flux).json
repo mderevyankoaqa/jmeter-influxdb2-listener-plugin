@@ -9,8 +9,8 @@
       "pluginName": "InfluxDB"
     }
   ],
-  "__elements": [
-    {
+  "__elements": {
+    "NKdhkbj7k": {
       "name": "Porcessing Time = Latency - Connect Time ",
       "uid": "NKdhkbj7k",
       "kind": 1,
@@ -26,6 +26,8 @@
               "mode": "palette-classic"
             },
             "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
               "axisLabel": "",
               "axisPlacement": "auto",
               "barAlignment": 0,
@@ -58,7 +60,8 @@
               "mode": "absolute",
               "steps": [
                 {
-                  "color": "green"
+                  "color": "green",
+                  "value": null
                 },
                 {
                   "color": "red",
@@ -116,13 +119,6 @@
             }
           ]
         },
-        "gridPos": {
-          "h": 10,
-          "w": 24,
-          "x": 0,
-          "y": 151
-        },
-        "id": 87,
         "links": [],
         "options": {
           "legend": {
@@ -132,7 +128,8 @@
               "min"
             ],
             "displayMode": "table",
-            "placement": "right"
+            "placement": "right",
+            "showLegend": true
           },
           "tooltip": {
             "mode": "multi",
@@ -143,6 +140,10 @@
         "targets": [
           {
             "alias": "$tag_requestName",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "${DS_INFLUXDB2.0_JMETER}"
+            },
             "groupBy": [
               {
                 "params": [
@@ -166,7 +167,7 @@
             "measurement": "requestsRaw",
             "orderByTime": "ASC",
             "policy": "autogen",
-            "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"processingTime\")\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
+            "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"processingTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
             "rawQuery": true,
             "refId": "D",
             "resultFormat": "time_series",
@@ -184,8 +185,7 @@
                 }
               ]
             ],
-            "tags": [],
-            "datasource": "${DS_INFLUXDB2.0_JMETER}"
+            "tags": []
           }
         ],
         "title": "Porcessing Time = Latency - Connect Time ",
@@ -193,7 +193,7 @@
         "type": "timeseries"
       }
     }
-  ],
+  },
   "__requires": [
     {
       "type": "panel",
@@ -211,7 +211,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.4"
+      "version": "9.1.6"
     },
     {
       "type": "datasource",
@@ -276,13 +276,19 @@
           "uid": "${DS_INFLUXDB2.0_JMETER}"
         },
         "enable": true,
+        "hide": false,
         "iconColor": "rgb(23, 255, 0)",
-        "mappings": {},
+        "mappings": {
+          "tags": {
+            "source": "field",
+            "value": "placeholder {nodeName=\"Test-Node\", runId=\"R006\", testName=\"Test\", type=\"started\"}"
+          }
+        },
         "name": "Test Start",
         "showIn": 0,
         "tagsColumn": "type",
         "target": {
-          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"testStartEnd\")\r\n  |> filter(fn: (r) => r[\"type\"] == \"started\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)"
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"testStartEnd\")\r\n  |> filter(fn: (r) => r[\"type\"] == \"started\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)"
         },
         "titleColumn": "testName"
       },
@@ -298,7 +304,7 @@
         "showIn": 0,
         "tagsColumn": "type",
         "target": {
-          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"testStartEnd\")\r\n  |> filter(fn: (r) => r[\"type\"] == \"finished\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)"
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"testStartEnd\")\r\n  |> filter(fn: (r) => r[\"type\"] == \"finished\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)"
         },
         "titleColumn": "testName"
       }
@@ -310,7 +316,6 @@
   "gnetId": 13644,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1655192906717,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -395,16 +400,20 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "9.1.6",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
           "dsType": "influxdb",
           "groupBy": [],
           "hide": false,
           "measurement": "virtualUsers",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: last, createEmpty: false) \r\n  |> yield(name: \"last\")\r\n  ",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -418,8 +427,7 @@
               }
             ]
           ],
-          "tags": [],
-          "datasource": "${DS_INFLUXDB2.0_JMETER}"
+          "tags": []
         }
       ],
       "title": "Active Users",
@@ -489,7 +497,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "9.1.6",
       "targets": [
         {
           "datasource": {
@@ -502,7 +510,7 @@
           "measurement": "virtualUsers",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))\r\n",
+          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))\r\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -588,9 +596,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "9.1.6",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
           "groupBy": [
             {
               "params": [
@@ -608,7 +620,7 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"sentBytes\")\r\n  |> group(columns: [\"runId\"], mode: \"by\")\r\n  |> sum()\r\n",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"sentBytes\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"_field\"])\r\n  |> sum()\r\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -626,8 +638,7 @@
               }
             ]
           ],
-          "tags": [],
-          "datasource": "${DS_INFLUXDB2.0_JMETER}"
+          "tags": []
         }
       ],
       "title": "Sent Bytes",
@@ -697,7 +708,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "9.1.6",
       "targets": [
         {
           "datasource": {
@@ -722,7 +733,7 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"receivedBytes\")\r\n  |> group(columns: [\"runId\"], mode: \"by\")\r\n  |> sum()\r\n",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"receivedBytes\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"_field\"])\r\n  |> sum()\r\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -811,16 +822,20 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "9.1.6",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
           "dsType": "influxdb",
           "groupBy": [],
           "hide": false,
           "measurement": "virtualUsers",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"errorCount\")\r\n  |> group(columns: [\"runId\"])\r\n  |> sum()\r\n",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"errorCount\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"_field\"])\r\n  |> sum()\r\n",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -834,8 +849,7 @@
               }
             ]
           ],
-          "tags": [],
-          "datasource": "${DS_INFLUXDB2.0_JMETER}"
+          "tags": []
         }
       ],
       "title": "Errors Count",
@@ -907,16 +921,20 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "9.1.6",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
           "dsType": "influxdb",
           "groupBy": [],
           "hide": false,
           "measurement": "virtualUsers",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"_field\"])\r\n  |> count()",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"_field\"])\r\n  |> count()",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -930,8 +948,7 @@
               }
             ]
           ],
-          "tags": [],
-          "datasource": "${DS_INFLUXDB2.0_JMETER}"
+          "tags": []
         }
       ],
       "title": "Request Count",
@@ -1004,15 +1021,19 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "9.1.6",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
           "dsType": "influxdb",
           "groupBy": [],
           "measurement": "virtualUsers",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "successfulPercentages = () => {\r\n\r\ncountResponseTime=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"runId\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> keep(columns: [\"_value\", \"runId\"])\r\n  \r\nsumerrorCount=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"errorCount\")\r\n  |> group(columns: [\"runId\"])  \r\n  |> sum()\r\n  |> toFloat()\r\n  |> keep(columns: [\"_value\", \"runId\"])\r\n  \r\n  return join(\r\n      tables:{countResponseTime:countResponseTime, sumerrorCount:sumerrorCount},\r\n      on:[\"runId\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n             \r\n             percentage:  1.0 - r._value_sumerrorCount / r._value_countResponseTime      \r\n    }))   \r\n   \r\n}\r\n\r\nsuccessfulPercentages()",
+          "query": "successfulPercentages = () => {\r\n\r\ncountResponseTime=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"runId\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> keep(columns: [\"_value\", \"runId\"])\r\n  \r\nsumerrorCount=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"errorCount\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"runId\"])  \r\n  |> sum()\r\n  |> toFloat()\r\n  |> keep(columns: [\"_value\", \"runId\"])\r\n  \r\n  return join(\r\n      tables:{countResponseTime:countResponseTime, sumerrorCount:sumerrorCount},\r\n      on:[\"runId\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n             \r\n             percentage:  1.0 - r._value_sumerrorCount / r._value_countResponseTime      \r\n    }))   \r\n   \r\n}\r\n\r\nsuccessfulPercentages()",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1026,8 +1047,7 @@
               }
             ]
           ],
-          "tags": [],
-          "datasource": "${DS_INFLUXDB2.0_JMETER}"
+          "tags": []
         }
       ],
       "title": "Success Rate",
@@ -1099,15 +1119,19 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "9.1.6",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
           "dsType": "influxdb",
           "groupBy": [],
           "measurement": "virtualUsers",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "failuresPercentages = () => {\r\n\r\ncountResponseTime=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"runId\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> keep(columns: [\"_value\", \"runId\"])\r\n  \r\nsumerrorCount=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"errorCount\")\r\n  |> group(columns: [\"runId\"])\r\n  |> sum()\r\n  |> toFloat()\r\n  |> keep(columns: [\"_value\", \"runId\"])\r\n  \r\n  return join(\r\n      tables:{countResponseTime:countResponseTime, sumerrorCount:sumerrorCount},\r\n      on:[\"runId\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n             \r\n             percentage: r._value_sumerrorCount / r._value_countResponseTime         \r\n    }))       \r\n}\r\n\r\nfailuresPercentages()",
+          "query": "failuresPercentages = () => {\r\n\r\ncountResponseTime=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"runId\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> keep(columns: [\"_value\", \"runId\"])\r\n  \r\nsumerrorCount=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"errorCount\")\r\n    |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"runId\"])\r\n  |> sum()\r\n  |> toFloat()\r\n  |> keep(columns: [\"_value\", \"runId\"])\r\n  \r\n  return join(\r\n      tables:{countResponseTime:countResponseTime, sumerrorCount:sumerrorCount},\r\n      on:[\"runId\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n             \r\n             percentage: r._value_sumerrorCount / r._value_countResponseTime         \r\n    }))       \r\n}\r\n\r\nfailuresPercentages()",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1121,8 +1145,7 @@
               }
             ]
           ],
-          "tags": [],
-          "datasource": "${DS_INFLUXDB2.0_JMETER}"
+          "tags": []
         }
       ],
       "title": "Error Rate",
@@ -1157,6 +1180,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Throughput",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1259,7 +1284,8 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -1293,7 +1319,7 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))\r\n",
+          "query": "\r\n \r\n from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\") \r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))\r\n",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1334,7 +1360,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])\r\n ",
+          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/) \r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])\r\n ",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1370,6 +1396,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Throughput",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1460,7 +1488,8 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -1494,7 +1523,7 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))\r\n",
+          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))\r\n",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1535,7 +1564,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
+          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/) \r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1571,6 +1600,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Throughput",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1673,7 +1704,8 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -1707,7 +1739,7 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"errorCount\")\r\n  |> filter(fn: (r) => r[\"_value\"] == 1)\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))\r\n",
+          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"errorCount\")\r\n  |> filter(fn: (r) => r[\"_value\"] == 1)\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))\r\n",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1748,7 +1780,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
+          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/) \r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1784,6 +1816,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Throughput",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1874,7 +1908,8 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -1908,7 +1943,7 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))\r\n",
+          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))\r\n",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -1949,7 +1984,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
+          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1985,6 +2020,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Throughput",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -2075,7 +2112,8 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -2109,7 +2147,7 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"fail\" )\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))\r\n",
+          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"fail\" )\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))\r\n",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -2150,7 +2188,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
+          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)  \r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -2186,6 +2224,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Throughput",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -2247,7 +2287,8 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -2280,7 +2321,7 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"responseCode\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))",
+          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"responseCode\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -2338,6 +2379,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Response Time, ms",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -2473,7 +2516,8 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -2506,7 +2550,7 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\n  |> group(columns: [\"requestName\"])\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
+          "query": "from(bucket: v.bucket)\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\n  |> group(columns: [\"requestName\"])\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2553,7 +2597,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
+          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -2587,6 +2631,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Response Time, ms",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -2722,7 +2768,8 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -2755,7 +2802,7 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\n  |> group(columns: [\"requestName\"])\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
+          "query": "from(bucket: v.bucket)\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\n  |> group(columns: [\"requestName\"])\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2802,7 +2849,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
+          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -2836,6 +2883,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Response Time, ms",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -2971,7 +3020,8 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -3004,7 +3054,7 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\n  |> filter(fn: (r) => r[\"result\"] == \"fail\")\n  |> group(columns: [\"requestName\"])\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
+          "query": "from(bucket: v.bucket)\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\n  |> filter(fn: (r) => r[\"result\"] == \"fail\")\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\n  |> group(columns: [\"requestName\"])\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3051,7 +3101,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
+          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -3085,6 +3135,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Response Time, ms",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -3220,7 +3272,8 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -3231,6 +3284,10 @@
       "targets": [
         {
           "alias": "$tag_requestName",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
           "dsType": "influxdb",
           "groupBy": [
             {
@@ -3249,7 +3306,7 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\n  |> group(columns: [\"requestName\"])\n  |> aggregateWindow(every: [[aggregation]]s, fn: max, createEmpty: false)\n   |> keep(columns: [\"_time\", \"_value\", \"requestName\"])",
+          "query": "from(bucket: v.bucket)\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\n  |> filter(fn: (r) => r[\"runId\"] == \"${runId}\")\n  |> group(columns: [\"requestName\"])\n  |> aggregateWindow(every: [[aggregation]]s, fn: max, createEmpty: false)\n   |> keep(columns: [\"_time\", \"_value\", \"requestName\"])",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3273,10 +3330,13 @@
               "operator": "=~",
               "value": "/^$request$/"
             }
-          ],
-          "datasource": "${DS_INFLUXDB2.0_JMETER}"
+          ]
         },
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
           "groupBy": [
             {
               "params": [
@@ -3293,7 +3353,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
+          "query": " from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"virtualUsers\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"meanActiveThreads\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\", \"_field\"])",
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -3310,8 +3370,7 @@
               }
             ]
           ],
-          "tags": [],
-          "datasource": "${DS_INFLUXDB2.0_JMETER}"
+          "tags": []
         }
       ],
       "title": "MAX Response Times (no filters)",
@@ -3434,9 +3493,13 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "9.1.6",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
           "groupBy": [
             {
               "params": [
@@ -3453,7 +3516,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "get_percent_500 = () => {\r\nfcount_500=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"_value\"] <= 500)\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n\r\n count=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n    \r\n   return join(\r\n      tables:{fcount_500:fcount_500, count:count},\r\n      on:[\"requestName\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n             \"Request Name\": r.requestName,\r\n             \"Response time is <= 500, (%)\": r._value_fcount_500 * 100.0/ r._value_count,          \r\n    })) \r\n}\r\nget_percent_500()\r\n\r\n",
+          "query": "get_percent_500 = () => {\r\nfcount_500=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"_value\"] <= 500)\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n\r\n count=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n    \r\n   return join(\r\n      tables:{fcount_500:fcount_500, count:count},\r\n      on:[\"requestName\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n             \"Request Name\": r.requestName,\r\n             \"Response time is <= 500, (%)\": r._value_fcount_500 * 100.0/ r._value_count,          \r\n    })) \r\n}\r\nget_percent_500()\r\n\r\n",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -3470,10 +3533,13 @@
               }
             ]
           ],
-          "tags": [],
-          "datasource": "${DS_INFLUXDB2.0_JMETER}"
+          "tags": []
         },
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
           "groupBy": [
             {
               "params": [
@@ -3490,7 +3556,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "get_percent_1000 = () => {\r\n\r\nfcount_1000=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"_value\"] <= 1000)\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])  \r\n  \r\n count=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n    \r\n   return join(\r\n      tables:{fcount_1000:fcount_1000, count:count},\r\n      on:[\"requestName\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n              \"Request Name\": r.requestName,\r\n               \"Response time is <= 1000, (%)\": r._value_fcount_1000 * 100.0/ r._value_count,        \r\n    })) \r\n}\r\nget_percent_1000()",
+          "query": "get_percent_1000 = () => {\r\n\r\nfcount_1000=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"_value\"] <= 1000)\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])  \r\n  \r\n count=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n    \r\n   return join(\r\n      tables:{fcount_1000:fcount_1000, count:count},\r\n      on:[\"requestName\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n              \"Request Name\": r.requestName,\r\n               \"Response time is <= 1000, (%)\": r._value_fcount_1000 * 100.0/ r._value_count,        \r\n    })) \r\n}\r\nget_percent_1000()",
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -3507,10 +3573,13 @@
               }
             ]
           ],
-          "tags": [],
-          "datasource": "${DS_INFLUXDB2.0_JMETER}"
+          "tags": []
         },
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
           "groupBy": [
             {
               "params": [
@@ -3527,7 +3596,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "get_percent_1500 = () => {\r\n\r\nfcount_1500=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"_value\"] <= 1500)\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])  \r\n  \r\n count=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n    \r\n   return join(\r\n      tables:{fcount_1500:fcount_1500, count:count},\r\n      on:[\"requestName\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n              \"Request Name\": r.requestName,\r\n               \"Response time is <= 1500, (%)\": r._value_fcount_1500 * 100.0/ r._value_count,        \r\n    })) \r\n}\r\nget_percent_1500()",
+          "query": "get_percent_1500 = () => {\r\n\r\nfcount_1500=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"_value\"] <= 1500)\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)  \r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])  \r\n  \r\n count=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n    \r\n   return join(\r\n      tables:{fcount_1500:fcount_1500, count:count},\r\n      on:[\"requestName\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n              \"Request Name\": r.requestName,\r\n               \"Response time is <= 1500, (%)\": r._value_fcount_1500 * 100.0/ r._value_count,        \r\n    })) \r\n}\r\nget_percent_1500()",
           "refId": "C",
           "resultFormat": "time_series",
           "select": [
@@ -3544,10 +3613,13 @@
               }
             ]
           ],
-          "tags": [],
-          "datasource": "${DS_INFLUXDB2.0_JMETER}"
+          "tags": []
         },
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
           "groupBy": [
             {
               "params": [
@@ -3564,7 +3636,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "get_percent_2000 = () => {\r\n\r\nfcount_2000=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"_value\"] <= 2000)\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])  \r\n  \r\n count=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n    \r\n   return join(\r\n      tables:{fcount_2000:fcount_2000, count:count},\r\n      on:[\"requestName\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n              \"Request Name\": r.requestName,\r\n               \"Response time is <= 2000, (%)\": r._value_fcount_2000 * 100.0/ r._value_count,        \r\n    })) \r\n}\r\nget_percent_2000()",
+          "query": "get_percent_2000 = () => {\r\n\r\nfcount_2000=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"_value\"] <= 2000)\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])  \r\n  \r\n count=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n    \r\n   return join(\r\n      tables:{fcount_2000:fcount_2000, count:count},\r\n      on:[\"requestName\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n              \"Request Name\": r.requestName,\r\n               \"Response time is <= 2000, (%)\": r._value_fcount_2000 * 100.0/ r._value_count,        \r\n    })) \r\n}\r\nget_percent_2000()",
           "refId": "D",
           "resultFormat": "time_series",
           "select": [
@@ -3581,10 +3653,13 @@
               }
             ]
           ],
-          "tags": [],
-          "datasource": "${DS_INFLUXDB2.0_JMETER}"
+          "tags": []
         },
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
           "groupBy": [
             {
               "params": [
@@ -3602,7 +3677,7 @@
           "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "get_percent_5000 = () => {\r\n\r\nfcount_5000=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"_value\"] <= 5000)\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])  \r\n  \r\n count=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n    \r\n   return join(\r\n      tables:{fcount_5000:fcount_5000, count:count},\r\n      on:[\"requestName\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n              \"Request Name\": r.requestName,\r\n               \"Response time is <= 5000, (%)\": r._value_fcount_5000 * 100.0/ r._value_count,        \r\n    })) \r\n}\r\nget_percent_5000()\r\n\r\n",
+          "query": "get_percent_5000 = () => {\r\n\r\nfcount_5000=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"_value\"] <= 5000)\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])  \r\n  \r\n count=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n    \r\n   return join(\r\n      tables:{fcount_5000:fcount_5000, count:count},\r\n      on:[\"requestName\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n              \"Request Name\": r.requestName,\r\n               \"Response time is <= 5000, (%)\": r._value_fcount_5000 * 100.0/ r._value_count,        \r\n    })) \r\n}\r\nget_percent_5000()\r\n\r\n",
           "refId": "E",
           "resultFormat": "time_series",
           "select": [
@@ -3619,8 +3694,7 @@
               }
             ]
           ],
-          "tags": [],
-          "datasource": "${DS_INFLUXDB2.0_JMETER}"
+          "tags": []
         }
       ],
       "title": "Response Times Distribution, % (no filters)",
@@ -3689,7 +3763,7 @@
           "valueSize": 15
         }
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "9.1.6",
       "targets": [
         {
           "datasource": {
@@ -3697,7 +3771,7 @@
             "uid": "${DS_INFLUXDB2.0_JMETER}"
           },
           "hide": false,
-          "query": "from(bucket: v.bucket)\r\n   |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> quantile(q: 0.90)\r\n  |> group(columns: [\"requestName\"])\r\n  |> keep(columns: [ \"_value\", \"requestName\"])\r\n  |> rename(columns: {_value: \"request\"})\r\n\r\n",
+          "query": "from(bucket: v.bucket)\r\n   |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> quantile(q: 0.90)\r\n  |> group(columns: [\"requestName\"])\r\n  |> keep(columns: [ \"_value\", \"requestName\"])\r\n  |> rename(columns: {_value: \"request\"})\r\n\r\n",
           "refId": "A"
         }
       ],
@@ -3760,7 +3834,7 @@
           "valueSize": 15
         }
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "9.1.6",
       "targets": [
         {
           "datasource": {
@@ -3768,7 +3842,7 @@
             "uid": "${DS_INFLUXDB2.0_JMETER}"
           },
           "hide": false,
-          "query": "from(bucket: v.bucket)\r\n   |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> quantile(q: 0.95)\r\n  |> group(columns: [\"requestName\"])\r\n  |> keep(columns: [ \"_value\", \"requestName\"])\r\n  |> rename(columns: {_value: \"request\"})\r\n\r\n",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> quantile(q: 0.95)\r\n  |> group(columns: [\"requestName\"])\r\n  |> keep(columns: [ \"_value\", \"requestName\"])\r\n  |> rename(columns: {_value: \"request\"})\r\n\r\n",
           "refId": "A"
         }
       ],
@@ -4024,7 +4098,7 @@
           }
         ]
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "9.1.6",
       "targets": [
         {
           "datasource": {
@@ -4047,8 +4121,8 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> mean()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Avg\"})\r\n  |> keep(columns: [\"Avg\", \"requestName\"])\r\n\r\n ",
-          "refId": "B",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> mean()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Avg\"})\r\n  |> keep(columns: [\"Avg\", \"requestName\"])\r\n\r\n ",
+          "refId": "AVG",
           "resultFormat": "time_series",
           "select": [
             [
@@ -4087,8 +4161,8 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Count\"})\r\n  |> keep(columns: [\"requestName\", \"Count\"])",
-          "refId": "D",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Count\"})\r\n  |> keep(columns: [\"requestName\", \"Count\"])",
+          "refId": "Request Name",
           "resultFormat": "time_series",
           "select": [
             [
@@ -4127,8 +4201,8 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> max()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Max\"})\r\n  |> keep(columns: [\"Max\", \"requestName\"])",
-          "refId": "C",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> max()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Max\"})\r\n  |> keep(columns: [\"Max\", \"requestName\"])",
+          "refId": "Max",
           "resultFormat": "time_series",
           "select": [
             [
@@ -4167,8 +4241,8 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> median()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Median\"})\r\n  |> keep(columns: [\"Median\", \"requestName\"])",
-          "refId": "A",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> median()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Median\"})\r\n  |> keep(columns: [\"Median\", \"requestName\"])",
+          "refId": "Median",
           "resultFormat": "time_series",
           "select": [
             [
@@ -4207,8 +4281,8 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> quantile(q: 0.90)\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"90%\"})\r\n  |> keep(columns: [\"90%\", \"requestName\"])",
-          "refId": "E",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> quantile(q: 0.90)\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"90%\"})\r\n  |> keep(columns: [\"90%\", \"requestName\"])",
+          "refId": "90 %",
           "resultFormat": "time_series",
           "select": [
             [
@@ -4247,8 +4321,8 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> quantile(q: 0.95)\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"95%\"})\r\n  |> keep(columns: [\"95%\", \"requestName\"])",
-          "refId": "F",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> quantile(q: 0.95)\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"95%\"})\r\n  |> keep(columns: [\"95%\", \"requestName\"])",
+          "refId": "95 %",
           "resultFormat": "time_series",
           "select": [
             [
@@ -4287,8 +4361,8 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> quantile(q: 0.99)\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"99%\"})\r\n  |> keep(columns: [\"99%\", \"requestName\"])",
-          "refId": "G",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> quantile(q: 0.99)\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"99%\"})\r\n  |> keep(columns: [\"99%\", \"requestName\"])",
+          "refId": "99 %",
           "resultFormat": "time_series",
           "select": [
             [
@@ -4327,8 +4401,8 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> stddev()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"stddev\"})\r\n  |> keep(columns: [\"stddev\", \"requestName\"])",
-          "refId": "H",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> stddev()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"stddev\"})\r\n  |> keep(columns: [\"stddev\", \"requestName\"])",
+          "refId": "stddev",
           "resultFormat": "time_series",
           "select": [
             [
@@ -4367,8 +4441,8 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "tpsCalculator = () => {\r\ncount = from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"count\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n\r\n integral = from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"count\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> integral()\r\n  |> toFloat()\r\n  |> group() \r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n  \r\n  return join(\r\n      tables:{count:count, integral:integral},\r\n      on:[\"requestName\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n             requestName: r.requestName,\r\n             TPS: r._value_count / r._value_integral,\r\n             TPM: (r._value_count / r._value_integral) * 60.0,\r\n             TPH: (r._value_count / r._value_integral) * 60.0 * 60.0,        \r\n    }))       \r\n}\r\n\r\ntpsCalculator()",
-          "refId": "I",
+          "query": "tpsCalculator = () => {\r\ncount = from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"count\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n\r\n integral = from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"count\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> integral()\r\n  |> toFloat()\r\n  |> group() \r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n  \r\n  return join(\r\n      tables:{count:count, integral:integral},\r\n      on:[\"requestName\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n             requestName: r.requestName,\r\n             TPS: r._value_count / r._value_integral,\r\n             TPM: (r._value_count / r._value_integral) * 60.0,\r\n             TPH: (r._value_count / r._value_integral) * 60.0 * 60.0,        \r\n    }))       \r\n}\r\n\r\ntpsCalculator()",
+          "refId": "TPS",
           "resultFormat": "time_series",
           "select": [
             [
@@ -4407,8 +4481,8 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "failuresPercentages = () => {\r\n\r\ncountResponseTime=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"] )\r\n  |> count()\r\n  |> group()\r\n  |> toFloat()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n\r\n  \r\nsumerrorCount=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"errorCount\")\r\n  |> group(columns: [\"requestName\"] )\r\n  |> sum()\r\n  |> group()\r\n  |> toFloat()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n\r\n  return join(\r\n      tables:{countResponseTime:countResponseTime, sumerrorCount:sumerrorCount},\r\n      on:[\"requestName\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n             requestName: r.requestName,\r\n             ErrorRate: r._value_sumerrorCount / r._value_countResponseTime         \r\n    }))       \r\n}\r\n\r\nfailuresPercentages()",
-          "refId": "J",
+          "query": "failuresPercentages = () => {\r\n\r\ncountResponseTime=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"] )\r\n  |> count()\r\n  |> group()\r\n  |> toFloat()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n\r\n  \r\nsumerrorCount=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"errorCount\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"] )\r\n  |> sum()\r\n  |> group()\r\n  |> toFloat()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n\r\n  return join(\r\n      tables:{countResponseTime:countResponseTime, sumerrorCount:sumerrorCount},\r\n      on:[\"requestName\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n             requestName: r.requestName,\r\n             ErrorRate: r._value_sumerrorCount / r._value_countResponseTime         \r\n    }))       \r\n}\r\n\r\nfailuresPercentages()",
+          "refId": "Error %",
           "resultFormat": "time_series",
           "select": [
             [
@@ -4470,7 +4544,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   }
                 ]
               },
@@ -4504,7 +4579,8 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "green"
+                          "color": "green",
+                          "value": null
                         },
                         {
                           "color": "#1F78C1",
@@ -4656,7 +4732,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 102
+            "y": 104
           },
           "id": 115,
           "links": [],
@@ -4677,7 +4753,7 @@
               }
             ]
           },
-          "pluginVersion": "8.5.4",
+          "pluginVersion": "9.1.6",
           "targets": [
             {
               "datasource": {
@@ -4700,8 +4776,8 @@
               ],
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> mean()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Avg\"})\r\n  |> keep(columns: [\"Avg\", \"requestName\"])\r\n\r\n ",
-              "refId": "B",
+              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> mean()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Avg\"})\r\n  |> keep(columns: [\"Avg\", \"requestName\"])\r\n\r\n ",
+              "refId": "AVG",
               "resultFormat": "time_series",
               "select": [
                 [
@@ -4740,8 +4816,8 @@
               ],
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Count\"})\r\n  |> keep(columns: [\"requestName\", \"Count\"])",
-              "refId": "D",
+              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Count\"})\r\n  |> keep(columns: [\"requestName\", \"Count\"])",
+              "refId": "Request Name & Count",
               "resultFormat": "time_series",
               "select": [
                 [
@@ -4780,8 +4856,8 @@
               ],
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> max()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Max\"})\r\n  |> keep(columns: [\"Max\", \"requestName\"])",
-              "refId": "C",
+              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> max()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Max\"})\r\n  |> keep(columns: [\"Max\", \"requestName\"])",
+              "refId": "Max",
               "resultFormat": "time_series",
               "select": [
                 [
@@ -4820,8 +4896,8 @@
               ],
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> median()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Median\"})\r\n  |> keep(columns: [\"Median\", \"requestName\"])",
-              "refId": "A",
+              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> median()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Median\"})\r\n  |> keep(columns: [\"Median\", \"requestName\"])",
+              "refId": "Median",
               "resultFormat": "time_series",
               "select": [
                 [
@@ -4860,8 +4936,8 @@
               ],
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> quantile(q: 0.90)\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"90%\"})\r\n  |> keep(columns: [\"90%\", \"requestName\"])",
-              "refId": "E",
+              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> quantile(q: 0.90)\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"90%\"})\r\n  |> keep(columns: [\"90%\", \"requestName\"])",
+              "refId": "90%",
               "resultFormat": "time_series",
               "select": [
                 [
@@ -4900,8 +4976,8 @@
               ],
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> quantile(q: 0.95)\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"95%\"})\r\n  |> keep(columns: [\"95%\", \"requestName\"])",
-              "refId": "F",
+              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> quantile(q: 0.95)\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"95%\"})\r\n  |> keep(columns: [\"95%\", \"requestName\"])",
+              "refId": "95 %",
               "resultFormat": "time_series",
               "select": [
                 [
@@ -4940,8 +5016,8 @@
               ],
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> quantile(q: 0.99)\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"99%\"})\r\n  |> keep(columns: [\"99%\", \"requestName\"])",
-              "refId": "G",
+              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> quantile(q: 0.99)\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"99%\"})\r\n  |> keep(columns: [\"99%\", \"requestName\"])",
+              "refId": "99 %",
               "resultFormat": "time_series",
               "select": [
                 [
@@ -4980,8 +5056,8 @@
               ],
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> stddev()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"stddev\"})\r\n  |> keep(columns: [\"stddev\", \"requestName\"])",
-              "refId": "H",
+              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> stddev()\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"stddev\"})\r\n  |> keep(columns: [\"stddev\", \"requestName\"])",
+              "refId": "STDDEV",
               "resultFormat": "time_series",
               "select": [
                 [
@@ -5020,8 +5096,8 @@
               ],
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "tpsCalculator = () => {\r\ncount = from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"count\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n\r\n integral = from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"count\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> integral()\r\n  |> toFloat()\r\n  |> group() \r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n  \r\n  return join(\r\n      tables:{count:count, integral:integral},\r\n      on:[\"requestName\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n             requestName: r.requestName,\r\n             TPS: r._value_count / r._value_integral,\r\n             TPM: (r._value_count / r._value_integral) * 60.0,\r\n             TPH: (r._value_count / r._value_integral) * 60.0 * 60.0,        \r\n    }))       \r\n}\r\n\r\ntpsCalculator()",
-              "refId": "I",
+              "query": "tpsCalculator = () => {\r\ncount = from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"count\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> count()\r\n  |> toFloat()\r\n  |> group()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n\r\n integral = from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"count\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> integral()\r\n  |> toFloat()\r\n  |> group() \r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n  \r\n  return join(\r\n      tables:{count:count, integral:integral},\r\n      on:[\"requestName\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n             requestName: r.requestName,\r\n             TPS: r._value_count / r._value_integral,\r\n             TPM: (r._value_count / r._value_integral) * 60.0,\r\n             TPH: (r._value_count / r._value_integral) * 60.0 * 60.0,        \r\n    }))       \r\n}\r\n\r\ntpsCalculator()",
+              "refId": "TPS",
               "resultFormat": "time_series",
               "select": [
                 [
@@ -5060,8 +5136,8 @@
               ],
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "failuresPercentages = () => {\r\n\r\ncountResponseTime=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n\r\n  |> group(columns: [\"requestName\"] )\r\n  |> count()\r\n  |> group()\r\n  |> toFloat()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n\r\n  \r\nsumerrorCount=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"errorCount\")\r\n  |> group(columns: [\"requestName\"] )\r\n  |> sum()\r\n  |> group()\r\n  |> toFloat()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n\r\n  return join(\r\n      tables:{countResponseTime:countResponseTime, sumerrorCount:sumerrorCount},\r\n      on:[\"requestName\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n             requestName: r.requestName,\r\n             ErrorRate: r._value_sumerrorCount / r._value_countResponseTime         \r\n    }))       \r\n}\r\n\r\nfailuresPercentages()",
-              "refId": "J",
+              "query": "failuresPercentages = () => {\r\n\r\ncountResponseTime=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"] )\r\n  |> count()\r\n  |> group()\r\n  |> toFloat()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n\r\n  \r\nsumerrorCount=from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"errorCount\")\r\n  |> filter(fn: (r) => r[\"result\"] == \"pass\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"] )\r\n  |> sum()\r\n  |> group()\r\n  |> toFloat()\r\n  |> keep(columns: [\"_value\", \"requestName\"])\r\n\r\n  return join(\r\n      tables:{countResponseTime:countResponseTime, sumerrorCount:sumerrorCount},\r\n      on:[\"requestName\"]\r\n    )\r\n    |> map(fn:(r) => ({\r\n             requestName: r.requestName,\r\n             ErrorRate: r._value_sumerrorCount / r._value_countResponseTime         \r\n    }))       \r\n}\r\n\r\nfailuresPercentages()",
+              "refId": "Error %",
               "resultFormat": "time_series",
               "select": [
                 [
@@ -5100,7 +5176,7 @@
             "h": 2,
             "w": 24,
             "x": 0,
-            "y": 112
+            "y": 114
           },
           "height": "180",
           "id": 25,
@@ -5109,7 +5185,7 @@
             "content": "<h3 style=\"text-align: center;\"><em>The following panels show aggregated metrics for <span style=\"color: #00ccff;\"><strong>all requests</strong></span></em></h3>",
             "mode": "html"
           },
-          "pluginVersion": "8.5.4",
+          "pluginVersion": "9.1.6",
           "transparent": true,
           "type": "text"
         }
@@ -5150,7 +5226,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -5214,7 +5291,7 @@
             "h": 13,
             "w": 24,
             "x": 0,
-            "y": 103
+            "y": 105
           },
           "id": 96,
           "links": [],
@@ -5235,9 +5312,13 @@
               }
             ]
           },
-          "pluginVersion": "8.5.4",
+          "pluginVersion": "9.1.6",
           "targets": [
             {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "${DS_INFLUXDB2.0_JMETER}"
+              },
               "groupBy": [
                 {
                   "params": [
@@ -5261,7 +5342,7 @@
               "measurement": "responseError",
               "orderByTime": "ASC",
               "policy": "autogen",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"errorCount\")\r\n  |> filter(fn: (r) => r[\"_value\"] == 1)\r\n  |> group(columns: [\"requestName\",  \"errorMessage\", \"responseCode\"]) \r\n  |> sum()\r\n  |> keep(columns: [\"requestName\", \"errorMessage\", \"responseCode\", \"_value\"])\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Count\"})",
+              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"errorCount\")\r\n  |> filter(fn: (r) => r[\"_value\"] == 1)\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\",  \"errorMessage\", \"responseCode\"]) \r\n  |> sum()\r\n  |> keep(columns: [\"requestName\", \"errorMessage\", \"responseCode\", \"_value\"])\r\n  |> group()\r\n  |> rename(columns: {\"_value\": \"Count\"})",
               "rawQuery": true,
               "refId": "C",
               "resultFormat": "table",
@@ -5279,8 +5360,7 @@
                   }
                 ]
               ],
-              "tags": [],
-              "datasource": "${DS_INFLUXDB2.0_JMETER}"
+              "tags": []
             }
           ],
           "title": "Errors Summary",
@@ -5325,7 +5405,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -5389,7 +5470,7 @@
             "h": 13,
             "w": 24,
             "x": 0,
-            "y": 104
+            "y": 131
           },
           "id": 95,
           "links": [],
@@ -5411,10 +5492,14 @@
               }
             ]
           },
-          "pluginVersion": "8.5.4",
+          "pluginVersion": "9.1.6",
           "targets": [
             {
               "alias": "",
+              "datasource": {
+                "type": "influxdb",
+                "uid": "${DS_INFLUXDB2.0_JMETER}"
+              },
               "groupBy": [
                 {
                   "params": [
@@ -5431,7 +5516,7 @@
               ],
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "\r\nfrom(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"errorCount\")\r\n  |> filter(fn: (r) => r[\"_value\"] == 1)\r\n  |> group(columns: [\"requestName\", \"responseCode\", \"errorMessage\", \"errorResponseBody\"])\r\n  |> sum()\r\n  |> group()\r\n  |> keep(columns: [\"requestName\", \"errorMessage\", \"errorResponseBody\", \"responseCode\", \"_value\"])\r\n  |> rename(columns: {\"_value\": \"Count\"})",
+              "query": "\r\nfrom(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"errorCount\")\r\n  |> filter(fn: (r) => r[\"_value\"] == 1)\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\", \"responseCode\", \"errorMessage\", \"errorResponseBody\"])\r\n  |> sum()\r\n  |> group()\r\n  |> keep(columns: [\"requestName\", \"errorMessage\", \"errorResponseBody\", \"responseCode\", \"_value\"])\r\n  |> rename(columns: {\"_value\": \"Count\"})",
               "rawQuery": true,
               "refId": "A",
               "resultFormat": "table",
@@ -5449,8 +5534,7 @@
                   }
                 ]
               ],
-              "tags": [],
-              "datasource": "${DS_INFLUXDB2.0_JMETER}"
+              "tags": []
             }
           ],
           "title": "Error Deteils ",
@@ -5485,6 +5569,8 @@
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -5517,7 +5603,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -5579,7 +5666,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 105
+            "y": 145
           },
           "id": 77,
           "links": [],
@@ -5591,7 +5678,8 @@
                 "min"
               ],
               "displayMode": "table",
-              "placement": "right"
+              "placement": "right",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -5602,6 +5690,10 @@
           "targets": [
             {
               "alias": "$tag_requestName",
+              "datasource": {
+                "type": "influxdb",
+                "uid": "${DS_INFLUXDB2.0_JMETER}"
+              },
               "groupBy": [
                 {
                   "params": [
@@ -5625,7 +5717,7 @@
               "measurement": "requestsRaw",
               "orderByTime": "ASC",
               "policy": "autogen",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"latency\")  \r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n",
+              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"latency\")  \r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n",
               "rawQuery": true,
               "refId": "D",
               "resultFormat": "time_series",
@@ -5643,8 +5735,7 @@
                   }
                 ]
               ],
-              "tags": [],
-              "datasource": "${DS_INFLUXDB2.0_JMETER}"
+              "tags": []
             }
           ],
           "title": "Latency",
@@ -5662,6 +5753,8 @@
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -5694,7 +5787,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -5756,7 +5850,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 113
+            "y": 153
           },
           "id": 86,
           "links": [],
@@ -5768,7 +5862,8 @@
                 "min"
               ],
               "displayMode": "table",
-              "placement": "right"
+              "placement": "right",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -5779,6 +5874,10 @@
           "targets": [
             {
               "alias": "$tag_requestName",
+              "datasource": {
+                "type": "influxdb",
+                "uid": "${DS_INFLUXDB2.0_JMETER}"
+              },
               "groupBy": [
                 {
                   "params": [
@@ -5802,7 +5901,7 @@
               "measurement": "requestsRaw",
               "orderByTime": "ASC",
               "policy": "autogen",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"connectTime\")\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n",
+              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"connectTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n",
               "rawQuery": true,
               "refId": "D",
               "resultFormat": "time_series",
@@ -5820,8 +5919,7 @@
                   }
                 ]
               ],
-              "tags": [],
-              "datasource": "${DS_INFLUXDB2.0_JMETER}"
+              "tags": []
             }
           ],
           "title": "Connect",
@@ -5840,6 +5938,8 @@
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -5872,7 +5972,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -5888,7 +5989,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 122
+            "y": 162
           },
           "id": 50,
           "links": [],
@@ -5900,7 +6001,8 @@
                 "mean"
               ],
               "displayMode": "table",
-              "placement": "right"
+              "placement": "right",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -5911,6 +6013,10 @@
           "targets": [
             {
               "alias": "Sent Bytes",
+              "datasource": {
+                "type": "influxdb",
+                "uid": "${DS_INFLUXDB2.0_JMETER}"
+              },
               "groupBy": [
                 {
                   "params": [
@@ -5935,7 +6041,7 @@
               "measurement": "requestsRaw",
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"receivedBytes\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
+              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"receivedBytes\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
               "rawQuery": true,
               "refId": "A",
               "resultFormat": "time_series",
@@ -5959,11 +6065,14 @@
                   "operator": "!=",
                   "value": "select tag value"
                 }
-              ],
-              "datasource": "${DS_INFLUXDB2.0_JMETER}"
+              ]
             },
             {
               "alias": "Received Bytes",
+              "datasource": {
+                "type": "influxdb",
+                "uid": "${DS_INFLUXDB2.0_JMETER}"
+              },
               "groupBy": [
                 {
                   "params": [
@@ -5987,7 +6096,7 @@
               "measurement": "requestsRaw",
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"sentBytes\")\r\n    |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
+              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"sentBytes\")\r\n  |> filter(fn: (r) => r[\"runId\"] == \"${runId}\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
               "rawQuery": true,
               "refId": "B",
               "resultFormat": "time_series",
@@ -6011,8 +6120,7 @@
                   "operator": "!=",
                   "value": "select tag value"
                 }
-              ],
-              "datasource": "${DS_INFLUXDB2.0_JMETER}"
+              ]
             }
           ],
           "title": "Bytes Throughput Over Time",
@@ -6030,6 +6138,8 @@
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -6062,7 +6172,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -6078,7 +6189,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 132
+            "y": 172
           },
           "id": 49,
           "links": [],
@@ -6090,7 +6201,8 @@
                 "mean"
               ],
               "displayMode": "table",
-              "placement": "right"
+              "placement": "right",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -6101,6 +6213,10 @@
           "targets": [
             {
               "alias": "$tag_requestName",
+              "datasource": {
+                "type": "influxdb",
+                "uid": "${DS_INFLUXDB2.0_JMETER}"
+              },
               "groupBy": [
                 {
                   "params": [
@@ -6124,7 +6240,7 @@
               "measurement": "requestsRaw",
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"sentBytes\")\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
+              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"sentBytes\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
               "rawQuery": true,
               "refId": "A",
               "resultFormat": "time_series",
@@ -6148,8 +6264,7 @@
                   "operator": "!=",
                   "value": "select tag value"
                 }
-              ],
-              "datasource": "${DS_INFLUXDB2.0_JMETER}"
+              ]
             }
           ],
           "title": "Sent Bytes per Request",
@@ -6167,6 +6282,8 @@
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -6199,7 +6316,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -6215,7 +6333,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 141
+            "y": 181
           },
           "id": 48,
           "links": [],
@@ -6227,7 +6345,8 @@
                 "mean"
               ],
               "displayMode": "table",
-              "placement": "right"
+              "placement": "right",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -6238,6 +6357,10 @@
           "targets": [
             {
               "alias": "$tag_requestName",
+              "datasource": {
+                "type": "influxdb",
+                "uid": "${DS_INFLUXDB2.0_JMETER}"
+              },
               "groupBy": [
                 {
                   "params": [
@@ -6261,7 +6384,7 @@
               "measurement": "requestsRaw",
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"receivedBytes\")\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
+              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"receivedBytes\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
               "rawQuery": true,
               "refId": "A",
               "resultFormat": "time_series",
@@ -6285,8 +6408,7 @@
                   "operator": "!=",
                   "value": "select tag value"
                 }
-              ],
-              "datasource": "${DS_INFLUXDB2.0_JMETER}"
+              ]
             }
           ],
           "title": "Received Bytes per Request",
@@ -6305,6 +6427,8 @@
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -6337,7 +6461,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -6399,7 +6524,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 151
+            "y": 191
           },
           "id": 87,
           "libraryPanel": {
@@ -6414,7 +6539,7 @@
               },
               "folderName": "General",
               "folderUid": "",
-              "updated": "2022-06-13T22:38:22+03:00",
+              "updated": "2022-09-30T15:19:37+03:00",
               "updatedBy": {
                 "avatarUrl": "/avatar/46d229b033af06a191ff2267bca9ae56",
                 "id": 1,
@@ -6424,7 +6549,7 @@
             "name": "Porcessing Time = Latency - Connect Time ",
             "type": "timeseries",
             "uid": "NKdhkbj7k",
-            "version": 1
+            "version": 3
           },
           "links": [],
           "options": {
@@ -6435,7 +6560,8 @@
                 "min"
               ],
               "displayMode": "table",
-              "placement": "right"
+              "placement": "right",
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -6446,6 +6572,10 @@
           "targets": [
             {
               "alias": "$tag_requestName",
+              "datasource": {
+                "type": "influxdb",
+                "uid": "${DS_INFLUXDB2.0_JMETER}"
+              },
               "groupBy": [
                 {
                   "params": [
@@ -6469,7 +6599,7 @@
               "measurement": "requestsRaw",
               "orderByTime": "ASC",
               "policy": "autogen",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"processingTime\")\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
+              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"processingTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
               "rawQuery": true,
               "refId": "D",
               "resultFormat": "time_series",
@@ -6487,8 +6617,7 @@
                   }
                 ]
               ],
-              "tags": [],
-              "datasource": "${DS_INFLUXDB2.0_JMETER}"
+              "tags": []
             }
           ],
           "title": "Porcessing Time = Latency - Connect Time ",
@@ -6506,7 +6635,7 @@
             "h": 2,
             "w": 24,
             "x": 0,
-            "y": 161
+            "y": 201
           },
           "height": "180",
           "id": 97,
@@ -6515,7 +6644,7 @@
             "content": "<h3 style=\"text-align: center;\"><em>The following panels show aggregated metrics for <span style=\"color: #00ccff;\"><strong>selected request \"[[request]]\"</strong></span></em></h3>",
             "mode": "html"
           },
-          "pluginVersion": "8.5.4",
+          "pluginVersion": "9.1.6",
           "transparent": true,
           "type": "text"
         }
@@ -6552,6 +6681,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Response Time",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -6655,7 +6786,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -6666,6 +6798,10 @@
       "targets": [
         {
           "alias": "Mean",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
           "dsType": "influxdb",
           "groupBy": [
             {
@@ -6685,9 +6821,9 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "  from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: mean, createEmpty: false)   \r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> rename(columns: {_value: \"Response Time. AVG\"})",
+          "query": "  from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)  \r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: mean, createEmpty: false)   \r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> rename(columns: {_value: \"Response Time. AVG\"})",
           "rawQuery": true,
-          "refId": "A",
+          "refId": "AVG",
           "resultFormat": "time_series",
           "select": [
             [
@@ -6709,11 +6845,14 @@
               "operator": "=~",
               "value": "/^$request$/"
             }
-          ],
-          "datasource": "${DS_INFLUXDB2.0_JMETER}"
+          ]
         },
         {
           "alias": "90 perc",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
           "dsType": "influxdb",
           "groupBy": [
             {
@@ -6733,9 +6872,9 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "  from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: max, createEmpty: false)   \r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> rename(columns: {_value: \"Response Time. MAX\"})",
+          "query": "  from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: max, createEmpty: false)   \r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> rename(columns: {_value: \"Response Time. MAX\"})",
           "rawQuery": true,
-          "refId": "B",
+          "refId": "MAX",
           "resultFormat": "time_series",
           "select": [
             [
@@ -6759,11 +6898,14 @@
               "operator": "=~",
               "value": "/^$request$/"
             }
-          ],
-          "datasource": "${DS_INFLUXDB2.0_JMETER}"
+          ]
         },
         {
           "alias": "95 perc",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
           "dsType": "influxdb",
           "groupBy": [
             {
@@ -6783,9 +6925,9 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "  from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> toFloat()\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: median, createEmpty: false)   \r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> rename(columns: {_value: \"Response Time. Median\"})",
+          "query": "  from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> toFloat()\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: median, createEmpty: false)   \r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> rename(columns: {_value: \"Response Time. Median\"})",
           "rawQuery": true,
-          "refId": "D",
+          "refId": "Median",
           "resultFormat": "time_series",
           "select": [
             [
@@ -6809,10 +6951,13 @@
               "operator": "=~",
               "value": "/^$request$/"
             }
-          ],
-          "datasource": "${DS_INFLUXDB2.0_JMETER}"
+          ]
         },
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
           "groupBy": [
             {
               "params": [
@@ -6829,8 +6974,8 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"latency\")  \r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> rename(columns: {_value: \"Latency\"})\r\n",
-          "refId": "C",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"latency\")  \r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n  |> keep(columns: [\"_time\", \"_value\"])\r\n  |> rename(columns: {_value: \"Latency\"})\r\n",
+          "refId": "Latency",
           "resultFormat": "time_series",
           "select": [
             [
@@ -6846,8 +6991,7 @@
               }
             ]
           ],
-          "tags": [],
-          "datasource": "${DS_INFLUXDB2.0_JMETER}"
+          "tags": []
         }
       ],
       "title": "Response Times [[request]]",
@@ -6866,6 +7010,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Throughput",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -6931,7 +7077,8 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -6942,6 +7089,10 @@
       "targets": [
         {
           "alias": "Throughput",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
           "dsType": "influxdb",
           "groupBy": [
             {
@@ -6960,7 +7111,7 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "  from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))\r\n",
+          "query": "  from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))\r\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -6984,8 +7135,7 @@
               "operator": "=~",
               "value": "/^$request$/"
             }
-          ],
-          "datasource": "${DS_INFLUXDB2.0_JMETER}"
+          ]
         }
       ],
       "title": "Throughput per second [[request]] ",
@@ -7002,6 +7152,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "errors / interval",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -7066,7 +7218,8 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -7077,6 +7230,10 @@
       "targets": [
         {
           "alias": "Errors per Second",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
           "dsType": "influxdb",
           "groupBy": [
             {
@@ -7095,7 +7252,7 @@
           "measurement": "requestsRaw",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "  from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"errorCount\")\r\n  |> filter(fn: (r) => r[\"_value\"] == 1)\r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> group(columns: [\"_field\", \"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))\r\n",
+          "query": "  from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"errorCount\")\r\n  |> filter(fn: (r) => r[\"_value\"] == 1)\r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> group(columns: [\"_field\", \"requestName\"])\r\n  |> aggregateWindow(every: ${aggregation}s, fn: count, createEmpty: false)   \r\n  |> toFloat() \r\n  |> map(fn: (r) => ({ r with _value: float(v: r._value /float(v: ${aggregation})) }))\r\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -7119,8 +7276,7 @@
               "operator": "=~",
               "value": "/^$request$/"
             }
-          ],
-          "datasource": "${DS_INFLUXDB2.0_JMETER}"
+          ]
         }
       ],
       "title": "Error Rate [[request]]",
@@ -7164,6 +7320,7 @@
         "legend": {
           "displayMode": "list",
           "placement": "bottom",
+          "showLegend": true,
           "values": []
         },
         "pieType": "pie",
@@ -7187,7 +7344,7 @@
             "uid": "${DS_INFLUXDB2.0_JMETER}"
           },
           "hide": false,
-          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"count\")  \r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> group(columns: [\"requestName\", \"responseCode\"])\r\n  |> toFloat()\r\n  |> sum()\r\n  |> keep(columns: [ \"requestName\", \"responseCode\", \"_value\"])\r\n  |> rename(columns: {_value: \"request\"})\r\n\r\n \r\n \r\n  ",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"count\")  \r\n  |> filter(fn: (r) => r[\"requestName\"] == \"${request}\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> group(columns: [\"requestName\", \"responseCode\"])\r\n  |> toFloat()\r\n  |> sum()\r\n  |> keep(columns: [ \"requestName\", \"responseCode\", \"_value\"])\r\n  |> rename(columns: {_value: \"request\"})\r\n\r\n \r\n \r\n  ",
           "refId": "A"
         }
       ],
@@ -7197,7 +7354,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 36,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -7219,16 +7376,16 @@
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 1,
         "type": "query",
         "useTags": false
       },
       {
         "auto": false,
         "current": {
-          "selected": true,
-          "text": "10s",
-          "value": "10"
+          "selected": false,
+          "text": "30s",
+          "value": "30"
         },
         "hide": 0,
         "includeAll": false,
@@ -7242,12 +7399,12 @@
             "value": "1"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "10s",
             "value": "10"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "30s",
             "value": "30"
           },
@@ -7277,12 +7434,56 @@
         "refresh": 0,
         "skipUrlSync": false,
         "type": "custom"
+      },
+      {
+        "allValue": "",
+        "current": {},
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_INFLUXDB2.0_JMETER}"
+        },
+        "definition": "import \"influxdata/influxdb/schema\"\r\n\r\nschema.measurementTagValues(\r\n  bucket: v.bucket,\r\n  measurement: \"requestsRaw\",\r\n  tag: \"runId\"\r\n)",
+        "description": "You can filter the data using run id",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Run Id",
+        "multi": true,
+        "name": "runId",
+        "options": [],
+        "query": "import \"influxdata/influxdb/schema\"\r\n\r\nschema.measurementTagValues(\r\n  bucket: v.bucket,\r\n  measurement: \"requestsRaw\",\r\n  tag: \"runId\"\r\n)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "",
+        "current": {},
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_INFLUXDB2.0_JMETER}"
+        },
+        "definition": "import \"influxdata/influxdb/schema\"\r\n\r\nschema.measurementTagValues(\r\n  bucket: v.bucket,\r\n  measurement: \"requestsRaw\",\r\n  tag: \"samplerType\"\r\n)",
+        "description": "There is the possibility to filter the requests or transactions  ",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Type",
+        "multi": false,
+        "name": "samplerType",
+        "options": [],
+        "query": "import \"influxdata/influxdb/schema\"\r\n\r\nschema.measurementTagValues(\r\n  bucket: v.bucket,\r\n  measurement: \"requestsRaw\",\r\n  tag: \"samplerType\"\r\n)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "2022-06-13T19:52:41.319Z",
-    "to": "2022-06-13T19:55:16.620Z"
+    "from": "now-5m",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -7312,6 +7513,6 @@
   "timezone": "browser",
   "title": "JMeter Load Test (org.md.jmeter.influxdb2.visualizer) - influxdb v2.0 (Flux)",
   "uid": "b4kP_KoMzasadasdasd",
-  "version": 50,
+  "version": 49,
   "weekStart": ""
 }

@@ -62,7 +62,7 @@ public interface RequestMeasurement {
 		/**
 		 * sampleType represents the type of sample, whether it is a request or a transaction controller.
 		 */
-		String SAMPLE_TYPE = "sampleType";
+		String SAMPLE_TYPE = "samplerType";
 	}
 
 	/**

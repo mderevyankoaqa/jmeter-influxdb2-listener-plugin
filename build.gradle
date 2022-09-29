@@ -24,7 +24,7 @@ repositories {
 
 sourceCompatibility = 11
 group = 'io.github.mderevyankoaqa'
-version = '2.4'
+version = '2.5'
 def title = 'JMeterInfluxDB2Listener'
 def archiveName = 'jmeter-plugins-influxdb2-listener'
 
@@ -45,7 +45,7 @@ def archiveName = 'jmeter-plugins-influxdb2-listener'
         implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_java', version: '5.5'
         implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_components', version: '5.5'
         implementation group: 'org.apache.jmeter', name: 'jorphan', version: '5.5'
-        implementation group: 'com.influxdb', name: 'influxdb-client-java', version: '6.1.0'
+        implementation group: 'com.influxdb', name: 'influxdb-client-java', version: '6.5.0'
         implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
         implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_http', version: '5.4.3'
 
@@ -131,6 +131,11 @@ publishing {
                         id = 'AlucardleVash'
                         name = 'Pierre Brun'
                         email = 'pbrun.pro@gmail.com'
+                    }
+                    developer {
+                        id = 'ushklianik'
+                        name = 'Uladzislau Shklianik'
+                        email = 'Uladzislau_Shklianik@epam.com'
                     }
                 }
                 scm {

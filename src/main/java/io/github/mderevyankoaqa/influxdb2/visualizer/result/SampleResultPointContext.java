@@ -15,7 +15,7 @@ public class SampleResultPointContext {
     private String testName;
     boolean errorBodyToBeSaved;
     private int ResponseBodyLength;
-    private String sampleType;
+    private String samplerType;
 
     /**
      * Checks whether the body of the failed repose is going to be saved.
@@ -130,18 +130,18 @@ public class SampleResultPointContext {
     }
 
     /**
-     * Sets sampleType.
-     * @param sampleType represents the type of sample, whether it is a request or a transaction controller.
+     * Sets samplerType.
+     * @param samplerType represents the type of sample, whether it is a request or a transaction controller.
      */
-    public void setSampleType(String sampleType) {
-        this.sampleType = sampleType;
+    public void setSamplerType(String samplerType) {
+        this.samplerType = samplerType;
     }
 
     /**
-     * Gets the SampleType.
-     * @return returns SampleType.
+     * Gets the SamplerType.
+     * @return returns SamplerType.
      */
-    public String getSampleType() {
-        return this.sampleType;
+    public String getSamplerType() {
+        return this.samplerType;
     }
 }
