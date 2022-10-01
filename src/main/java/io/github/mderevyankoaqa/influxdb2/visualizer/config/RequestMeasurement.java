@@ -58,6 +58,11 @@ public interface RequestMeasurement {
 		 * The result, can be pass or fail.
 		 */
 		String RESULT = "result";
+
+		/**
+		 * sampleType represents the type of sample, whether it is a request or a transaction controller.
+		 */
+		String SAMPLE_TYPE = "samplerType";
 	}
 
 	/**

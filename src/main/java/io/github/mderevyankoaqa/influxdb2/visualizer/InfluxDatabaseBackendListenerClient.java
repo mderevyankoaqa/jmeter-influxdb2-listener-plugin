@@ -9,6 +9,7 @@ import io.github.mderevyankoaqa.influxdb2.visualizer.influxdb.client.InfluxDatab
 import io.github.mderevyankoaqa.influxdb2.visualizer.result.SampleResultPointContext;
 import io.github.mderevyankoaqa.influxdb2.visualizer.result.SampleResultPointProvider;
 import org.apache.jmeter.config.Arguments;
+import org.apache.jmeter.protocol.http.sampler.HTTPSampleResult;
 import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.threads.JMeterContextService;
 import org.apache.jmeter.threads.JMeterContextService.ThreadCounts;
@@ -124,6 +125,11 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
 
         for (SampleResult sampleResult : allSampleResults) {
             getUserMetrics().add(sampleResult);
+            // Determine the type of sample, whether it is a request or a transaction controller
+            String samplerType = "transaction";
+            if (sampleResult instanceof HTTPSampleResult){
+                samplerType = "request";
+            }
 
             if ((null != regexForSamplerList && sampleResult.getSampleLabel().matches(regexForSamplerList))
                     || samplersToFilter.contains(sampleResult.getSampleLabel())) {
@@ -133,6 +139,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
                 sampleResultContext.setTestName(this.testName);
                 sampleResultContext.setNodeName(this.nodeName);
                 sampleResultContext.setSampleResult(sampleResult);
+                sampleResultContext.setSamplerType(samplerType);
                 sampleResultContext.setTimeToSet(System.currentTimeMillis() * ONE_MS_IN_NANOSECONDS + this.getUniqueNumberForTheSamplerThread());
                 sampleResultContext.setErrorBodyToBeSaved(context.getBooleanParameter(KEY_INCLUDE_BODY_OF_FAILURES, false));
                 sampleResultContext.setResponseBodyLength(this.influxDBConfig.getResponseBodyLength());

@@ -67,7 +67,8 @@ The supported versions:
 * Java 11 - make sure that you have it (its minimum version).
 * InfluxDB v2.x, see release notes: https://docs.influxdata.com/influxdb/v2.0/reference/release-notes/influxdb/  (1.8 is not supported)
 * JMeter 5.5.0 only.
-* The current board and plugin were tested on Grafana 8.5.4 and InfluxDB 2.2.0, JAVA 15.
+
+* The current board and plugin were tested on Grafana 9.1.6 and InfluxDB 2.2.0, JAVA 15.
 
 ## Maven Support
 Please see the latest release here https://search.maven.org/artifact/io.github.mderevyankoaqa/jmeter-plugins-influxdb2-listener.
@@ -192,9 +193,14 @@ Notes: when test has been interrupted from UI; the processes may not be finished
 See deployment instructions here https://grafana.com/grafana/dashboards/13644
 
 Dashboard helps:
+* Filter the results by Run Id or Type (can be requests or transactions). 
+  ![](img/filterById.png)
+  
+  ![](img/filterByType.png)
+  
+
 * Monitor throughput with active users.
   ![](img/grafana1.png)
-  
 
 * Overview and analise the response time, distribution as well. Added the filters to see requests with status "pass", "fail".
   ![](img/grafana2.png)
