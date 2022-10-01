@@ -194,9 +194,9 @@ See deployment instructions here https://grafana.com/grafana/dashboards/13644
 
 Dashboard helps:
 * Filter the results by Run Id or Type (can be requests or transactions). 
-  ![](img/filterById.png)
-  
-  ![](img/filterByType.png)
+
+ ![](img/filterById.png)  
+ ![](img/filterByType.png)
   
 
 * Monitor throughput with active users.
