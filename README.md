@@ -67,6 +67,7 @@ The supported versions:
 * Java 11 - make sure that you have it (its minimum version).
 * InfluxDB v2.x, see release notes: https://docs.influxdata.com/influxdb/v2.0/reference/release-notes/influxdb/  (1.8 is not supported)
 * JMeter 5.5.0 only.
+
 * The current board and plugin were tested on Grafana 9.1.6 and InfluxDB 2.2.0, JAVA 15.
 
 ## Maven Support
