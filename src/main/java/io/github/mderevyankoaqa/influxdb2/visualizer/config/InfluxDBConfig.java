@@ -18,14 +18,9 @@ public class InfluxDBConfig {
     public static final String DEFAULT_BUCKET = "jmeter";
 
     /**
-     * Default http scheme name.
+     * Default influxdb url.
      */
-    public static final String DEFAULT_HTTP_SCHEME = "http";
-
-    /**
-     * Default port.
-     */
-    public static final int DEFAULT_PORT = 8086;
+    public static final String DEFAULT_INFLUXDB_URL = "http://localhost:8086/";
 
     /**
      * Default threshold error.
@@ -58,6 +53,11 @@ public class InfluxDBConfig {
     public static final int DEFAULT_RESPONSE_BODY_LENGTH = 2000;
 
     /**
+     * Config key for influxdb url.
+     */
+    public static final String KEY_INFLUX_DB_URL = "influxDBURL";
+
+    /**
      * Config key for bucket.
      */
     public static final String KEY_INFLUX_DB_BUCKET = "influxDBBucket";
@@ -71,21 +71,6 @@ public class InfluxDBConfig {
      * Config key for token.
      */
     public static final String KEY_INFLUX_DB_TOKEN = "influxDBToken";
-
-    /**
-     * Config key for port.
-     */
-    public static final String KEY_INFLUX_DB_PORT = "influxDBPort";
-
-    /**
-     * Config key for host.
-     */
-    public static final String KEY_INFLUX_DB_HOST = "influxDBHost";
-
-    /**
-     * Config key for http scheme.
-     */
-    public static final String KEY_HTTP_SCHEME = "influxDBHttpScheme";
 
     /**
      * Config key for batch size.
@@ -108,9 +93,9 @@ public class InfluxDBConfig {
     public static final String KEY_RESPONSE_BODY_LENGTH = "responseBodyLength";
 
     /**
-     * InfluxDB Host.
+     * InfluxDB URL.
      */
-    private String influxDBHost;
+    private String influxDBURL;
 
     /**
      * InfluxDB Token.
@@ -126,16 +111,6 @@ public class InfluxDBConfig {
      * InfluxDB database Bucket.
      */
     private String influxBucket;
-
-    /**
-     * InfluxDB Port.
-     */
-    private int influxDBPort;
-
-    /**
-     * InfluxDB database retention policy.
-     */
-    private String influxHTTPScheme;
 
     /**
      * InfluxDB database batch size.
@@ -163,12 +138,11 @@ public class InfluxDBConfig {
      * @param context the {@link BackendListenerContext}
      */
     public InfluxDBConfig(BackendListenerContext context) {
-        String influxDBHost = context.getParameter(KEY_INFLUX_DB_HOST);
-        Arguments.checkNonEmpty(KEY_INFLUX_DB_BUCKET, influxDBHost);
-        this.setInfluxDBHost(influxDBHost);
-
-        int influxDBPort = context.getIntParameter(KEY_INFLUX_DB_PORT, InfluxDBConfig.DEFAULT_PORT);
-        this.setInfluxDBPort(influxDBPort);
+        String influxDBURL = context.getParameter(KEY_INFLUX_DB_URL);
+        Arguments.checkNonEmpty(influxDBURL, KEY_INFLUX_DB_URL);
+        String[] influxHTTPScheme =  influxDBURL.split("://",2);
+        ArgsValidator.checkHTTPScheme(influxHTTPScheme[0]);
+        this.setInfluxDBURL(influxDBURL);
 
         String influxToken = context.getParameter(KEY_INFLUX_DB_TOKEN);
         Arguments.checkNonEmpty(influxToken, KEY_INFLUX_DB_TOKEN);
@@ -181,9 +155,6 @@ public class InfluxDBConfig {
         String influxBucket = context.getParameter(KEY_INFLUX_DB_BUCKET);
         Arguments.checkNonEmpty(influxBucket, KEY_INFLUX_DB_BUCKET);
         this.setInfluxBucket(influxBucket);
-
-        String influxHTTPScheme = ArgsValidator.checkHTTPScheme(context.getParameter(KEY_HTTP_SCHEME, DEFAULT_HTTP_SCHEME));
-        this.setInfluxHTTPScheme(influxHTTPScheme);
 
         int influxdbBatchSize = context.getIntParameter(KEY_INFLUX_DB_MAX_BATCH_SIZE);
         Arguments.checkNotNegativeNumber(influxdbBatchSize, KEY_INFLUX_DB_MAX_BATCH_SIZE);
@@ -203,30 +174,21 @@ public class InfluxDBConfig {
     }
 
     /**
-     * Builds URL to influxDB.
+     * Gets the InfluxDB URL.
      *
-     * @return influxDB URL.
+     * @return the InfluxDB URL.
      */
     public String getInfluxDBURL() {
-        return this.influxHTTPScheme + "://" + this.getInfluxDBHost() + ":" + this.getInfluxDBPort();
+        return influxDBURL;
     }
 
     /**
-     * Gets the influxDBHost.
+     * Sets influxDB URL.
      *
-     * @return the influxDBHost.
+     * @param influxDBURL the influxdb host url.
      */
-    public String getInfluxDBHost() {
-        return this.influxDBHost;
-    }
-
-    /**
-     * Sets influxDBHost.
-     *
-     * @param influxDBHost the influxDBHost to set.
-     */
-    public void setInfluxDBHost(String influxDBHost) {
-        this.influxDBHost = influxDBHost;
+    public void setInfluxDBURL(String influxDBURL) {
+        this.influxDBURL = influxDBURL;
     }
 
     /**
@@ -245,33 +207,6 @@ public class InfluxDBConfig {
      */
     public void setInfluxBucket(String influxBucket) {
         this.influxBucket = influxBucket;
-    }
-
-    /**
-     * Sets influxHTTPScheme.
-     *
-     * @param influxHTTPScheme the influxHTTPScheme to set.
-     */
-    public void setInfluxHTTPScheme(String influxHTTPScheme) {
-        this.influxHTTPScheme = influxHTTPScheme;
-    }
-
-    /**
-     * Gets influxDBPort.
-     *
-     * @return the influxDBPort.
-     */
-    public int getInfluxDBPort() {
-        return this.influxDBPort;
-    }
-
-    /**
-     * Sets setInfluxDBPort.
-     *
-     * @param influxDBPort the influxDBPort to set.
-     */
-    public void setInfluxDBPort(int influxDBPort) {
-        this.influxDBPort = influxDBPort;
     }
 
     /**
