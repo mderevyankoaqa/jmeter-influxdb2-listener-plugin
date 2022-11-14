@@ -137,6 +137,11 @@ publishing {
                         name = 'Uladzislau Shklianik'
                         email = 'Uladzislau_Shklianik@epam.com'
                     }
+                    developer {
+                        id = 'MalshaUdani'
+                        name = 'Malsha Nagahawatta'
+                        email = 'malsha.nagahawatta@gmail.com'
+                    }
                 }
                 scm {
                     connection = 'scm:git:git:github.com/mderevyankoaqa/jmeter-influxdb2-listener-plugin.git'
