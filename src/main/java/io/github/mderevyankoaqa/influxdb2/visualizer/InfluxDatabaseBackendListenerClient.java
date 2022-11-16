@@ -157,9 +157,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
         arguments.addArgument(KEY_TEST_NAME, "Test");
         arguments.addArgument(KEY_NODE_NAME, "Test-Node");
         arguments.addArgument(KEY_RUN_ID, "R001");
-        arguments.addArgument(InfluxDBConfig.KEY_HTTP_SCHEME, InfluxDBConfig.DEFAULT_HTTP_SCHEME);
-        arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_HOST, "localhost");
-        arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_PORT, Integer.toString(InfluxDBConfig.DEFAULT_PORT));
+        arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_URL, InfluxDBConfig.DEFAULT_INFLUXDB_URL);
         arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_TOKEN, InfluxDBConfig.DEFAULT_INFLUX_DB_TOKEN);
         arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_ORG, InfluxDBConfig.DEFAULT_INFLUX_DB_ORG);
         arguments.addArgument(InfluxDBConfig.KEY_INFLUX_DB_BUCKET, InfluxDBConfig.DEFAULT_BUCKET);

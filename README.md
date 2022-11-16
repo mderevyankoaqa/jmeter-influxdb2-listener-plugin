@@ -148,9 +148,7 @@ Let’s explain the plugin fields:
 * `testName` - the name of the test.
 * `nodeName` - the name of the server.
 * `runId` - the identification number of hte test run, can be dynamic.
-* `influxDBScheme` - InfluxDB server scheme (can be http or https).
-* `influxDBHost` - the host name or ip of the InfluxDB server.
-* `influxDBPort` - the port of the InfluxDB server, the default is 8086.
+* `influxDBURL` - InfluxDB server URL [protocol://][host][:port], protocol (can be http or https) and the default port is 8086.
 * `influxDBToken` - the influxdb bucket token, the default value should be updated, copy it from InfluxDB site.
 
   ![](img/influx3.png)
@@ -194,9 +192,8 @@ See deployment instructions here https://grafana.com/grafana/dashboards/13644
 
 Dashboard helps:
 * Filter the results by Run Id or Type (can be requests or transactions). 
-
- ![](img/filterById.png)  
- ![](img/filterByType.png)
+  ![](img/filterById.png)  
+  ![](img/filterByType.png)
   
 
 * Monitor throughput with active users.
