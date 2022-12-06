@@ -44,11 +44,11 @@ public class SampleResultPointProvider {
      * @param isToBeSaved set to true if body need to be saved; otherwise false.
      * @return the normalized string if parameter @param isToBeSaved set to true; 'noData' string otherwise.
      */
-     private String getErrorBodyToBeSaved(boolean isToBeSaved)
+     private String getErrorBodyToBeSaved(boolean isToBeSaved, boolean isSuccessful)
      {
          String errorResponseBody;
 
-         if (isToBeSaved)
+         if (isToBeSaved && isSuccessful)
          {
              errorResponseBody = this.getErrorBody();
          }
@@ -107,7 +107,7 @@ public class SampleResultPointProvider {
                 .addTag(RequestMeasurement.Tags.RESULT_CODE, this.sampleResultContext.getSampleResult().getResponseCode())
                 .addTag(RequestMeasurement.Tags.ERROR_MSG, this.getAssertionFailure())
                 .addTag(RequestMeasurement.Tags.SAMPLE_TYPE, this.sampleResultContext.getSamplerType())
-                .addTag(RequestMeasurement.Tags.ERROR_RESPONSE_BODY, this.getErrorBodyToBeSaved(this.sampleResultContext.isErrorBodyToBeSaved()))
+                .addTag(RequestMeasurement.Tags.ERROR_RESPONSE_BODY, this.getErrorBodyToBeSaved(this.sampleResultContext.isErrorBodyToBeSaved(), !this.sampleResultContext.getSampleResult().isSuccessful()))
                 .addField(RequestMeasurement.Fields.ERROR_COUNT, this.sampleResultContext.getSampleResult().getErrorCount())
                 .addField(RequestMeasurement.Fields.REQUEST_COUNT, this.sampleResultContext.getSampleResult().getSampleCount())
                 .addField(RequestMeasurement.Fields.RECEIVED_BYTES, this.sampleResultContext.getSampleResult().getBytesAsLong())
