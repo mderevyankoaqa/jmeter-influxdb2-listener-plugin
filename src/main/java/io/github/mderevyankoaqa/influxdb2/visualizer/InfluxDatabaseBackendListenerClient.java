@@ -112,6 +112,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
     /**
      * Processes sampler results.
      */
+    @Override
     public void handleSampleResults(List<SampleResult> sampleResults, BackendListenerContext context) {
         // Gather all the listeners
         List<SampleResult> allSampleResults = new ArrayList<>();
@@ -143,7 +144,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
                 sampleResultContext.setTimeToSet(System.currentTimeMillis() * ONE_MS_IN_NANOSECONDS + this.getUniqueNumberForTheSamplerThread());
                 sampleResultContext.setErrorBodyToBeSaved(context.getBooleanParameter(KEY_INCLUDE_BODY_OF_FAILURES, false));
                 sampleResultContext.setResponseBodyLength(this.influxDBConfig.getResponseBodyLength());
-                var sampleResultPointProvider = new SampleResultPointProvider(sampleResultContext);
+                SampleResultPointProvider sampleResultPointProvider = new SampleResultPointProvider(sampleResultContext);
 
                 Point resultPoint = sampleResultPointProvider.getPoint();
                 InfluxDatabaseClient.getInstance(this.influxDBConfig, LOGGER).collectData(resultPoint);
@@ -239,6 +240,7 @@ public class InfluxDatabaseBackendListenerClient extends AbstractBackendListener
     /**
      * Periodically writes virtual users metrics to influxDB.
      */
+    @Override
     public void run() {
         ThreadCounts tc = JMeterContextService.getThreadCounts();
 
