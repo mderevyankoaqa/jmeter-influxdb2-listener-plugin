@@ -22,9 +22,9 @@ repositories {
 }
 
 
-sourceCompatibility = 11
+sourceCompatibility = 8
 group = 'io.github.mderevyankoaqa'
-version = '2.6'
+version = '2.6-jdk8'
 
 def title = 'JMeterInfluxDB2Listener'
 def archiveName = 'jmeter-plugins-influxdb2-listener'
@@ -137,7 +137,7 @@ publishing {
                         name = 'Uladzislau Shklianik'
                         email = 'Uladzislau_Shklianik@epam.com'
                     }
-i                    developer {
+                    developer {
                         id = 'MalshaUdani'
                         name = 'Malsha Nagahawatta'
                         email = 'malsha.nagahawatta@gmail.com'
