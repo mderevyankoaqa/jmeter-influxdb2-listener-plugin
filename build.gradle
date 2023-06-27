@@ -42,13 +42,13 @@ def archiveName = 'jmeter-plugins-influxdb2-listener'
     }
 
     dependencies {
-        implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_core', version: '5.5'
-        implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_java', version: '5.5'
-        implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_components', version: '5.5'
-        implementation group: 'org.apache.jmeter', name: 'jorphan', version: '5.5'
-        implementation group: 'com.influxdb', name: 'influxdb-client-java', version: '6.7.0'
+        implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_core', version: '5.6'
+        implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_java', version: '5.6'
+        implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_components', version: '5.6'
+        implementation group: 'org.apache.jmeter', name: 'jorphan', version: '5.6'
+        implementation group: 'com.influxdb', name: 'influxdb-client-java', version: '6.9.0'
         implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
-        implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_http', version: '5.5'
+        implementation group: 'org.apache.jmeter', name: 'ApacheJMeter_http', version: '5.6'
         components {
             withModule("org.apache.jmeter:ApacheJMeter_core", JMeterRule)
             withModule("org.apache.jmeter:ApacheJMeter_java", JMeterRule)
@@ -137,10 +137,15 @@ publishing {
                         name = 'Uladzislau Shklianik'
                         email = 'Uladzislau_Shklianik@epam.com'
                     }
-i                    developer {
+                    developer {
                         id = 'MalshaUdani'
                         name = 'Malsha Nagahawatta'
                         email = 'malsha.nagahawatta@gmail.com'
+                    }
+                     developer {
+                        id = 'mateusgsan'
+                        name = 'Mateus G. Santos'
+                        email = 'mateusgsan@gmail.com'
                     }
 
                 }
