@@ -147,6 +147,11 @@ publishing {
                         name = 'Mateus G. Santos'
                         email = 'mateusgsan@gmail.com'
                     }
+                    developer {
+                        id = 'singh2005'
+                        name = 'Shailendra Singh'
+                        email = 'singh2005@gmail.com'
+                    }
 
                 }
                 scm {

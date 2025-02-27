@@ -20,6 +20,7 @@ public class InfluxDatabaseUtility {
 
           return value.replace("\n", "")
                       .replace("\r", "")
+                      .replace(",", "\\,")
                       .trim();
 
     }
