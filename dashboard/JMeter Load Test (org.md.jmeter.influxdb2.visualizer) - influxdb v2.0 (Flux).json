@@ -298,6 +298,7 @@
           "uid": "${DS_INFLUXDB2.0_JMETER}"
         },
         "enable": true,
+        "hide": false,
         "iconColor": "rgba(255, 96, 96, 1)",
         "mappings": {},
         "name": "Test End",
@@ -313,18 +314,12 @@
   "description": "This dashboard shows live load test metrics provided by JMeter, updated bars charts.",
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "gnetId": 13644,
   "graphTooltip": 1,
-  "id": null,
+  "id": 19,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "collapsed": false,
-      "datasource": {
-        "type": "influxdb",
-        "uid": "UgPq-YFnk"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -383,13 +378,13 @@
         "y": 1
       },
       "id": 14,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "none",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -397,10 +392,12 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.1.6",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -480,13 +477,13 @@
         "y": 1
       },
       "id": 17,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "none",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "mean"
@@ -494,10 +491,12 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.1.6",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -528,7 +527,6 @@
         }
       ],
       "title": "Overall Throughput",
-      "transformations": [],
       "type": "stat"
     },
     {
@@ -578,14 +576,13 @@
         "y": 1
       },
       "id": 56,
-      "interval": "",
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "sum"
@@ -593,10 +590,12 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.1.6",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -690,14 +689,13 @@
         "y": 1
       },
       "id": 34,
-      "interval": "",
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "sum"
@@ -705,10 +703,12 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.1.6",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -755,7 +755,6 @@
         }
       ],
       "title": "Received Bytes",
-      "transformations": [],
       "type": "stat"
     },
     {
@@ -805,13 +804,13 @@
         "y": 1
       },
       "id": 59,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "none",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "sum"
@@ -819,10 +818,12 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.1.6",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -902,13 +903,13 @@
         "y": 1
       },
       "id": 20,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "none",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "sum"
@@ -916,12 +917,14 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {
           "titleSize": 20
         },
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.1.6",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -1006,9 +1009,10 @@
         "y": 1
       },
       "id": 18,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -1019,9 +1023,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.1.6",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -1104,9 +1109,10 @@
         "y": 1
       },
       "id": 21,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -1117,9 +1123,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.1.6",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -1153,10 +1160,6 @@
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "influxdb",
-        "uid": "UgPq-YFnk"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1180,11 +1183,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Throughput",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -1193,6 +1198,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 6,
@@ -1275,7 +1281,6 @@
         "y": 8
       },
       "id": 91,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -1292,7 +1297,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "alias": "Throughput",
@@ -1381,7 +1386,6 @@
         }
       ],
       "title": "Overall Throughput  (no filters)",
-      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -1396,11 +1400,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Throughput",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -1409,6 +1415,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 6,
@@ -1479,7 +1486,6 @@
         "y": 8
       },
       "id": 90,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -1496,7 +1502,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "alias": "Throughput",
@@ -1585,7 +1591,6 @@
         }
       ],
       "title": "Overall Throughput Per Request (no filters)",
-      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -1600,11 +1605,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Throughput",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -1613,6 +1620,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 6,
@@ -1695,7 +1703,6 @@
         "y": 21
       },
       "id": 110,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -1712,7 +1719,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "alias": "Throughput",
@@ -1801,7 +1808,6 @@
         }
       ],
       "title": "Fails Throughput  (shows requests with status \"fail\")",
-      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -1816,11 +1822,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Throughput",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -1829,6 +1837,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 6,
@@ -1899,7 +1908,6 @@
         "y": 21
       },
       "id": 112,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -1916,7 +1924,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "alias": "Throughput",
@@ -2005,7 +2013,6 @@
         }
       ],
       "title": "Overall Throughput Per Request (shows requests with status \"pass\")",
-      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -2020,11 +2027,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Throughput",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -2033,6 +2042,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 6,
@@ -2103,7 +2113,6 @@
         "y": 35
       },
       "id": 111,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -2120,7 +2129,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "alias": "Throughput",
@@ -2209,7 +2218,6 @@
         }
       ],
       "title": "Overall Throughput Per Request (shows requests with status \"fail\")",
-      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -2224,11 +2232,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Throughput",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -2237,6 +2247,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 6,
@@ -2278,7 +2289,6 @@
         "y": 35
       },
       "id": 58,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -2295,7 +2305,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "alias": "$tag_responseCode",
@@ -2353,10 +2363,6 @@
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "influxdb",
-        "uid": "UgPq-YFnk"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -2379,11 +2385,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Response Time, ms",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -2392,6 +2400,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 6,
@@ -2507,7 +2516,6 @@
         "y": 48
       },
       "id": 28,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -2524,7 +2532,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "alias": "$tag_requestName",
@@ -2631,11 +2639,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Response Time, ms",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -2644,6 +2654,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 6,
@@ -2759,7 +2770,6 @@
         "y": 48
       },
       "id": 114,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -2776,7 +2786,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "alias": "$tag_requestName",
@@ -2883,11 +2893,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Response Time, ms",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -2896,6 +2908,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 6,
@@ -3011,7 +3024,6 @@
         "y": 60
       },
       "id": 113,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -3028,7 +3040,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "alias": "$tag_requestName",
@@ -3135,11 +3147,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Response Time, ms",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -3148,6 +3162,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 6,
@@ -3263,7 +3278,6 @@
         "y": 60
       },
       "id": 94,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -3280,7 +3294,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "alias": "$tag_requestName",
@@ -3389,7 +3403,9 @@
           },
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": true,
             "inspect": false,
             "minWidth": 20
@@ -3433,8 +3449,11 @@
                 "value": 2
               },
               {
-                "id": "custom.displayMode",
-                "value": "color-background"
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
               },
               {
                 "id": "custom.align"
@@ -3481,9 +3500,10 @@
         "y": 72
       },
       "id": 108,
-      "links": [],
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -3493,7 +3513,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "9.1.6",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -3744,11 +3764,18 @@
         "y": 82
       },
       "id": 116,
-      "links": [],
       "options": {
         "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
         "minVizHeight": 12,
         "minVizWidth": 0,
+        "namePlacement": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -3758,12 +3785,14 @@
           "values": false
         },
         "showUnfilled": true,
+        "sizing": "auto",
         "text": {
           "titleSize": 12,
           "valueSize": 15
-        }
+        },
+        "valueMode": "color"
       },
-      "pluginVersion": "9.1.6",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -3776,7 +3805,6 @@
         }
       ],
       "title": "Response Times Distribution, 90% percentile (no filters)",
-      "transformations": [],
       "type": "bargauge"
     },
     {
@@ -3815,11 +3843,18 @@
         "y": 82
       },
       "id": 117,
-      "links": [],
       "options": {
         "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
         "minVizHeight": 10,
         "minVizWidth": 0,
+        "namePlacement": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -3829,12 +3864,14 @@
           "values": false
         },
         "showUnfilled": true,
+        "sizing": "auto",
         "text": {
           "titleSize": 12,
           "valueSize": 15
-        }
+        },
+        "valueMode": "color"
       },
-      "pluginVersion": "9.1.6",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -3847,15 +3884,10 @@
         }
       ],
       "title": "Response Times Distribution, 95% percentile (no filters)",
-      "transformations": [],
       "type": "bargauge"
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "influxdb",
-        "uid": "UgPq-YFnk"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -3880,7 +3912,9 @@
           },
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": true,
             "inspect": false,
             "minWidth": 60
@@ -3913,8 +3947,11 @@
                 "id": "decimals"
               },
               {
-                "id": "custom.displayMode",
-                "value": "lcd-gauge"
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge"
+                }
               },
               {
                 "id": "custom.align",
@@ -4082,9 +4119,10 @@
         "y": 93
       },
       "id": 83,
-      "links": [],
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "enablePagination": true,
           "fields": [],
           "reducer": [],
@@ -4098,7 +4136,7 @@
           }
         ]
       },
-      "pluginVersion": "9.1.6",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -4533,7 +4571,9 @@
               },
               "custom": {
                 "align": "auto",
-                "displayMode": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
                 "filterable": true,
                 "inspect": false,
                 "minWidth": 60
@@ -4544,8 +4584,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -4566,8 +4605,11 @@
                     "id": "decimals"
                   },
                   {
-                    "id": "custom.displayMode",
-                    "value": "lcd-gauge"
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "lcd",
+                      "type": "gauge"
+                    }
                   },
                   {
                     "id": "custom.align",
@@ -4579,8 +4621,7 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "green",
-                          "value": null
+                          "color": "green"
                         },
                         {
                           "color": "#1F78C1",
@@ -4735,7 +4776,6 @@
             "y": 104
           },
           "id": 115,
-          "links": [],
           "options": {
             "footer": {
               "enablePagination": true,
@@ -5166,26 +5206,23 @@
           "type": "table"
         },
         {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
           },
-          "editable": true,
-          "error": false,
           "gridPos": {
             "h": 2,
             "w": 24,
             "x": 0,
-            "y": 114
+            "y": 172
           },
-          "height": "180",
           "id": 25,
-          "links": [],
           "options": {
             "content": "<h3 style=\"text-align: center;\"><em>The following panels show aggregated metrics for <span style=\"color: #00ccff;\"><strong>all requests</strong></span></em></h3>",
             "mode": "html"
           },
           "pluginVersion": "9.1.6",
+          "title": "",
           "transparent": true,
           "type": "text"
         }
@@ -5195,10 +5232,6 @@
     },
     {
       "collapsed": true,
-      "datasource": {
-        "type": "influxdb",
-        "uid": "UgPq-YFnk"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -5217,7 +5250,9 @@
             "defaults": {
               "custom": {
                 "align": "auto",
-                "displayMode": "json-view",
+                "cellOptions": {
+                  "type": "json-view"
+                },
                 "filterable": true,
                 "inspect": false
               },
@@ -5226,8 +5261,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -5294,7 +5328,6 @@
             "y": 105
           },
           "id": 96,
-          "links": [],
           "options": {
             "footer": {
               "enablePagination": true,
@@ -5364,7 +5397,6 @@
             }
           ],
           "title": "Errors Summary",
-          "transformations": [],
           "type": "table"
         }
       ],
@@ -5373,10 +5405,6 @@
     },
     {
       "collapsed": true,
-      "datasource": {
-        "type": "influxdb",
-        "uid": "UgPq-YFnk"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -5395,7 +5423,9 @@
             "defaults": {
               "custom": {
                 "align": "auto",
-                "displayMode": "json-view",
+                "cellOptions": {
+                  "type": "json-view"
+                },
                 "filterable": true,
                 "inspect": false,
                 "minWidth": 50
@@ -5405,8 +5435,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -5470,10 +5499,9 @@
             "h": 13,
             "w": 24,
             "x": 0,
-            "y": 131
+            "y": 189
           },
           "id": 95,
-          "links": [],
           "options": {
             "footer": {
               "enablePagination": true,
@@ -5545,11 +5573,7 @@
       "type": "row"
     },
     {
-      "collapsed": true,
-      "datasource": {
-        "type": "influxdb",
-        "uid": "UgPq-YFnk"
-      },
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -5557,1112 +5581,919 @@
         "y": 106
       },
       "id": 38,
-      "panels": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB2.0_JMETER}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "smooth",
-                "lineWidth": 2,
-                "pointSize": 6,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "always",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "ms"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "95 perc"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "#F9934E",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "99 perc"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "#E24D42",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Max"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "#BF1B00",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 24,
-            "x": 0,
-            "y": 145
-          },
-          "id": 77,
-          "links": [],
-          "options": {
-            "legend": {
-              "calcs": [
-                "mean",
-                "max",
-                "min"
-              ],
-              "displayMode": "table",
-              "placement": "right",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "8.5.4",
-          "targets": [
-            {
-              "alias": "$tag_requestName",
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB2.0_JMETER}"
-              },
-              "groupBy": [
-                {
-                  "params": [
-                    "$__interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "requestName"
-                  ],
-                  "type": "tag"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "measurement": "requestsRaw",
-              "orderByTime": "ASC",
-              "policy": "autogen",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"latency\")  \r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n",
-              "rawQuery": true,
-              "refId": "D",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "latency"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": []
-            }
-          ],
-          "title": "Latency",
-          "transformations": [],
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB2.0_JMETER}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "smooth",
-                "lineWidth": 2,
-                "pointSize": 6,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "always",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "ms"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "95 perc"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "#F9934E",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "99 perc"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "#E24D42",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Max"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "#BF1B00",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 24,
-            "x": 0,
-            "y": 153
-          },
-          "id": 86,
-          "links": [],
-          "options": {
-            "legend": {
-              "calcs": [
-                "mean",
-                "max",
-                "min"
-              ],
-              "displayMode": "table",
-              "placement": "right",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "8.5.4",
-          "targets": [
-            {
-              "alias": "$tag_requestName",
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB2.0_JMETER}"
-              },
-              "groupBy": [
-                {
-                  "params": [
-                    "$__interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "requestName"
-                  ],
-                  "type": "tag"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "measurement": "requestsRaw",
-              "orderByTime": "ASC",
-              "policy": "autogen",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"connectTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n",
-              "rawQuery": true,
-              "refId": "D",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "latency"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": []
-            }
-          ],
-          "title": "Connect",
-          "transformations": [],
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB2.0_JMETER}"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "smooth",
-                "lineWidth": 2,
-                "pointSize": 6,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "always",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "decbytes"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 10,
-            "w": 24,
-            "x": 0,
-            "y": 162
-          },
-          "id": 50,
-          "links": [],
-          "options": {
-            "legend": {
-              "calcs": [
-                "max",
-                "min",
-                "mean"
-              ],
-              "displayMode": "table",
-              "placement": "right",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "8.5.4",
-          "targets": [
-            {
-              "alias": "Sent Bytes",
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB2.0_JMETER}"
-              },
-              "groupBy": [
-                {
-                  "params": [
-                    "$__interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "requestName"
-                  ],
-                  "type": "tag"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "hide": false,
-              "measurement": "requestsRaw",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"receivedBytes\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
-              "rawQuery": true,
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "receivedBytes"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "requestName",
-                  "operator": "!=",
-                  "value": "select tag value"
-                }
-              ]
-            },
-            {
-              "alias": "Received Bytes",
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB2.0_JMETER}"
-              },
-              "groupBy": [
-                {
-                  "params": [
-                    "$__interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "requestName"
-                  ],
-                  "type": "tag"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "measurement": "requestsRaw",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"sentBytes\")\r\n  |> filter(fn: (r) => r[\"runId\"] == \"${runId}\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
-              "rawQuery": true,
-              "refId": "B",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "receivedBytes"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "requestName",
-                  "operator": "!=",
-                  "value": "select tag value"
-                }
-              ]
-            }
-          ],
-          "title": "Bytes Throughput Over Time",
-          "transformations": [],
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB2.0_JMETER}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "smooth",
-                "lineWidth": 2,
-                "pointSize": 6,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "always",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "decbytes"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 24,
-            "x": 0,
-            "y": 172
-          },
-          "id": 49,
-          "links": [],
-          "options": {
-            "legend": {
-              "calcs": [
-                "max",
-                "min",
-                "mean"
-              ],
-              "displayMode": "table",
-              "placement": "right",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "8.5.4",
-          "targets": [
-            {
-              "alias": "$tag_requestName",
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB2.0_JMETER}"
-              },
-              "groupBy": [
-                {
-                  "params": [
-                    "$__interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "requestName"
-                  ],
-                  "type": "tag"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "measurement": "requestsRaw",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"sentBytes\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
-              "rawQuery": true,
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "receivedBytes"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "requestName",
-                  "operator": "!=",
-                  "value": "select tag value"
-                }
-              ]
-            }
-          ],
-          "title": "Sent Bytes per Request",
-          "transformations": [],
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB2.0_JMETER}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "linear",
-                "lineWidth": 2,
-                "pointSize": 6,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "always",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "decbytes"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 10,
-            "w": 24,
-            "x": 0,
-            "y": 181
-          },
-          "id": 48,
-          "links": [],
-          "options": {
-            "legend": {
-              "calcs": [
-                "max",
-                "min",
-                "mean"
-              ],
-              "displayMode": "table",
-              "placement": "right",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "8.5.4",
-          "targets": [
-            {
-              "alias": "$tag_requestName",
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB2.0_JMETER}"
-              },
-              "groupBy": [
-                {
-                  "params": [
-                    "$__interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "requestName"
-                  ],
-                  "type": "tag"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "measurement": "requestsRaw",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"receivedBytes\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
-              "rawQuery": true,
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "receivedBytes"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "requestName",
-                  "operator": "!=",
-                  "value": "select tag value"
-                }
-              ]
-            }
-          ],
-          "title": "Received Bytes per Request",
-          "transformations": [],
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB2.0_JMETER}"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "smooth",
-                "lineWidth": 2,
-                "pointSize": 6,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "always",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "ms"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "95 perc"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "#F9934E",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "99 perc"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "#E24D42",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Max"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "#BF1B00",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 10,
-            "w": 24,
-            "x": 0,
-            "y": 191
-          },
-          "id": 87,
-          "libraryPanel": {
-            "description": "",
-            "meta": {
-              "connectedDashboards": 1,
-              "created": "2022-06-13T22:38:22+03:00",
-              "createdBy": {
-                "avatarUrl": "/avatar/46d229b033af06a191ff2267bca9ae56",
-                "id": 1,
-                "name": "admin"
-              },
-              "folderName": "General",
-              "folderUid": "",
-              "updated": "2022-09-30T15:19:37+03:00",
-              "updatedBy": {
-                "avatarUrl": "/avatar/46d229b033af06a191ff2267bca9ae56",
-                "id": 1,
-                "name": "admin"
-              }
-            },
-            "name": "Porcessing Time = Latency - Connect Time ",
-            "type": "timeseries",
-            "uid": "NKdhkbj7k",
-            "version": 3
-          },
-          "links": [],
-          "options": {
-            "legend": {
-              "calcs": [
-                "mean",
-                "max",
-                "min"
-              ],
-              "displayMode": "table",
-              "placement": "right",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "8.5.4",
-          "targets": [
-            {
-              "alias": "$tag_requestName",
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${DS_INFLUXDB2.0_JMETER}"
-              },
-              "groupBy": [
-                {
-                  "params": [
-                    "$__interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "requestName"
-                  ],
-                  "type": "tag"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "measurement": "requestsRaw",
-              "orderByTime": "ASC",
-              "policy": "autogen",
-              "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"processingTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
-              "rawQuery": true,
-              "refId": "D",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "latency"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": []
-            }
-          ],
-          "title": "Porcessing Time = Latency - Connect Time ",
-          "transformations": [],
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB2.0_JMETER}"
-          },
-          "editable": true,
-          "error": false,
-          "gridPos": {
-            "h": 2,
-            "w": 24,
-            "x": 0,
-            "y": 201
-          },
-          "height": "180",
-          "id": 97,
-          "links": [],
-          "options": {
-            "content": "<h3 style=\"text-align: center;\"><em>The following panels show aggregated metrics for <span style=\"color: #00ccff;\"><strong>selected request \"[[request]]\"</strong></span></em></h3>",
-            "mode": "html"
-          },
-          "pluginVersion": "9.1.6",
-          "transparent": true,
-          "type": "text"
-        }
-      ],
+      "panels": [],
       "title": "Network Traffic",
       "type": "row"
     },
     {
-      "collapsed": false,
       "datasource": {
         "type": "influxdb",
-        "uid": "UgPq-YFnk"
+        "uid": "${DS_INFLUXDB2.0_JMETER}"
       },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 6,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "95 perc"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#F9934E",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "99 perc"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#E24D42",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#BF1B00",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 107
+      },
+      "id": 77,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.1",
+      "targets": [
+        {
+          "alias": "$tag_requestName",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "requestName"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "requestsRaw",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"latency\")  \r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Latency",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB2.0_JMETER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 6,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "95 perc"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#F9934E",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "99 perc"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#E24D42",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#BF1B00",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 115
+      },
+      "id": 86,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.1",
+      "targets": [
+        {
+          "alias": "$tag_requestName",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "requestName"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "requestsRaw",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"connectTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)\r\n",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "latency"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Connect",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB2.0_JMETER}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 6,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 124
+      },
+      "id": 50,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "min",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.1",
+      "targets": [
+        {
+          "alias": "Sent Bytes",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "requestName"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "requestsRaw",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"receivedBytes\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "receivedBytes"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "requestName",
+              "operator": "!=",
+              "value": "select tag value"
+            }
+          ]
+        },
+        {
+          "alias": "Received Bytes",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "requestName"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "requestsRaw",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"sentBytes\")\r\n  |> filter(fn: (r) => r[\"runId\"] == \"${runId}\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "receivedBytes"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "requestName",
+              "operator": "!=",
+              "value": "select tag value"
+            }
+          ]
+        }
+      ],
+      "title": "Bytes Throughput Over Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB2.0_JMETER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 6,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 134
+      },
+      "id": 49,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "min",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.1",
+      "targets": [
+        {
+          "alias": "$tag_requestName",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "requestName"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "requestsRaw",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"sentBytes\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "receivedBytes"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "requestName",
+              "operator": "!=",
+              "value": "select tag value"
+            }
+          ]
+        }
+      ],
+      "title": "Sent Bytes per Request",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB2.0_JMETER}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 6,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 143
+      },
+      "id": 48,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "min",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.1",
+      "targets": [
+        {
+          "alias": "$tag_requestName",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "requestName"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "requestsRaw",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"receivedBytes\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runId:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group (columns: [\"requestName\"])\r\n  |> aggregateWindow(every: [[aggregation]]s, fn: mean, createEmpty: false)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "receivedBytes"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "requestName",
+              "operator": "!=",
+              "value": "select tag value"
+            }
+          ]
+        }
+      ],
+      "title": "Received Bytes per Request",
+      "type": "timeseries"
+    },
+    {
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 153
+      },
+      "id": 87,
+      "libraryPanel": {
+        "name": "Porcessing Time = Latency - Connect Time ",
+        "uid": "NKdhkbj7k"
+      },
+      "title": "Porcessing Time = Latency - Connect Time "
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 163
+      },
+      "id": 97,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<h3 style=\"text-align: center;\"><em>The following panels show aggregated metrics for <span style=\"color: #00ccff;\"><strong>selected request \"[[request]]\"</strong></span></em></h3>",
+        "mode": "html"
+      },
+      "pluginVersion": "11.3.1",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 107
+        "y": 165
       },
       "id": 36,
       "panels": [],
@@ -6681,11 +6512,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Response Time",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 30,
             "gradientMode": "none",
@@ -6694,6 +6527,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -6778,10 +6612,9 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 108
+        "y": 166
       },
       "id": 1,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [],
@@ -6794,7 +6627,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "alias": "Mean",
@@ -6995,7 +6828,6 @@
         }
       ],
       "title": "Response Times [[request]]",
-      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -7010,11 +6842,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Throughput",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -7023,6 +6857,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineStyle": {
               "fill": "solid"
@@ -7064,10 +6899,9 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 117
+        "y": 175
       },
       "id": 7,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -7085,7 +6919,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "alias": "Throughput",
@@ -7152,11 +6986,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "errors / interval",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -7165,6 +7001,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 6,
@@ -7204,11 +7041,9 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 117
+        "y": 175
       },
       "id": 11,
-      "interval": "",
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -7226,7 +7061,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "alias": "Errors per Second",
@@ -7309,10 +7144,9 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 125
+        "y": 183
       },
       "id": 105,
-      "links": [],
       "options": {
         "displayLabels": [
           "percent"
@@ -7336,7 +7170,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.2.3",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -7349,13 +7183,209 @@
         }
       ],
       "title": "Response codes",
-      "transformations": [],
       "type": "piechart"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 192
+      },
+      "id": 120,
+      "panels": [],
+      "title": "Response time comparison: ${comparisonMetric} time",
+      "type": "row"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 193
+      },
+      "id": 121,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<h3 style=\"text-align: center;\"><em>The following panels show aggregated metrics for comparison between tests <span style=\"color: #00ccff;\"><strong> ${runIdLeft} </strong> and <strong> ${runIdRight} </strong></span></em></h3>",
+        "mode": "html"
+      },
+      "pluginVersion": "11.3.1",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB2.0_JMETER}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlYlRd"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 195
+      },
+      "id": 122,
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 12,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {
+          "titleSize": 12,
+          "valueSize": 15
+        },
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
+          "hide": false,
+          "query": "from(bucket: v.bucket)\r\n   |> range(start: -365d)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runIdLeft:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> ${comparisonMetric}\r\n  |> group(columns: [\"requestName\"])\r\n  |> keep(columns: [ \"_value\", \"requestName\"])\r\n  |> rename(columns: {_value: \"request\"})",
+          "refId": "A"
+        }
+      ],
+      "title": "${comparisonMetric} Response Times Distribution - ${runIdLeft}",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB2.0_JMETER}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlYlRd"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 195
+      },
+      "id": 123,
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 12,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {
+          "titleSize": 12,
+          "valueSize": 15
+        },
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB2.0_JMETER}"
+          },
+          "hide": false,
+          "query": "from(bucket: v.bucket)\r\n   |> range(start: -365d)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"requestsRaw\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"responseTime\")\r\n  |> filter(fn: (r) => r[\"runId\"] =~ /${runIdRight:regex}/)\r\n  |> filter(fn: (r) => r[\"samplerType\"] =~ /${samplerType:regex}/)\r\n  |> group(columns: [\"requestName\"])\r\n  |> toFloat()\r\n  |> ${comparisonMetric}\r\n  |> group(columns: [\"requestName\"])\r\n  |> keep(columns: [ \"_value\", \"requestName\"])\r\n  |> rename(columns: {_value: \"request\"})",
+          "refId": "A"
+        }
+      ],
+      "title": "${comparisonMetric} Response Times Distribution - ${runIdRight}",
+      "type": "bargauge"
     }
   ],
+  "preload": false,
   "refresh": false,
-  "schemaVersion": 37,
-  "style": "dark",
+  "schemaVersion": 40,
   "tags": [],
   "templating": {
     "list": [
@@ -7366,85 +7396,79 @@
           "uid": "${DS_INFLUXDB2.0_JMETER}"
         },
         "definition": "",
-        "hide": 0,
         "includeAll": false,
         "label": "Individual Request",
-        "multi": false,
         "name": "request",
         "options": [],
         "query": "import \"influxdata/influxdb/schema\"\r\n\r\nschema.measurementTagValues(\r\n  bucket: v.bucket,\r\n  measurement: \"requestsRaw\",\r\n  tag: \"requestName\"\r\n)",
         "refresh": 2,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
-        "auto": false,
         "current": {
-          "selected": false,
-          "text": "30s",
+          "text": "30",
           "value": "30"
         },
-        "hide": 0,
         "includeAll": false,
         "label": "Aggregation Interval",
-        "multi": false,
         "name": "aggregation",
         "options": [
           {
             "selected": false,
-            "text": "1s",
+            "text": "1",
             "value": "1"
           },
           {
             "selected": false,
-            "text": "10s",
+            "text": "10",
             "value": "10"
           },
           {
-            "selected": true,
-            "text": "30s",
+            "selected": false,
+            "text": "30",
             "value": "30"
           },
           {
             "selected": false,
-            "text": "1m",
+            "text": "60",
             "value": "60"
           },
           {
             "selected": false,
-            "text": "10m",
+            "text": "600",
             "value": "600"
           },
           {
             "selected": false,
-            "text": "30m",
+            "text": "1800",
             "value": "1800"
           },
           {
             "selected": false,
-            "text": "1h",
+            "text": "3600",
             "value": "3600"
           }
         ],
         "query": "1,10,30,60,600,1800,3600",
-        "queryValue": "",
-        "refresh": 0,
-        "skipUrlSync": false,
         "type": "custom"
       },
       {
-        "allValue": "",
-        "current": {},
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": {
           "type": "influxdb",
           "uid": "${DS_INFLUXDB2.0_JMETER}"
         },
         "definition": "import \"influxdata/influxdb/schema\"\r\n\r\nschema.measurementTagValues(\r\n  bucket: v.bucket,\r\n  measurement: \"requestsRaw\",\r\n  tag: \"runId\"\r\n)",
         "description": "You can filter the data using run id",
-        "hide": 0,
         "includeAll": true,
         "label": "Run Id",
         "multi": true,
@@ -7453,31 +7477,105 @@
         "query": "import \"influxdata/influxdb/schema\"\r\n\r\nschema.measurementTagValues(\r\n  bucket: v.bucket,\r\n  measurement: \"requestsRaw\",\r\n  tag: \"runId\"\r\n)",
         "refresh": 2,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       },
       {
-        "allValue": "",
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
         "datasource": {
           "type": "influxdb",
           "uid": "${DS_INFLUXDB2.0_JMETER}"
         },
         "definition": "import \"influxdata/influxdb/schema\"\r\n\r\nschema.measurementTagValues(\r\n  bucket: v.bucket,\r\n  measurement: \"requestsRaw\",\r\n  tag: \"samplerType\"\r\n)",
         "description": "There is the possibility to filter the requests or transactions  ",
-        "hide": 0,
         "includeAll": true,
         "label": "Type",
-        "multi": false,
         "name": "samplerType",
         "options": [],
         "query": "import \"influxdata/influxdb/schema\"\r\n\r\nschema.measurementTagValues(\r\n  bucket: v.bucket,\r\n  measurement: \"requestsRaw\",\r\n  tag: \"samplerType\"\r\n)",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_INFLUXDB2.0_JMETER}"
+        },
+        "definition": "import \"influxdata/influxdb/schema\"\n\nschema.measurementTagValues(\n  bucket: v.bucket,\n  measurement: \"requestsRaw\",\n  tag: \"runId\"\n)",
+        "description": "Select first run ID to compare",
+        "label": "Run Id A",
+        "name": "runIdLeft",
+        "options": [],
+        "query": {
+          "query": "import \"influxdata/influxdb/schema\"\n\nschema.measurementTagValues(\n  bucket: v.bucket,\n  measurement: \"requestsRaw\",\n  tag: \"runId\"\n)"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_INFLUXDB2.0_JMETER}"
+        },
+        "definition": "import \"influxdata/influxdb/schema\"\n\nschema.measurementTagValues(\n  bucket: v.bucket,\n  measurement: \"requestsRaw\",\n  tag: \"runId\"\n)",
+        "description": "Select second run ID to compare",
+        "label": "Run Id B",
+        "name": "runIdRight",
+        "options": [],
+        "query": {
+          "query": "import \"influxdata/influxdb/schema\"\n\nschema.measurementTagValues(\n  bucket: v.bucket,\n  measurement: \"requestsRaw\",\n  tag: \"runId\"\n)"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {},
+        "description": "Metric for comparison between different tests",
+        "label": "comparisonMetric",
+        "name": "comparisonMetric",
+        "options": [
+          {
+            "selected": false,
+            "text": "Avg",
+            "value": "mean()"
+          },
+          {
+            "selected": false,
+            "text": "Max",
+            "value": "max()"
+          },
+          {
+            "selected": false,
+            "text": "Median",
+            "value": "median()"
+          },
+          {
+            "selected": false,
+            "text": "90%",
+            "value": "quantile(q: 0.90)"
+          },
+          {
+            "selected": false,
+            "text": "95%",
+            "value": "quantile(q: 0.95)"
+          },
+          {
+            "selected": false,
+            "text": "99%",
+            "value": "quantile(q: 0.99)"
+          }
+        ],
+        "query": "Avg : mean(), Max : max(), Median : median(), 90% : quantile(q: 0.90), 95% : quantile(q: 0.95), 99% : quantile(q: 0.99)",
+        "type": "custom"
       }
     ]
   },
@@ -7485,34 +7583,10 @@
     "from": "now-5m",
     "to": "now"
   },
-  "timepicker": {
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ]
-  },
+  "timepicker": {},
   "timezone": "browser",
   "title": "JMeter Load Test (org.md.jmeter.influxdb2.visualizer) - influxdb v2.0 (Flux)",
   "uid": "b4kP_KoMzasadasdasd",
-  "version": 49,
+  "version": 8,
   "weekStart": ""
 }
